@@ -1,0 +1,55 @@
+# Netlify configuration — Jindal Dental Clinic
+# Static site at root + serverless functions in /netlify/functions
+
+[build]
+  publish    = "."
+  functions  = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  # Functions use ESM (see package.json "type": "module")
+
+# Pretty API URLs: /api/booking  →  /.netlify/functions/booking
+[[redirects]]
+  from   = "/api/booking"
+  to     = "/.netlify/functions/booking"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/api/contact"
+  to     = "/.netlify/functions/contact"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/api/config"
+  to     = "/.netlify/functions/config"
+  status = 200
+  force  = true
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Permissions-Policy     = "geolocation=(), microphone=(), camera=()"
+
+# No caching for HTML so updates roll out fast
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Long cache for fingerprinted assets (CSS/JS)
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

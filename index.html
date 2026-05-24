@@ -473,6 +473,9 @@
         <input type="hidden" id="b-treatment" name="treatment" required />
         <input type="hidden" id="b-time" name="time" required />
 
+        <!-- honeypot — bots fill every input; humans don't see this one -->
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+
         <!-- 1. Treatment chips -->
         <div class="form-section">
           <span class="form-section__label">
@@ -773,6 +776,8 @@
       <div class="contact__form-wrap reveal">
         <form class="contact__form" id="contactForm" novalidate>
           <h3>Send us a message</h3>
+          <!-- honeypot -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
           <div class="field">
             <label for="c-name">Your Name</label>
             <input id="c-name" name="name" type="text" placeholder="Full name" required />
