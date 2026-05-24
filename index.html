@@ -16,6 +16,8 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#main">Skip to main content</a>
+
   <!-- ============ LOADER ============ -->
   <div class="loader" id="loader">
     <div class="loader__logo">
@@ -71,6 +73,7 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="home">
+    <a id="main" tabindex="-1" aria-hidden="true"></a>
     <div class="hero__bg">
       <div class="blob blob--1"></div>
       <div class="blob blob--2"></div>
@@ -463,66 +466,92 @@
       <form class="book__form reveal" id="bookForm" novalidate>
         <div class="book__form-head">
           <h3>Book Your Appointment</h3>
-          <p>Fill in the details and we'll get back to you shortly.</p>
+          <p>Pick a slot — we'll confirm on WhatsApp within 30 minutes.</p>
         </div>
 
-        <div class="field">
-          <label for="b-name">Full Name</label>
-          <input id="b-name" name="name" type="text" placeholder="e.g. Harpreet Singh" required minlength="2" />
-        </div>
+        <!-- hidden inputs populated by chip/slot UI -->
+        <input type="hidden" id="b-treatment" name="treatment" required />
+        <input type="hidden" id="b-time" name="time" required />
 
-        <div class="field">
-          <label for="b-phone">Phone Number</label>
-          <input id="b-phone" name="phone" type="tel" placeholder="+91 98XXX XXXXX" required pattern="^[+0-9 ()-]{8,}$" />
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="b-date">Preferred Date</label>
-            <input id="b-date" name="date" type="date" required />
-          </div>
-          <div class="field">
-            <label for="b-time">Preferred Time</label>
-            <select id="b-time" name="time" required>
-              <option value="" disabled selected>Select a slot</option>
-              <option>10:00 AM – 11:00 AM</option>
-              <option>11:00 AM – 12:00 PM</option>
-              <option>12:00 PM – 01:00 PM</option>
-              <option>04:00 PM – 05:00 PM</option>
-              <option>05:00 PM – 06:00 PM</option>
-              <option>06:00 PM – 07:00 PM</option>
-              <option>07:00 PM – 08:00 PM</option>
-            </select>
+        <!-- 1. Treatment chips -->
+        <div class="form-section">
+          <span class="form-section__label">
+            <span class="form-section__num">1</span> Choose a treatment
+          </span>
+          <div class="chips" id="treatmentChips" role="radiogroup" aria-label="Select a treatment">
+            <button type="button" class="chip" data-value="General Consultation" role="radio" aria-checked="false">General Consultation</button>
+            <button type="button" class="chip" data-value="Dental Implants" role="radio" aria-checked="false">Dental Implants</button>
+            <button type="button" class="chip" data-value="Root Canal Treatment" role="radio" aria-checked="false">Root Canal</button>
+            <button type="button" class="chip" data-value="Teeth Whitening" role="radio" aria-checked="false">Teeth Whitening</button>
+            <button type="button" class="chip" data-value="Smile Designing" role="radio" aria-checked="false">Smile Designing</button>
+            <button type="button" class="chip" data-value="Tooth Capping / Crown" role="radio" aria-checked="false">Capping / Crown</button>
+            <button type="button" class="chip" data-value="Braces &amp; Aligners" role="radio" aria-checked="false">Braces &amp; Aligners</button>
+            <button type="button" class="chip" data-value="Sensitivity Treatment" role="radio" aria-checked="false">Sensitivity</button>
+            <button type="button" class="chip" data-value="Pediatric Dentistry" role="radio" aria-checked="false">Kids Dentistry</button>
+            <button type="button" class="chip" data-value="Dentures" role="radio" aria-checked="false">Dentures</button>
+            <button type="button" class="chip" data-value="Cosmetic Dentistry" role="radio" aria-checked="false">Cosmetic</button>
+            <button type="button" class="chip" data-value="Emergency" role="radio" aria-checked="false">Emergency</button>
           </div>
         </div>
 
-        <div class="field">
-          <label for="b-treatment">Treatment</label>
-          <select id="b-treatment" name="treatment" required>
-            <option value="" disabled selected>Select a treatment</option>
-            <option>General Consultation</option>
-            <option>Dental Implants</option>
-            <option>Root Canal Treatment</option>
-            <option>Teeth Whitening</option>
-            <option>Smile Designing</option>
-            <option>Tooth Capping / Crown</option>
-            <option>Braces &amp; Aligners</option>
-            <option>Sensitivity Treatment</option>
-            <option>Pediatric Dentistry</option>
-            <option>Dentures</option>
-            <option>Cosmetic Dentistry</option>
-            <option>Other / Emergency</option>
-          </select>
+        <!-- 2. Quick dates + custom date -->
+        <div class="form-section">
+          <span class="form-section__label">
+            <span class="form-section__num">2</span> Choose a date
+          </span>
+          <div class="quick-dates" id="quickDates" role="radiogroup" aria-label="Select a date">
+            <!-- populated by JS -->
+          </div>
+          <input id="b-date" name="date" type="date" required aria-label="Pick a custom date" />
         </div>
 
-        <div class="field">
-          <label for="b-msg">Message <span>(optional)</span></label>
-          <textarea id="b-msg" name="message" rows="3" placeholder="Tell us a bit about your concern..."></textarea>
+        <!-- 3. Time slot grid -->
+        <div class="form-section">
+          <span class="form-section__label">
+            <span class="form-section__num">3</span> Choose a time
+          </span>
+          <div class="slots" id="timeSlots" role="radiogroup" aria-label="Select a time slot">
+            <button type="button" class="slot" data-value="10:00 AM" role="radio" aria-checked="false">10:00 AM</button>
+            <button type="button" class="slot" data-value="11:00 AM" role="radio" aria-checked="false">11:00 AM</button>
+            <button type="button" class="slot" data-value="12:00 PM" role="radio" aria-checked="false">12:00 PM</button>
+            <button type="button" class="slot" data-value="04:00 PM" role="radio" aria-checked="false">04:00 PM</button>
+            <button type="button" class="slot" data-value="05:00 PM" role="radio" aria-checked="false">05:00 PM</button>
+            <button type="button" class="slot" data-value="06:00 PM" role="radio" aria-checked="false">06:00 PM</button>
+            <button type="button" class="slot" data-value="07:00 PM" role="radio" aria-checked="false">07:00 PM</button>
+            <button type="button" class="slot" data-value="08:00 PM" role="radio" aria-checked="false">08:00 PM</button>
+          </div>
         </div>
 
-        <button type="submit" class="btn btn--primary btn--block">
+        <!-- 4. Personal details -->
+        <div class="form-section">
+          <span class="form-section__label">
+            <span class="form-section__num">4</span> Your details
+          </span>
+
+          <div class="field">
+            <label for="b-name">Full Name</label>
+            <input id="b-name" name="name" type="text" placeholder="e.g. Harpreet Singh" required minlength="2" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="b-phone">Phone Number</label>
+            <input id="b-phone" name="phone" type="tel" placeholder="+91 98XXX XXXXX" required pattern="^[+0-9 ()-]{8,}$" autocomplete="tel" inputmode="tel" />
+          </div>
+
+          <div class="field">
+            <label for="b-msg">Message <span>(optional)</span></label>
+            <textarea id="b-msg" name="message" rows="2" placeholder="Tell us a bit about your concern..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block btn--glow">
           <span class="btn__label">Confirm Appointment</span>
           <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </button>
+
+        <button type="button" class="btn btn--whatsapp btn--block book__wa" id="bookViaWa">
+          <svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.7 11.7 0 0 0 12 0 11.8 11.8 0 0 0 1.7 17.6L0 24l6.6-1.7A11.8 11.8 0 0 0 24 12a11.7 11.7 0 0 0-3.5-8.5zM12 21.8a9.7 9.7 0 0 1-5-1.4l-.4-.2-3.9 1 1-3.8-.2-.4A9.8 9.8 0 1 1 21.8 12 9.8 9.8 0 0 1 12 21.8zm5.4-7.3c-.3-.2-1.7-.9-2-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7 0a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.8c.8.3 1.4.5 1.9.7a4.6 4.6 0 0 0 2 .1 3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.1-.3-.2-.6-.3z"/></svg>
+          Or Book via WhatsApp
         </button>
 
         <p class="book__success" id="bookSuccess" hidden>
@@ -859,6 +888,22 @@
   <button class="back-top" id="backTop" aria-label="Back to top">
     <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
   </button>
+
+  <!-- ============ MOBILE STICKY ACTION BAR ============ -->
+  <nav class="mobile-bar" aria-label="Quick actions">
+    <a href="tel:+919815171917" class="mobile-bar__btn mobile-bar__call" aria-label="Call clinic">
+      <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15 15 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .2-1A11.4 11.4 0 0 1 8.5 4 1 1 0 0 0 7.5 3H4a1 1 0 0 0-1 1 17 17 0 0 0 17 17 1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg>
+      <span>Call</span>
+    </a>
+    <a href="https://wa.me/919815171917?text=Hello%20Jindal%20Dental%20Clinic%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="mobile-bar__btn mobile-bar__wa" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.7 11.7 0 0 0 12 0 11.8 11.8 0 0 0 1.7 17.6L0 24l6.6-1.7A11.8 11.8 0 0 0 24 12a11.7 11.7 0 0 0-3.5-8.5zM12 21.8a9.7 9.7 0 0 1-5-1.4l-.4-.2-3.9 1 1-3.8-.2-.4A9.8 9.8 0 1 1 21.8 12 9.8 9.8 0 0 1 12 21.8z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+    <a href="#book" class="mobile-bar__btn mobile-bar__book" aria-label="Book appointment">
+      <svg viewBox="0 0 24 24"><path d="M19 4h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14zm0-12H5V6h14z"/></svg>
+      <span>Book Now</span>
+    </a>
+  </nav>
 
   <script src="script.js"></script>
 </body>
