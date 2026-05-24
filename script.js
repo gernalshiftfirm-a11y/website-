@@ -308,46 +308,162 @@
   const bookForm = document.getElementById('bookForm');
   const bookSuccess = document.getElementById('bookSuccess');
   if (bookForm) {
-    // set min date to today
+    // -------- date helpers --------
+    const toISODate = (d) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${dd}`;
+    };
+
     const dateField = bookForm.querySelector('#b-date');
-    if (dateField) {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      dateField.min = `${yyyy}-${mm}-${dd}`;
+    const treatmentField = bookForm.querySelector('#b-treatment');
+    const timeField = bookForm.querySelector('#b-time');
+
+    // set min date to today
+    const today = new Date();
+    if (dateField) dateField.min = toISODate(today);
+
+    // -------- build quick-date chips (Today, Tomorrow, Day after) --------
+    const quickDatesEl = document.getElementById('quickDates');
+    if (quickDatesEl) {
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const labels = ['Today', 'Tomorrow', 'Day after'];
+      quickDatesEl.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        const d = new Date();
+        d.setDate(today.getDate() + i);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'quick-date';
+        btn.setAttribute('role', 'radio');
+        btn.setAttribute('aria-checked', 'false');
+        btn.dataset.value = toISODate(d);
+        btn.innerHTML = `
+          <span class="quick-date__day">${labels[i]} · ${dayNames[d.getDay()]}</span>
+          <span class="quick-date__date">${d.getDate()} ${d.toLocaleString('default', { month: 'short' })}</span>
+        `;
+        quickDatesEl.appendChild(btn);
+      }
     }
 
+    // -------- single-select group helper --------
+    const setupRadioGroup = (groupEl, onChange) => {
+      if (!groupEl) return;
+      groupEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('[role="radio"]');
+        if (!btn || !groupEl.contains(btn)) return;
+        groupEl.querySelectorAll('[role="radio"]').forEach(b => {
+          b.setAttribute('aria-checked', b === btn ? 'true' : 'false');
+        });
+        onChange?.(btn.dataset.value, btn);
+      });
+      // keyboard support
+      groupEl.addEventListener('keydown', (e) => {
+        const radios = Array.from(groupEl.querySelectorAll('[role="radio"]'));
+        const current = document.activeElement;
+        const idx = radios.indexOf(current);
+        if (idx < 0) return;
+        let next = idx;
+        if (['ArrowRight', 'ArrowDown'].includes(e.key)) next = (idx + 1) % radios.length;
+        else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) next = (idx - 1 + radios.length) % radios.length;
+        else return;
+        e.preventDefault();
+        radios[next].focus();
+        radios[next].click();
+      });
+    };
+
+    // treatment chips
+    setupRadioGroup(document.getElementById('treatmentChips'), (val) => {
+      if (treatmentField) treatmentField.value = val || '';
+    });
+
+    // time slots
+    setupRadioGroup(document.getElementById('timeSlots'), (val) => {
+      if (timeField) timeField.value = val || '';
+    });
+
+    // quick-date chips → sync date input
+    setupRadioGroup(document.getElementById('quickDates'), (val) => {
+      if (dateField) dateField.value = val || '';
+    });
+
+    // typing a custom date clears active quick-date chip
+    dateField?.addEventListener('input', () => {
+      document.querySelectorAll('#quickDates [role="radio"]').forEach(b => {
+        b.setAttribute('aria-checked', b.dataset.value === dateField.value ? 'true' : 'false');
+      });
+    });
+
+    // -------- shared validation --------
+    const collectFormData = () => {
+      const data = {
+        name: bookForm.querySelector('#b-name').value.trim(),
+        phone: bookForm.querySelector('#b-phone').value.trim(),
+        date: dateField?.value || '',
+        time: timeField?.value || '',
+        treatment: treatmentField?.value || '',
+        message: bookForm.querySelector('#b-msg').value.trim(),
+      };
+      return data;
+    };
+
+    const validateBooking = () => {
+      const d = collectFormData();
+      if (!d.treatment) { alert('Please choose a treatment.'); return null; }
+      if (!d.date) { alert('Please pick a date.'); return null; }
+      if (!d.time) { alert('Please pick a time slot.'); return null; }
+      if (!bookForm.checkValidity()) { bookForm.reportValidity(); return null; }
+      return d;
+    };
+
+    // -------- submit handler --------
     bookForm.addEventListener('submit', (e) => {
       e.preventDefault();
-
-      // basic validity check
-      if (!bookForm.checkValidity()) {
-        bookForm.reportValidity();
-        return;
-      }
+      const data = validateBooking();
+      if (!data) return;
 
       const submitBtn = bookForm.querySelector('button[type="submit"]');
-      const originalLabel = submitBtn.querySelector('.btn__label')?.textContent;
-      if (submitBtn.querySelector('.btn__label')) {
-        submitBtn.querySelector('.btn__label').textContent = 'Sending...';
-      }
+      const label = submitBtn.querySelector('.btn__label');
+      const original = label?.textContent;
+      if (label) label.textContent = 'Sending...';
       submitBtn.disabled = true;
 
-      // simulate submission (no backend)
+      // simulate submission (replace with real backend later)
       setTimeout(() => {
         if (bookSuccess) {
           bookSuccess.hidden = false;
           bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
+        // reset
         bookForm.reset();
+        bookForm.querySelectorAll('[role="radio"]').forEach(b => b.setAttribute('aria-checked', 'false'));
+        if (treatmentField) treatmentField.value = '';
+        if (timeField) timeField.value = '';
         submitBtn.disabled = false;
-        if (submitBtn.querySelector('.btn__label') && originalLabel) {
-          submitBtn.querySelector('.btn__label').textContent = originalLabel;
-        }
-        // hide success after a while
+        if (label && original) label.textContent = original;
         setTimeout(() => { if (bookSuccess) bookSuccess.hidden = true; }, 8000);
       }, 800);
+    });
+
+    // -------- WhatsApp quick-book --------
+    const waBtn = document.getElementById('bookViaWa');
+    waBtn?.addEventListener('click', () => {
+      const data = validateBooking();
+      if (!data) return;
+      const lines = [
+        `Hello Jindal Dental Clinic, I'd like to book an appointment.`,
+        ``,
+        `*Name:* ${data.name}`,
+        `*Phone:* ${data.phone}`,
+        `*Treatment:* ${data.treatment}`,
+        `*Date:* ${data.date}`,
+        `*Time:* ${data.time}`,
+      ];
+      if (data.message) lines.push(`*Note:* ${data.message}`);
+      const msg = encodeURIComponent(lines.join('\n'));
+      window.open(`https://wa.me/919815171917?text=${msg}`, '_blank', 'noopener');
     });
   }
 
