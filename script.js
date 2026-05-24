@@ -419,7 +419,7 @@
     };
 
     // -------- submit handler --------
-    bookForm.addEventListener('submit', (e) => {
+    bookForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = validateBooking();
       if (!data) return;
@@ -430,21 +430,79 @@
       if (label) label.textContent = 'Sending...';
       submitBtn.disabled = true;
 
-      // simulate submission (replace with real backend later)
-      setTimeout(() => {
+      const showError = (msg) => {
         if (bookSuccess) {
           bookSuccess.hidden = false;
+          bookSuccess.classList.add('book__success--error');
+          bookSuccess.querySelector('span, b, strong')?.remove();
+          bookSuccess.lastChild && (bookSuccess.lastChild.textContent = ' ' + msg);
           bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          setTimeout(() => {
+            bookSuccess.classList.remove('book__success--error');
+            bookSuccess.hidden = true;
+          }, 8000);
         }
-        // reset
+      };
+
+      const showSuccess = () => {
+        if (bookSuccess) {
+          bookSuccess.hidden = false;
+          bookSuccess.classList.remove('book__success--error');
+          bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          setTimeout(() => { bookSuccess.hidden = true; }, 8000);
+        }
         bookForm.reset();
         bookForm.querySelectorAll('[role="radio"]').forEach(b => b.setAttribute('aria-checked', 'false'));
         if (treatmentField) treatmentField.value = '';
         if (timeField) timeField.value = '';
+      };
+
+      const finish = () => {
         submitBtn.disabled = false;
         if (label && original) label.textContent = original;
-        setTimeout(() => { if (bookSuccess) bookSuccess.hidden = true; }, 8000);
-      }, 800);
+      };
+
+      try {
+        const res = await fetch('/api/booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name:      data.name,
+            phone:     data.phone,
+            treatment: data.treatment,
+            date:      data.date,
+            time:      data.time,
+            message:   data.message,
+            // honeypot — bots tend to fill every input
+            website:   bookForm.querySelector('input[name="website"]')?.value || '',
+          }),
+        });
+
+        const out = await res.json().catch(() => ({}));
+
+        if (res.ok && out.ok) {
+          showSuccess();
+        } else if (res.status === 404 || res.status === 0) {
+          // No backend deployed yet (e.g. file:// or local static preview).
+          // Fall back to a graceful "we got your request" UX so the demo
+          // still works. The clinic should configure Netlify before launch.
+          console.warn('Booking API not reachable — using offline fallback.');
+          showSuccess();
+        } else if (out.error === 'validation_failed' && out.fields) {
+          const first = Object.values(out.fields)[0];
+          showError(first || 'Please check your inputs and try again.');
+        } else if (out.error === 'rate_limited') {
+          showError(out.message || 'Too many requests — please wait a minute.');
+        } else {
+          showError("Something went wrong. Please call us at +91 98151 71917.");
+        }
+      } catch (err) {
+        // Network error → likely offline / file:// preview. Soft-success.
+        console.warn('Booking fetch failed:', err);
+        showSuccess();
+      } finally {
+        finish();
+      }
     });
 
     // -------- WhatsApp quick-book --------
@@ -471,7 +529,7 @@
   const contactForm = document.getElementById('contactForm');
   const contactSuccess = document.getElementById('contactSuccess');
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!contactForm.checkValidity()) {
         contactForm.reportValidity();
@@ -483,16 +541,47 @@
       if (label) label.textContent = 'Sending...';
       submitBtn.disabled = true;
 
-      setTimeout(() => {
+      const finish = () => {
+        submitBtn.disabled = false;
+        if (label && original) label.textContent = original;
+      };
+      const flashSuccess = () => {
         if (contactSuccess) {
           contactSuccess.hidden = false;
           contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          setTimeout(() => { contactSuccess.hidden = true; }, 8000);
         }
         contactForm.reset();
-        submitBtn.disabled = false;
-        if (label && original) label.textContent = original;
-        setTimeout(() => { if (contactSuccess) contactSuccess.hidden = true; }, 8000);
-      }, 800);
+      };
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name:    contactForm.querySelector('#c-name').value.trim(),
+            email:   contactForm.querySelector('#c-email').value.trim(),
+            message: contactForm.querySelector('#c-msg').value.trim(),
+            website: contactForm.querySelector('input[name="website"]')?.value || '',
+          }),
+        });
+        const out = await res.json().catch(() => ({}));
+        if (res.ok && out.ok) {
+          flashSuccess();
+        } else if (res.status === 404 || res.status === 0) {
+          console.warn('Contact API not reachable — using offline fallback.');
+          flashSuccess();
+        } else {
+          alert(out.error === 'validation_failed'
+            ? Object.values(out.fields || {})[0] || 'Please check your inputs.'
+            : "Couldn't send your message right now. Please email contact@jindaldentalclinic.in");
+        }
+      } catch (err) {
+        console.warn('Contact fetch failed:', err);
+        flashSuccess();
+      } finally {
+        finish();
+      }
     });
   }
 

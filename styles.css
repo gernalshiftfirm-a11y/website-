@@ -1929,3 +1929,13 @@ summary:focus-visible {
   .slots { grid-template-columns: repeat(3, 1fr); }
   .quick-dates { grid-template-columns: repeat(3, 1fr); }
 }
+
+
+
+/* Error variant of the success banner inside the booking form */
+.book__success--error {
+  background: rgba(239, 68, 68, .18);
+  border-color: rgba(239, 68, 68, .45);
+  color: #fff;
+}
+.book__success--error svg { fill: #fecaca; }
