@@ -3,13 +3,19 @@
    ==================================================================== */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Force light rendering — prevents Safari/Chrome dark-mode auto-inversion
+     from making form inputs invisible on macOS Dark Mode. */
+  color-scheme: light;
+}
 body.admin {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 15px;
   line-height: 1.55;
   color: #0f172a;
   background: #f1f5f9;
+  color-scheme: light;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -148,11 +154,15 @@ select:focus-visible, textarea:focus-visible {
   width: 100%;
   padding: .85rem 1rem;
   background: #fff;
+  color: #0f172a;
   border: 1.5px solid var(--grey-200);
   border-radius: 12px;
   outline: none;
   transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;          /* prevent Safari iOS dark-mode auto-style */
+          appearance: none;
 }
+.auth__form input::placeholder { color: #94a3b8; }
 .auth__form input:focus {
   border-color: var(--blue-500);
   box-shadow: 0 0 0 4px var(--blue-50);
