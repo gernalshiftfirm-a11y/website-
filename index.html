@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CHROMA — bold, bright, free casuals for Gen Z. Men, Women, Kids." />
-  <title>CHROMA — Wear The Spectrum</title>
+  <meta name="description" content="CHROMA — groovy retro casuals for him, her & the little ones." />
+  <title>CHROMA · Wear The Spectrum</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <!-- film grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
+  <!-- crt scanlines (subtle) -->
+  <div class="scanlines" aria-hidden="true"></div>
+
   <!-- ============ LOADER ============ -->
   <div class="loader" id="loader">
+    <div class="loader__sun" aria-hidden="true"></div>
     <div class="loader__inner">
       <span class="loader__char">C</span>
       <span class="loader__char">H</span>
@@ -31,7 +37,7 @@
 
   <!-- ============ NAV ============ -->
   <header class="nav" id="nav">
-    <a href="#top" class="nav__logo">CHROMA<span>.</span></a>
+    <a href="#top" class="nav__logo">CHROMA<span>*</span></a>
     <nav class="nav__links">
       <a href="#shop">Shop</a>
       <a href="#drops">Drops</a>
@@ -43,24 +49,70 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="top">
-    <!-- floating shapes -->
-    <div class="shape shape--1" data-speed="0.06"></div>
-    <div class="shape shape--2" data-speed="-0.08"></div>
-    <div class="shape shape--3" data-speed="0.12"></div>
-    <div class="shape shape--4" data-speed="-0.05"></div>
-    <div class="shape shape--star" data-speed="0.1">
-      <svg viewBox="0 0 24 24"><path d="M12 1l3.09 7.26L22 9.27l-5 5.16L18.18 22 12 17.77 5.82 22 7 14.43l-5-5.16 6.91-1.01z"/></svg>
+    <!-- sunburst behind title -->
+    <div class="sunburst" aria-hidden="true"></div>
+
+    <!-- floating retro shapes -->
+    <div class="shape shape--daisy" data-speed="0.06" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <g fill="currentColor">
+          <circle cx="50" cy="20" r="14"/><circle cx="50" cy="80" r="14"/>
+          <circle cx="20" cy="50" r="14"/><circle cx="80" cy="50" r="14"/>
+          <circle cx="29" cy="29" r="14"/><circle cx="71" cy="29" r="14"/>
+          <circle cx="29" cy="71" r="14"/><circle cx="71" cy="71" r="14"/>
+        </g>
+        <circle cx="50" cy="50" r="16" fill="#2b1810"/>
+      </svg>
     </div>
-    <div class="shape shape--blob" data-speed="-0.04"></div>
+
+    <div class="shape shape--vinyl" data-speed="-0.08" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="#2b1810"/>
+        <circle cx="50" cy="50" r="44" fill="none" stroke="#3a2618" stroke-width=".5"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#3a2618" stroke-width=".5"/>
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#3a2618" stroke-width=".5"/>
+        <circle cx="50" cy="50" r="32" fill="none" stroke="#3a2618" stroke-width=".5"/>
+        <circle cx="50" cy="50" r="18" fill="#d65a31"/>
+        <circle cx="50" cy="50" r="3" fill="#2b1810"/>
+      </svg>
+    </div>
+
+    <div class="shape shape--star" data-speed="0.12" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <path fill="currentColor" d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z"/>
+      </svg>
+    </div>
+
+    <div class="shape shape--bolt" data-speed="-0.05" aria-hidden="true">
+      <svg viewBox="0 0 60 100">
+        <path fill="currentColor" stroke="#2b1810" stroke-width="3" stroke-linejoin="round"
+          d="M35 0 L0 55 L25 55 L18 100 L60 40 L33 40 Z"/>
+      </svg>
+    </div>
+
+    <div class="shape shape--smiley" data-speed="0.1" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="currentColor" stroke="#2b1810" stroke-width="4"/>
+        <circle cx="35" cy="42" r="5" fill="#2b1810"/>
+        <circle cx="65" cy="42" r="5" fill="#2b1810"/>
+        <path d="M30 60 Q50 80 70 60" fill="none" stroke="#2b1810" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="shape shape--squiggle" data-speed="-0.04" aria-hidden="true">
+      <svg viewBox="0 0 200 60">
+        <path d="M5 30 Q 25 5, 50 30 T 95 30 T 140 30 T 185 30" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+      </svg>
+    </div>
 
     <div class="hero__content">
-      <p class="hero__eyebrow">SS26 · Free Casuals · Gen Z Edit</p>
+      <p class="hero__eyebrow">★ EST. 2026 · A-SIDE · GROOVY CASUALS ★</p>
       <h1 class="hero__title">
         <span class="line"><span class="word" data-text="WEAR">WEAR</span></span>
         <span class="line"><span class="word outline" data-text="THE">THE</span></span>
         <span class="line"><span class="word gradient" data-text="SPECTRUM">SPECTRUM</span></span>
       </h1>
-      <p class="hero__sub">Loud colors. Loose fits. Built for the bold — for him, her & the little ones.</p>
+      <p class="hero__sub"><em>Loud colors. Loose fits.</em> Built far-out for him, her & the little ones.</p>
       <div class="hero__cta">
         <a href="#shop" class="btn btn--primary">Shop The Drop</a>
         <a href="#story" class="btn btn--ghost">Our Story <span class="arrow">↓</span></a>
@@ -76,8 +128,8 @@
   <!-- ============ MARQUEE 1 ============ -->
   <section class="marquee marquee--1">
     <div class="marquee__track">
-      <span>NEW DROP · </span><span>★</span><span> COLOR YOUR VIBE · </span><span>★</span><span> FREE SHIPPING OVER $50 · </span><span>★</span><span> WEAR THE SPECTRUM · </span><span>★</span>
-      <span>NEW DROP · </span><span>★</span><span> COLOR YOUR VIBE · </span><span>★</span><span> FREE SHIPPING OVER $50 · </span><span>★</span><span> WEAR THE SPECTRUM · </span><span>★</span>
+      <span>NEW DROP</span><span>✺</span><span>COLOR YOUR VIBE</span><span>✺</span><span>FREE SHIPPING OVER $50</span><span>✺</span><span>WEAR THE SPECTRUM</span><span>✺</span>
+      <span>NEW DROP</span><span>✺</span><span>COLOR YOUR VIBE</span><span>✺</span><span>FREE SHIPPING OVER $50</span><span>✺</span><span>WEAR THE SPECTRUM</span><span>✺</span>
     </div>
   </section>
 
@@ -86,9 +138,10 @@
     <div class="story__bg-text" data-parallax="0.3">CHROMA</div>
     <div class="story__grid">
       <div class="story__visual reveal">
-        <div class="story__sticker sticker--1">100% COTTON</div>
+        <div class="story__sticker sticker--1">★ 100% COTTON ★</div>
         <div class="story__sticker sticker--2">ZERO BORING</div>
         <div class="story__photo"></div>
+        <div class="story__halftone" aria-hidden="true"></div>
       </div>
       <div class="story__copy">
         <p class="kicker reveal">// our story</p>
@@ -115,6 +168,7 @@
       <article class="cat cat--men reveal" data-cat="men">
         <div class="cat__bg"></div>
         <div class="cat__circle"></div>
+        <span class="cat__stamp">★ A-SIDE ★</span>
         <div class="cat__inner">
           <p class="cat__num">01 / MEN</p>
           <h3>Bold &<br/>Boxy.</h3>
@@ -126,6 +180,7 @@
       <article class="cat cat--women reveal" data-cat="women">
         <div class="cat__bg"></div>
         <div class="cat__circle"></div>
+        <span class="cat__stamp">★ B-SIDE ★</span>
         <div class="cat__inner">
           <p class="cat__num">02 / WOMEN</p>
           <h3>Soft &<br/>Loud.</h3>
@@ -137,6 +192,7 @@
       <article class="cat cat--kids reveal" data-cat="kids">
         <div class="cat__bg"></div>
         <div class="cat__circle"></div>
+        <span class="cat__stamp">★ MINI MIX ★</span>
         <div class="cat__inner">
           <p class="cat__num">03 / KIDS</p>
           <h3>Tiny &<br/>Tough.</h3>
@@ -154,29 +210,29 @@
       <h2 class="reveal stagger">12 shades. <span class="hl">Zero rules.</span></h2>
     </div>
     <div class="colors__row">
-      <div class="swatch" style="--c:#ff3ea5"><span>HOT PINK</span></div>
-      <div class="swatch" style="--c:#ffd23f"><span>ACID YELLOW</span></div>
-      <div class="swatch" style="--c:#3ddc97"><span>MINT POP</span></div>
-      <div class="swatch" style="--c:#4cc9f0"><span>POOL BLUE</span></div>
-      <div class="swatch" style="--c:#7b2cbf"><span>UV PURPLE</span></div>
-      <div class="swatch" style="--c:#ff7f11"><span>TANGERINE</span></div>
-      <div class="swatch" style="--c:#ef233c"><span>FIRE RED</span></div>
-      <div class="swatch" style="--c:#06d6a0"><span>JADE</span></div>
-      <div class="swatch" style="--c:#118ab2"><span>DEEP DIVE</span></div>
-      <div class="swatch" style="--c:#f15bb5"><span>BUBBLEGUM</span></div>
-      <div class="swatch" style="--c:#9bf6ff"><span>ICE</span></div>
-      <div class="swatch" style="--c:#fee440"><span>SUN</span></div>
+      <div class="swatch" style="--c:#d65a31"><span>BURNT ORANGE</span></div>
+      <div class="swatch" style="--c:#e8a22f"><span>MUSTARD</span></div>
+      <div class="swatch" style="--c:#7a8b3c"><span>AVOCADO</span></div>
+      <div class="swatch" style="--c:#2d6e6e"><span>DUSTY TEAL</span></div>
+      <div class="swatch" style="--c:#8b4423"><span>RUST</span></div>
+      <div class="swatch" style="--c:#c1272d"><span>CHERRY</span></div>
+      <div class="swatch" style="--c:#e09a8e"><span>DUSTY ROSE</span></div>
+      <div class="swatch" style="--c:#3a2618"><span>COCOA</span></div>
+      <div class="swatch" style="--c:#f4ead5"><span>CREAM</span></div>
+      <div class="swatch" style="--c:#b8956a"><span>CARAMEL</span></div>
+      <div class="swatch" style="--c:#5e7d8c"><span>DENIM</span></div>
+      <div class="swatch" style="--c:#d4a574"><span>HONEY</span></div>
     </div>
   </section>
 
   <!-- ============ DROPS ============ -->
   <section class="drops" id="drops">
     <div class="drops__head">
-      <p class="kicker reveal">// new this week</p>
+      <p class="kicker reveal">// hot off the press</p>
       <h2 class="reveal stagger">Fresh <span class="hl-2">drops</span>.</h2>
     </div>
     <div class="drops__grid">
-      <a class="drop reveal" style="--bg:#ff3ea5;--accent:#ffd23f">
+      <a class="drop reveal" style="--bg:#d65a31;--accent:#e8a22f">
         <div class="drop__img drop__img--1"></div>
         <div class="drop__meta">
           <span class="drop__tag">NEW</span>
@@ -184,43 +240,43 @@
           <p class="drop__price">$38</p>
         </div>
       </a>
-      <a class="drop reveal" style="--bg:#4cc9f0;--accent:#7b2cbf">
+      <a class="drop reveal" style="--bg:#2d6e6e;--accent:#e09a8e">
         <div class="drop__img drop__img--2"></div>
         <div class="drop__meta">
           <span class="drop__tag">NEW</span>
-          <p class="drop__name">Pool Cargo Pants</p>
+          <p class="drop__name">Lagoon Cargo Pants</p>
           <p class="drop__price">$72</p>
         </div>
       </a>
-      <a class="drop reveal" style="--bg:#3ddc97;--accent:#ef233c">
+      <a class="drop reveal" style="--bg:#7a8b3c;--accent:#c1272d">
         <div class="drop__img drop__img--3"></div>
         <div class="drop__meta">
           <span class="drop__tag">LTD</span>
-          <p class="drop__name">Mint Boxy Hoodie</p>
+          <p class="drop__name">Avocado Boxy Hoodie</p>
           <p class="drop__price">$95</p>
         </div>
       </a>
-      <a class="drop reveal" style="--bg:#ffd23f;--accent:#118ab2">
+      <a class="drop reveal" style="--bg:#e8a22f;--accent:#3a2618">
         <div class="drop__img drop__img--4"></div>
         <div class="drop__meta">
           <span class="drop__tag">KIDS</span>
-          <p class="drop__name">Acid Mini Set</p>
+          <p class="drop__name">Mustard Mini Set</p>
           <p class="drop__price">$48</p>
         </div>
       </a>
-      <a class="drop reveal" style="--bg:#7b2cbf;--accent:#fee440">
+      <a class="drop reveal" style="--bg:#8b4423;--accent:#e8a22f">
         <div class="drop__img drop__img--5"></div>
         <div class="drop__meta">
           <span class="drop__tag">NEW</span>
-          <p class="drop__name">UV Crop Knit</p>
+          <p class="drop__name">Rust Crop Knit</p>
           <p class="drop__price">$65</p>
         </div>
       </a>
-      <a class="drop reveal" style="--bg:#ff7f11;--accent:#06d6a0">
+      <a class="drop reveal" style="--bg:#c1272d;--accent:#f4ead5">
         <div class="drop__img drop__img--6"></div>
         <div class="drop__meta">
           <span class="drop__tag">HOT</span>
-          <p class="drop__name">Tangerine Bucket Hat</p>
+          <p class="drop__name">Cherry Bucket Hat</p>
           <p class="drop__price">$28</p>
         </div>
       </a>
@@ -230,13 +286,14 @@
   <!-- ============ MARQUEE 2 ============ -->
   <section class="marquee marquee--2">
     <div class="marquee__track reverse">
-      <span>FREE CASUALS</span><span>·</span><span>MEN</span><span>·</span><span>WOMEN</span><span>·</span><span>KIDS</span><span>·</span><span>BUILT FOR GEN Z</span><span>·</span>
-      <span>FREE CASUALS</span><span>·</span><span>MEN</span><span>·</span><span>WOMEN</span><span>·</span><span>KIDS</span><span>·</span><span>BUILT FOR GEN Z</span><span>·</span>
+      <span>FREE CASUALS</span><span>✺</span><span>MEN</span><span>✺</span><span>WOMEN</span><span>✺</span><span>KIDS</span><span>✺</span><span>STAY GROOVY</span><span>✺</span>
+      <span>FREE CASUALS</span><span>✺</span><span>MEN</span><span>✺</span><span>WOMEN</span><span>✺</span><span>KIDS</span><span>✺</span><span>STAY GROOVY</span><span>✺</span>
     </div>
   </section>
 
   <!-- ============ NEWSLETTER ============ -->
   <section class="news">
+    <div class="news__sun" aria-hidden="true"></div>
     <div class="news__inner">
       <h2 class="reveal stagger">Get on the <span class="hl">list</span>.</h2>
       <p class="reveal stagger">Drops hit Fridays. Subscribers get them Thursdays + 10% off.</p>
@@ -245,16 +302,14 @@
         <button type="submit">JOIN</button>
       </form>
     </div>
-    <div class="news__shape news__shape--1"></div>
-    <div class="news__shape news__shape--2"></div>
   </section>
 
   <!-- ============ FOOTER ============ -->
   <footer class="foot">
     <div class="foot__top">
       <div class="foot__brand">
-        <h3>CHROMA<span>.</span></h3>
-        <p>Wear the spectrum.<br/>Made for the bold, since 2026.</p>
+        <h3>CHROMA<span>*</span></h3>
+        <p>Wear the spectrum.<br/>Made far-out, since 2026.</p>
       </div>
       <div class="foot__cols">
         <div>
