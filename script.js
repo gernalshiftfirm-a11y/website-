@@ -1,143 +1,432 @@
-/* ============ CHROMA · interactions ============ */
+/* ====================================================================
+   JINDAL DENTAL CLINIC — interactions
+   ==================================================================== */
 
-// 1) Loader
-window.addEventListener('load', () => {
-  const loader = document.getElementById('loader');
-  setTimeout(() => loader.classList.add('done'), 1800);
-});
+(() => {
+  'use strict';
 
-// 2) Sticky nav transform on scroll
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
-
-// 3) Custom cursor (desktop only)
-const cursor = document.getElementById('cursor');
-const cursorDot = document.getElementById('cursorDot');
-let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0, ringX = 0, ringY = 0;
-
-const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-if (isFinePointer) {
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  /* -------- 1) Loader -------- */
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    if (!loader) return;
+    setTimeout(() => loader.classList.add('done'), 1400);
+    setTimeout(() => loader.remove(), 2200);
   });
 
-  const animateCursor = () => {
-    dotX += (mouseX - dotX) * 0.6;
-    dotY += (mouseY - dotY) * 0.6;
-    ringX += (mouseX - ringX) * 0.18;
-    ringY += (mouseY - ringY) * 0.18;
-    cursorDot.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%, -50%)`;
-    cursor.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(animateCursor);
+  /* -------- 2) Sticky nav scroll state -------- */
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    if (!nav) return;
+    nav.classList.toggle('scrolled', window.scrollY > 30);
   };
-  animateCursor();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-  document.querySelectorAll('a, button, .swatch, .cat, .drop').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+  /* -------- 3) Mobile menu toggle -------- */
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  if (navToggle && nav) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    // close on link click
+    navLinks?.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        nav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    // close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target) && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  /* -------- 4) Smooth scroll for in-page anchors (offset for sticky nav) -------- */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href');
+      if (!id || id.length <= 1 || id === '#') return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const navHeight = nav?.offsetHeight ?? 70;
+      const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
   });
-} else {
-  cursor.style.display = 'none';
-  cursorDot.style.display = 'none';
-  document.body.style.cursor = 'auto';
-}
 
-// 4) Parallax — floating shapes follow mouse + scroll
-const shapes = document.querySelectorAll('.shape');
-let scrollY = window.scrollY;
+  /* -------- 5) Reveal-on-scroll with stagger -------- */
+  const reveals = document.querySelectorAll('.reveal');
 
-window.addEventListener('scroll', () => {
-  scrollY = window.scrollY;
-  shapes.forEach(sh => {
-    const speed = parseFloat(sh.dataset.speed || 0);
-    sh.style.translate = `0 ${scrollY * speed}px`;
+  // assign stagger delays per parent group
+  document.querySelectorAll('.stagger').forEach(el => {
+    const parent = el.parentElement;
+    if (!parent || parent.dataset._staggered) return;
+    parent.dataset._staggered = '1';
+    parent.querySelectorAll(':scope > .stagger').forEach((s, idx) => {
+      s.style.setProperty('--d', `${idx * 0.08}s`);
+    });
   });
 
-  // big background CHROMA text parallax
-  document.querySelectorAll('[data-parallax]').forEach(el => {
-    const s = parseFloat(el.dataset.parallax);
-    el.style.transform = `translate(${-scrollY * s}px, -50%)`;
-  });
-}, { passive: true });
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('is-visible'));
+  }
 
-// 5) Mouse tilt on hero shapes
-const hero = document.querySelector('.hero');
-hero?.addEventListener('mousemove', (e) => {
-  const rect = hero.getBoundingClientRect();
-  const cx = rect.width / 2;
-  const cy = rect.height / 2;
-  const dx = (e.clientX - rect.left - cx) / cx;
-  const dy = (e.clientY - rect.top - cy) / cy;
+  /* -------- 6) Animated stat counters -------- */
+  const stats = document.querySelectorAll('.stat strong[data-count]');
+  if ('IntersectionObserver' in window && stats.length) {
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const animateCount = (el) => {
+      const target = parseInt(el.dataset.count, 10) || 0;
+      const duration = 1600;
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const val = Math.floor(easeOut(p) * target);
+        el.textContent = val.toLocaleString('en-IN');
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString('en-IN');
+      };
+      requestAnimationFrame(tick);
+    };
+    const statIO = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          statIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    stats.forEach(s => statIO.observe(s));
+  }
 
-  shapes.forEach(sh => {
-    const speed = parseFloat(sh.dataset.speed || 0);
-    const move = Math.abs(speed) * 200;
-    sh.style.translate = `${dx * move}px ${dy * move + scrollY * speed}px`;
-  });
-});
+  /* -------- 7) Before / After slider (drag + click) -------- */
+  const ba = document.getElementById('baSlider');
+  const baAfter = document.getElementById('baAfter');
+  const baHandle = document.getElementById('baHandle');
+  if (ba && baAfter && baHandle) {
+    let dragging = false;
 
-// 6) IntersectionObserver — reveal on scroll
-const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      io.unobserve(entry.target);
+    const setPosition = (clientX) => {
+      const rect = ba.getBoundingClientRect();
+      let x = clientX - rect.left;
+      x = Math.max(0, Math.min(x, rect.width));
+      const pct = (x / rect.width) * 100;
+      baAfter.style.width = pct + '%';
+      baHandle.style.left = pct + '%';
+    };
+
+    const startDrag = (e) => {
+      dragging = true;
+      ba.style.cursor = 'grabbing';
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      setPosition(x);
+      e.preventDefault();
+    };
+    const moveDrag = (e) => {
+      if (!dragging) return;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      setPosition(x);
+    };
+    const stopDrag = () => {
+      dragging = false;
+      ba.style.cursor = '';
+    };
+
+    ba.addEventListener('mousedown', startDrag);
+    ba.addEventListener('touchstart', startDrag, { passive: false });
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('touchmove', moveDrag, { passive: true });
+    window.addEventListener('mouseup', stopDrag);
+    window.addEventListener('touchend', stopDrag);
+
+    // demo wiggle on first scroll into view
+    if ('IntersectionObserver' in window) {
+      const baIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const rect = ba.getBoundingClientRect();
+            let pct = 50;
+            const wiggle = [70, 30, 50];
+            let i = 0;
+            const step = () => {
+              pct = wiggle[i++];
+              baAfter.style.transition = 'width .8s cubic-bezier(.2,.9,.3,1)';
+              baHandle.style.transition = 'left .8s cubic-bezier(.2,.9,.3,1)';
+              baAfter.style.width = pct + '%';
+              baHandle.style.left = pct + '%';
+              if (i < wiggle.length) setTimeout(step, 900);
+              else setTimeout(() => {
+                baAfter.style.transition = '';
+                baHandle.style.transition = '';
+              }, 900);
+            };
+            setTimeout(step, 400);
+            baIO.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      baIO.observe(ba);
     }
-  });
-}, { threshold: 0.15 });
+  }
 
-// stagger setup: every .stagger sibling under same parent gets incrementing delay
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  /* -------- 8) Testimonials slider -------- */
+  const tTrack = document.getElementById('testTrack');
+  const tPrev = document.getElementById('testPrev');
+  const tNext = document.getElementById('testNext');
+  const tDots = document.getElementById('testDots');
 
-document.querySelectorAll('.stagger').forEach((el, i, arr) => {
-  // figure out index within its parent group of staggers
-  const parent = el.parentElement;
-  const sibs = parent.querySelectorAll(':scope > .stagger');
-  sibs.forEach((s, idx) => {
-    s.style.setProperty('--d', `${idx * 0.08}s`);
-  });
-});
+  if (tTrack && tPrev && tNext && tDots) {
+    const cards = tTrack.querySelectorAll('.t-card');
 
-// 7) Smooth scroll for anchor links (extra: account for fixed nav)
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', (e) => {
-    const id = link.getAttribute('href');
-    if (id.length <= 1) return;
-    const target = document.querySelector(id);
-    if (!target) return;
-    e.preventDefault();
-    const y = target.getBoundingClientRect().top + window.scrollY - 60;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-  });
-});
+    const getPerView = () => {
+      const w = window.innerWidth;
+      if (w < 620) return 1;
+      if (w < 980) return 2;
+      return 3;
+    };
 
-// 8) Category card 3D tilt on hover
-document.querySelectorAll('.cat').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${-y * 6}deg) rotateY(${x * 8}deg)`;
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-});
+    let perView = getPerView();
+    let totalPages = Math.max(1, Math.ceil(cards.length / perView));
+    let page = 0;
+    let auto = null;
 
-// 9) Drop card subtle tilt
-document.querySelectorAll('.drop').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${-y * 4}deg) rotateY(${x * 5}deg)`;
+    const buildDots = () => {
+      tDots.innerHTML = '';
+      for (let i = 0; i < totalPages; i++) {
+        const b = document.createElement('button');
+        b.setAttribute('aria-label', `Go to review page ${i + 1}`);
+        if (i === page) b.classList.add('active');
+        b.addEventListener('click', () => goTo(i, true));
+        tDots.appendChild(b);
+      }
+    };
+
+    const update = () => {
+      const trackWidth = tTrack.parentElement.getBoundingClientRect().width;
+      const offset = page * trackWidth;
+      tTrack.style.transform = `translateX(-${offset}px)`;
+      tDots.querySelectorAll('button').forEach((b, i) => {
+        b.classList.toggle('active', i === page);
+      });
+      tPrev.disabled = page === 0;
+      tNext.disabled = page === totalPages - 1;
+    };
+
+    const goTo = (i, userInitiated = false) => {
+      page = (i + totalPages) % totalPages;
+      update();
+      if (userInitiated) restartAuto();
+    };
+
+    const next = (userInitiated = false) => goTo(page + 1, userInitiated);
+    const prev = (userInitiated = false) => goTo(page - 1, userInitiated);
+
+    tPrev.addEventListener('click', () => prev(true));
+    tNext.addEventListener('click', () => next(true));
+
+    // keyboard
+    document.querySelector('.testimonials')?.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prev(true);
+      if (e.key === 'ArrowRight') next(true);
+    });
+
+    // touch swipe
+    let startX = 0, deltaX = 0, isSwipe = false;
+    tTrack.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isSwipe = true;
+    }, { passive: true });
+    tTrack.addEventListener('touchmove', (e) => {
+      if (!isSwipe) return;
+      deltaX = e.touches[0].clientX - startX;
+    }, { passive: true });
+    tTrack.addEventListener('touchend', () => {
+      if (!isSwipe) return;
+      if (Math.abs(deltaX) > 50) deltaX < 0 ? next(true) : prev(true);
+      deltaX = 0; isSwipe = false;
+    });
+
+    const startAuto = () => {
+      auto = setInterval(() => next(false), 6000);
+    };
+    const restartAuto = () => {
+      clearInterval(auto);
+      startAuto();
+    };
+
+    // pause on hover
+    const sliderEl = tTrack.closest('.slider');
+    sliderEl?.addEventListener('mouseenter', () => clearInterval(auto));
+    sliderEl?.addEventListener('mouseleave', startAuto);
+
+    const onResize = () => {
+      const newPerView = getPerView();
+      if (newPerView !== perView) {
+        perView = newPerView;
+        totalPages = Math.max(1, Math.ceil(cards.length / perView));
+        page = Math.min(page, totalPages - 1);
+        buildDots();
+      }
+      update();
+    };
+    window.addEventListener('resize', onResize);
+
+    buildDots();
+    update();
+    startAuto();
+  }
+
+  /* -------- 9) FAQ — single-open accordion -------- */
+  const faqItems = document.querySelectorAll('.faq__item');
+  faqItems.forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (item.open) {
+        faqItems.forEach(other => {
+          if (other !== item && other.open) other.open = false;
+        });
+      }
+    });
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-});
+
+  /* -------- 10) Booking form -------- */
+  const bookForm = document.getElementById('bookForm');
+  const bookSuccess = document.getElementById('bookSuccess');
+  if (bookForm) {
+    // set min date to today
+    const dateField = bookForm.querySelector('#b-date');
+    if (dateField) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      dateField.min = `${yyyy}-${mm}-${dd}`;
+    }
+
+    bookForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // basic validity check
+      if (!bookForm.checkValidity()) {
+        bookForm.reportValidity();
+        return;
+      }
+
+      const submitBtn = bookForm.querySelector('button[type="submit"]');
+      const originalLabel = submitBtn.querySelector('.btn__label')?.textContent;
+      if (submitBtn.querySelector('.btn__label')) {
+        submitBtn.querySelector('.btn__label').textContent = 'Sending...';
+      }
+      submitBtn.disabled = true;
+
+      // simulate submission (no backend)
+      setTimeout(() => {
+        if (bookSuccess) {
+          bookSuccess.hidden = false;
+          bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        bookForm.reset();
+        submitBtn.disabled = false;
+        if (submitBtn.querySelector('.btn__label') && originalLabel) {
+          submitBtn.querySelector('.btn__label').textContent = originalLabel;
+        }
+        // hide success after a while
+        setTimeout(() => { if (bookSuccess) bookSuccess.hidden = true; }, 8000);
+      }, 800);
+    });
+  }
+
+  /* -------- 11) Contact form -------- */
+  const contactForm = document.getElementById('contactForm');
+  const contactSuccess = document.getElementById('contactSuccess');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const label = submitBtn.querySelector('.btn__label');
+      const original = label?.textContent;
+      if (label) label.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        if (contactSuccess) {
+          contactSuccess.hidden = false;
+          contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        contactForm.reset();
+        submitBtn.disabled = false;
+        if (label && original) label.textContent = original;
+        setTimeout(() => { if (contactSuccess) contactSuccess.hidden = true; }, 8000);
+      }, 800);
+    });
+  }
+
+  /* -------- 12) Back-to-top -------- */
+  const backTop = document.getElementById('backTop');
+  if (backTop) {
+    const updateBackTop = () => {
+      backTop.classList.toggle('visible', window.scrollY > 600);
+    };
+    window.addEventListener('scroll', updateBackTop, { passive: true });
+    backTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* -------- 13) Year in footer -------- */
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* -------- 14) Subtle parallax on hero blobs -------- */
+  const blobs = document.querySelectorAll('.hero .blob');
+  if (blobs.length && window.matchMedia('(hover: hover)').matches) {
+    const hero = document.querySelector('.hero');
+    hero?.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const dx = (e.clientX - rect.left) / rect.width - 0.5;
+      const dy = (e.clientY - rect.top) / rect.height - 0.5;
+      blobs.forEach((b, i) => {
+        const k = (i + 1) * 12;
+        b.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
+      });
+    });
+    hero?.addEventListener('mouseleave', () => {
+      blobs.forEach(b => { b.style.transform = ''; });
+    });
+  }
+
+  /* -------- 15) Service card 3D tilt (desktop only) -------- */
+  if (window.matchMedia('(hover: hover) and (min-width: 920px)').matches) {
+    document.querySelectorAll('.service').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 5}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
+})();
