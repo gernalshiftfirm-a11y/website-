@@ -1,250 +1,130 @@
-# Jindal Dental Clinic — Website + Backend
+# Addiction Fitness Factory — Premium Gym Website
 
-A premium dental clinic site (Sangrur, Punjab) with a full Netlify-hosted
-backend, Supabase database, WhatsApp + email notifications, and a private
-admin dashboard.
+A cinematic, dark-luxury fitness website for **Addiction Fitness Factory**,
+Sangrur's premium gym. Built with vanilla HTML, CSS and JavaScript — zero
+build step, runs anywhere.
+
+> _"A luxury futuristic fitness brand built for serious transformations
+> and a premium gym lifestyle."_
 
 ---
 
-## What's in this repo
+## What's inside
+
+| Section | Highlights |
+| --- | --- |
+| **Premium loader** | Animated brand reveal with progress bar |
+| **Custom cursor** | Smooth-follow ring with hover state (desktop) |
+| **Sticky nav** | Glassmorphism, dark/light theme toggle, mobile drawer |
+| **Hero** | Cinematic video background, neon glow blobs, grid overlay, big motivational headline, **5 animated counters** (391+ reviews, 1000+ members, 15+ trainers, 100+ machines, 500+ transformations), 3 CTAs (Join Now, Book Free Trial, View Memberships) |
+| **Marquee** | High-energy scrolling ribbon — _NO PAIN NO GAIN · BUILT BY DISCIPLINE · TRANSFORMATION FACTORY_ |
+| **About** | Premium photo collage with floating badge + spinning sticker, 4 differentiators |
+| **Why Choose Us** | **12 glass feature cards** — certified trainers, premium equipment, personal training, fat loss, muscle building, cardio zone, strength training, functional area, spacious floor, hygiene, motivating vibe, flexible plans |
+| **Trainers** | 4 coach cards (Anshul, Preet Ma'am, Vikram, Neha) — grayscale-to-color hover, motivational quote, certifications |
+| **Plans** | **5 luxury pricing cards** — Monthly (₹1,999), Quarterly, Half-Year (featured), Annual, Personal Training |
+| **Transformations** | Drag/touch/keyboard before-after slider with neon handle, plus 4 result cards |
+| **Reviews** | Auto-rotating carousel of 6 glassmorphism review cards |
+| **Gallery** | 9-image masonry with full-screen lightbox (arrow-key + Esc nav) |
+| **Free Trial CTA** | Glassmorphism form (name, phone, goal, timing, plan), tap-to-call & WhatsApp |
+| **Fitness Tools** | **BMI Calculator** (with category interpretation), **Calorie Calculator** (Mifflin–St Jeor → maintain / cut / bulk), **Goal Tracker** with progress bar |
+| **Location** | Embedded Google Map (dark-themed), address, hours, Instagram, Get Directions / Call / WhatsApp buttons |
+| **FAQ** | 8 accordion items |
+| **Footer** | Quick links, memberships, contact, hours, newsletter |
+| **Floating actions** | WhatsApp, call, back-to-top |
+| **Mobile bottom bar** | Sticky Call · WhatsApp · Join Now |
+
+---
+
+## Brand & contact data baked into the site
+
+- **Name:** Addiction Fitness Factory Premium Gym
+- **Address:** Singla Road, Near Dr Dharmpal Road, Mubarik Mehal Colony,
+  Sangrur, Punjab 148001
+- **Phone / WhatsApp:** +91 90410 01005
+- **Hours:** Mon–Sat 5 AM – 11 PM · Sun 6 AM – 2 PM
+- **Trainers featured:** Anshul (Head Coach), Preet Ma'am (Women's Coach),
+  Vikram (Cardio/HIIT), Neha (Nutrition)
+
+---
+
+## Design language
+
+- **Palette:** matte black `#0a0a0a` · neon red `#ff2d2d` · neon orange `#ff7a18` · pure white
+- **Typography:** Bebas Neue (display) · Oswald (headings) · Inter (body)
+- **Effects:** glassmorphism cards, neon glow shadows, cinematic vignettes, animated grids, mouse-follow radial glow on cards, 3D tilt on hover, custom cursor
+- **Motion:** smooth scroll, scroll-reveal with stagger, animated counters, marquee, spinning brand sticker
+- **Theme:** Dark by default; light theme toggle persists in `localStorage`
+
+---
+
+## File structure
 
 ```
 website-/
-├── index.html              ← public site (hero, services, booking, contact, ...)
-├── styles.css
-├── script.js
-│
-├── admin/                  ← private admin dashboard (/admin/)
-│   ├── index.html
-│   ├── admin.css
-│   └── admin.js
-│
-├── netlify/
-│   └── functions/          ← serverless API
-│       ├── booking.js      ← POST /api/booking
-│       ├── contact.js      ← POST /api/contact
-│       ├── config.js       ← GET  /api/config (public Supabase config)
-│       └── _utils/
-│           └── notify.js   ← WhatsApp Cloud API + Resend email helpers
-│
-├── db/
-│   └── schema.sql          ← run this once in Supabase
-│
-├── netlify.toml            ← redirects, headers, build config
-├── package.json
-└── .env.example            ← env-var template
+├── index.html      ← all sections / markup
+├── styles.css      ← dark luxury theme, glassmorphism, neon, light theme support
+├── script.js       ← all interactions (cursor, slider, calcs, carousels, theme)
+├── netlify.toml    ← static publish + security headers
+├── package.json    ← static-site shell
+└── README.md
 ```
 
 ---
 
-## How the booking flow works
+## Run locally
 
-1. Patient submits the booking form on `/`
-2. Frontend POSTs JSON to `/api/booking`
-3. Netlify Function validates, rate-limits, and writes to Supabase
-4. Notifications fire **in parallel** (any can fail without breaking the others):
-   - Email to clinic via Resend (with tap-to-WhatsApp + tap-to-call buttons)
-   - WhatsApp template message to clinic _(Tier 2, optional)_
-   - WhatsApp template message to patient _(Tier 2, optional)_
-5. Admin sees the booking appear in real-time on `/admin/` and updates status,
-   adds notes, taps WhatsApp / Call to reply
-
----
-
-## ⚡ Quick deploy — 5 steps
-
-### 1 · Create a Supabase project (free)
-
-1. Go to **<https://app.supabase.com>** → **New project**.
-2. Pick a strong DB password, choose the closest region (Mumbai / Singapore).
-3. Wait ~2 minutes for it to provision.
-4. Open **SQL Editor → New query**, paste the contents of
-   [`db/schema.sql`](./db/schema.sql), and **Run**.
-5. **Authentication → Users → Add user**:
-   - Email: e.g. `admin@jindaldentalclinic.in` (used to log in)
-   - Password: a strong one — write it down
-   - Toggle **Auto Confirm User**: **ON**
-6. **Project Settings → API** — copy these three values, you'll need them next:
-   - `URL`                 → goes to `SUPABASE_URL` and `PUBLIC_SUPABASE_URL`
-   - `anon` `public` key   → goes to `PUBLIC_SUPABASE_ANON_KEY`
-   - `service_role` `secret` key → goes to `SUPABASE_SERVICE_ROLE_KEY`
-
-### 2 · Create a Resend account (free, 3000 emails / month)
-
-1. Sign up at **<https://resend.com>** with the same email you'll receive
-   booking alerts at.
-2. **API Keys → Create API Key** → copy it (starts with `re_…`)
-3. _(Recommended later)_ **Domains → Add domain** → verify
-   `jindaldentalclinic.in` so emails come from your real domain.
-   Until then, set `RESEND_FROM=Jindal Dental Clinic <onboarding@resend.dev>`.
-
-### 3 · Push this repo to GitHub
+Open `index.html` directly in any modern browser — that's it. No build,
+no install. Or, if you want a proper local server:
 
 ```bash
-git push origin main           # or whatever branch you use
+npm start             # starts python3 -m http.server on :8080
+# then visit http://localhost:8080
 ```
 
-### 4 · Connect to Netlify
+---
 
-1. **<https://app.netlify.com>** → **Add new site → Import an existing project**
-2. Choose this repo. Netlify detects `netlify.toml` automatically.
-3. **Site settings → Environment variables** — add all of these:
+## Deploy
 
-   | Key                          | Value                                                |
-   | ---------------------------- | ---------------------------------------------------- |
-   | `SUPABASE_URL`               | (from step 1.6)                                      |
-   | `SUPABASE_SERVICE_ROLE_KEY`  | (from step 1.6 — **secret**, never expose)           |
-   | `PUBLIC_SUPABASE_URL`        | (same as `SUPABASE_URL`)                             |
-   | `PUBLIC_SUPABASE_ANON_KEY`   | (from step 1.6)                                      |
-   | `CLINIC_PHONE`               | `+919815171917`                                      |
-   | `CLINIC_EMAIL`               | `contact@jindaldentalclinic.in`                      |
-   | `CLINIC_NAME`                | `Jindal Dental Clinic`                               |
-   | `RESEND_API_KEY`             | (from step 2 — leave empty to disable emails)        |
-   | `RESEND_FROM`                | `Jindal Dental Clinic <onboarding@resend.dev>`       |
+The site is a static bundle — drop it on **Netlify**, **Vercel**,
+**Cloudflare Pages**, **GitHub Pages**, or any host:
 
-4. **Trigger deploy** → wait for green checkmark.
-
-### 5 · Test it!
-
-1. Open your `https://YOUR-SITE.netlify.app` URL.
-2. Submit a test booking.
-3. Within seconds:
-   - You should get a styled email at your clinic email address with
-     **Reply on WhatsApp** + **Call patient** buttons.
-   - Open `https://YOUR-SITE.netlify.app/admin/`, sign in with the email +
-     password you created in step 1.5 — your test booking is right there.
-
-🎉 **You're live.**
+- **Netlify:** import the repo, no env vars needed; `netlify.toml`
+  publishes the root.
+- **Vercel:** import; framework preset = "Other"; root directory = `.`.
+- **GitHub Pages:** push to `main`, enable Pages → root.
 
 ---
 
-## 🟢 Tier 2 — Fully automated WhatsApp messages (optional)
+## Customising
 
-Out of the box you get **email** + **tap-to-WhatsApp links**. To make
-WhatsApp messages send **automatically** to both clinic and patient,
-follow these one-time steps:
+| What to change | Where |
+| --- | --- |
+| Brand name, address, phone | search `Addiction Fitness Factory`, `+91 90410 01005`, `Singla Road` in `index.html` |
+| Pricing | `<section id="plans">` plan cards |
+| Trainer names / photos | `<section id="trainers">` |
+| Hero video | `<source src="...">` inside `.hero__bg` (Pexels MP4 or your own URL) |
+| Stock photos | All `<img src="https://images.unsplash.com/...">` URLs |
+| Theme colours | CSS variables at top of `styles.css` (`--neon-red`, `--neon-orange`, `--bg`) |
+| Google Map | `iframe src` inside `<section id="contact">` — replace with your exact place embed URL |
 
-1. **Meta Business setup** (free, takes 1–3 days for approval):
-   - Create a Meta Business account → <https://business.facebook.com>
-   - Set up a **WhatsApp Business Account (WABA)** there
-   - Add a phone number you control (Meta will verify it via OTP)
-   - In **WhatsApp Manager → Message Templates**, create two templates:
-
-   **Template 1 — `appointment_confirmation`** (sent to patients)
-   - Category: `UTILITY`
-   - Language: `en`
-   - Body: `Hi {{1}}, your appointment for {{2}} on {{3}} at {{4}} has been received. We'll confirm shortly. — Jindal Dental Clinic`
-
-   **Template 2 — `new_appointment_alert`** (sent to clinic)
-   - Category: `UTILITY`
-   - Language: `en`
-   - Body: `New appointment request: {{1}} ({{2}}) — {{3}} on {{4}} at {{5}}.`
-
-   Submit for approval. Approval is usually within a few hours.
-
-2. **Get your credentials** (Meta Business → WhatsApp → API setup):
-   - **Permanent access token** → `WHATSAPP_TOKEN`
-   - **Phone number ID**       → `WHATSAPP_PHONE_ID`
-
-3. **Add to Netlify env vars** and redeploy:
-
-   | Key                          | Value                            |
-   | ---------------------------- | -------------------------------- |
-   | `WHATSAPP_TOKEN`             | (permanent access token)         |
-   | `WHATSAPP_PHONE_ID`          | (phone number ID)                |
-   | `WHATSAPP_TEMPLATE_PATIENT`  | `appointment_confirmation`       |
-   | `WHATSAPP_TEMPLATE_CLINIC`   | `new_appointment_alert`          |
-
-That's it — no code changes. The next booking will trigger automatic
-WhatsApp messages on both ends.
+The Google Maps **Get Directions** button searches for the gym name +
+address, so it works as soon as the place is correctly listed on Google
+Business.
 
 ---
 
-## 🔐 Using the admin dashboard
+## Optional next steps (not yet built)
 
-URL: `https://YOUR-SITE.netlify.app/admin/`
+- AI fitness assistant chatbot (e.g. via OpenAI realtime API)
+- Workout plan generator (rule-based or LLM-backed)
+- Online membership purchase (Razorpay / Stripe)
+- Trainer booking system (Cal.com embed or custom)
+- Diet consultation booking (form + calendar integration)
+- Member dashboard
 
-- **Sign in** with the Supabase admin email + password you created.
-- **Stats** at the top show today's bookings, pending count, week total,
-  and all-time total.
-- **Filter chips** narrow the list by status. **Search** by patient
-  name or phone.
-- **Status dropdown** on each card updates the booking immediately
-  (`pending → confirmed → completed`, or `cancelled` / `no_show`).
-- **Notes** auto-save 700ms after you stop typing.
-- **WhatsApp** button opens a chat with the patient with a pre-filled
-  confirmation message. **Call** button opens the dialer.
-- **New bookings appear instantly** via Supabase Realtime — no refresh
-  needed. You'll see a toast notification when one arrives.
-- **Messages tab** shows contact-form submissions with mailto: replies.
-
-### Adding more admin users
-
-**Supabase dashboard → Authentication → Users → Add user**.
-Any user with a Supabase auth account can log into the dashboard.
+These can be layered on as serverless functions or a separate API later
+without changing the public marketing site.
 
 ---
 
-## 🛠 Local development
-
-```bash
-# from the repo root
-npm install
-npx netlify login
-npx netlify link        # link this folder to your Netlify site
-npx netlify dev         # runs site + functions on http://localhost:8888
-```
-
-`netlify dev` automatically loads env vars from your linked site, or
-from a local `.env` file if you create one (copy from `.env.example`).
-
----
-
-## 🔧 Troubleshooting
-
-| Symptom                                    | Likely cause / fix                                                                   |
-| ------------------------------------------ | ------------------------------------------------------------------------------------ |
-| Booking returns 500                        | Check Netlify **Functions logs** → most likely missing `SUPABASE_*` env vars         |
-| Booking succeeds but no email arrives      | `RESEND_API_KEY` not set, or your `RESEND_FROM` domain isn't verified                |
-| Admin dashboard shows "Setup needed"       | `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY` not set in Netlify env vars       |
-| Admin login fails with "Invalid login"     | User doesn't exist in Supabase Auth, or "Auto Confirm User" wasn't ticked            |
-| Bookings list empty for admin              | RLS blocking access — re-run `db/schema.sql` (it creates the right policies)         |
-| WhatsApp messages don't send automatically | Tier 2 not configured yet — see Tier 2 section above                                 |
-| `429 rate_limited` on submit               | Working as designed — 5 bookings / minute / IP limit. Wait a minute.                 |
-
-For function logs: **Netlify dashboard → Site → Functions → click a
-function → Logs**.
-
----
-
-## 🔒 Security notes
-
-- The **service-role key** is a database superuser key. Keep it server-side
-  only (never put it in `PUBLIC_*` vars or browser code).
-- The **anon key** is meant to be public — Row Level Security on
-  `bookings` and `contact_messages` controls who can do what:
-  - Anyone (anon) can `INSERT` only.
-  - Authenticated users (admins) can `SELECT` / `UPDATE` / `DELETE`.
-- The `/admin/` route is `noindex,nofollow` so search engines won't
-  surface it. The route itself isn't blocked — security comes entirely
-  from Supabase Auth + RLS.
-- Forms include a **honeypot field** (`name="website"`) and a small
-  per-IP **rate limiter** to discourage automated spam.
-
----
-
-## 📞 Clinic info (used in defaults)
-
-- **Phone / WhatsApp:** +91 98151 71917
-- **Email:** contact@jindaldentalclinic.in
-- **Address:** 9-House Street, Banasar Bagh Road, Patiala Gate,
-  Near SBI Bank, Sangrur, Punjab
-
-Update these in:
-- Netlify env vars (`CLINIC_PHONE`, `CLINIC_EMAIL`, `CLINIC_NAME`)
-- `index.html` (header, hero, contact section, footer, floating buttons,
-  Google Maps embed)
-
----
-
-Made with care for healthier smiles. 🦷
+Built with sweat &amp; code for the addiction fitness lifestyle. 🔥

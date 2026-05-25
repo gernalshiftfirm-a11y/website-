@@ -1,20 +1,24 @@
 {
-  "name": "jindal-dental-clinic",
+  "name": "addiction-fitness-factory",
   "version": "1.0.0",
-  "description": "Jindal Dental Clinic — premium dental care website with Netlify Functions backend",
+  "description": "Addiction Fitness Factory — premium luxury gym website (Sangrur, Punjab) with hero video, BMI/calorie calculators, transformation slider, membership plans, and dark/light theme.",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "netlify dev",
-    "start": "netlify dev"
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
   },
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.0"
-  },
-  "devDependencies": {
-    "netlify-cli": "^17.0.0"
-  }
+  "keywords": [
+    "gym",
+    "fitness",
+    "premium-gym",
+    "sangrur",
+    "punjab",
+    "addiction-fitness-factory",
+    "dark-luxury-ui",
+    "neon",
+    "glassmorphism"
+  ]
 }

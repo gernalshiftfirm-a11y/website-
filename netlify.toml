@@ -1,32 +1,8 @@
-# Netlify configuration — Jindal Dental Clinic
-# Static site at root + serverless functions in /netlify/functions
+# Netlify configuration — Addiction Fitness Factory (Sangrur)
+# Pure static site, zero build step
 
 [build]
-  publish    = "."
-  functions  = "netlify/functions"
-
-[functions]
-  node_bundler = "esbuild"
-  # Functions use ESM (see package.json "type": "module")
-
-# Pretty API URLs: /api/booking  →  /.netlify/functions/booking
-[[redirects]]
-  from   = "/api/booking"
-  to     = "/.netlify/functions/booking"
-  status = 200
-  force  = true
-
-[[redirects]]
-  from   = "/api/contact"
-  to     = "/.netlify/functions/contact"
-  status = 200
-  force  = true
-
-[[redirects]]
-  from   = "/api/config"
-  to     = "/.netlify/functions/config"
-  status = 200
-  force  = true
+  publish = "."
 
 # Security headers
 [[headers]]
@@ -37,13 +13,13 @@
     Referrer-Policy        = "strict-origin-when-cross-origin"
     Permissions-Policy     = "geolocation=(), microphone=(), camera=()"
 
-# No caching for HTML so updates roll out fast
+# No caching for HTML so updates roll out instantly
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-# Long cache for fingerprinted assets (CSS/JS)
+# Long cache for static assets
 [[headers]]
   for = "/*.css"
   [headers.values]

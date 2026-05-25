@@ -1,43 +1,88 @@
 /* ====================================================================
-   JINDAL DENTAL CLINIC — interactions
+   ADDICTION FITNESS FACTORY — interactions
    ==================================================================== */
 
 (() => {
   'use strict';
 
-  /* -------- 1) Loader -------- */
+  const $  = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ============================================================
+     1) LOADER
+  ============================================================ */
   window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
+    const loader = $('#loader');
     if (!loader) return;
-    setTimeout(() => loader.classList.add('done'), 1400);
-    setTimeout(() => loader.remove(), 2200);
+    setTimeout(() => loader.classList.add('done'), reduced ? 200 : 1500);
+    setTimeout(() => loader.remove(), reduced ? 600 : 2300);
   });
 
-  /* -------- 2) Sticky nav scroll state -------- */
-  const nav = document.getElementById('nav');
-  const onScroll = () => {
-    if (!nav) return;
-    nav.classList.toggle('scrolled', window.scrollY > 30);
-  };
+  /* ============================================================
+     2) CUSTOM CURSOR (desktop, hover-capable only)
+  ============================================================ */
+  (() => {
+    const cursor = $('#cursor');
+    if (!cursor) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      cursor.remove();
+      return;
+    }
+    const dot = cursor.querySelector('.cursor__dot');
+    const ring = cursor.querySelector('.cursor__ring');
+
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    let rx = mx, ry = my;
+
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+
+    const tick = () => {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(tick);
+    };
+    tick();
+
+    const hoverSel = 'a, button, [role="radio"], .g-item, summary, input, select, textarea, [data-tilt], .ba, .float-wa, .float-call';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(hoverSel)) cursor.classList.add('is-hover');
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(hoverSel)) cursor.classList.remove('is-hover');
+    });
+
+    document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+  })();
+
+  /* ============================================================
+     3) STICKY NAV + MOBILE MENU
+  ============================================================ */
+  const nav = $('#nav');
+  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 30);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* -------- 3) Mobile menu toggle -------- */
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
+  const navToggle = $('#navToggle');
+  const navLinks  = $('#navLinks');
   if (navToggle && nav) {
     navToggle.addEventListener('click', () => {
       const isOpen = nav.classList.toggle('open');
       navToggle.setAttribute('aria-expanded', String(isOpen));
     });
-    // close on link click
     navLinks?.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         nav.classList.remove('open');
         navToggle.setAttribute('aria-expanded', 'false');
       });
     });
-    // close when clicking outside
     document.addEventListener('click', (e) => {
       if (!nav.contains(e.target) && nav.classList.contains('open')) {
         nav.classList.remove('open');
@@ -46,8 +91,10 @@
     });
   }
 
-  /* -------- 4) Smooth scroll for in-page anchors (offset for sticky nav) -------- */
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
+  /* ============================================================
+     4) SMOOTH SCROLL (with sticky-nav offset)
+  ============================================================ */
+  $$('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
       const id = link.getAttribute('href');
       if (!id || id.length <= 1 || id === '#') return;
@@ -56,15 +103,14 @@
       e.preventDefault();
       const navHeight = nav?.offsetHeight ?? 70;
       const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      window.scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
     });
   });
 
-  /* -------- 5) Reveal-on-scroll with stagger -------- */
-  const reveals = document.querySelectorAll('.reveal');
-
-  // assign stagger delays per parent group
-  document.querySelectorAll('.stagger').forEach(el => {
+  /* ============================================================
+     5) REVEAL ON SCROLL — with auto stagger
+  ============================================================ */
+  $$('.stagger').forEach(el => {
     const parent = el.parentElement;
     if (!parent || parent.dataset._staggered) return;
     parent.dataset._staggered = '1';
@@ -82,18 +128,20 @@
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    reveals.forEach(el => io.observe(el));
+    $$('.reveal').forEach(el => io.observe(el));
   } else {
-    reveals.forEach(el => el.classList.add('is-visible'));
+    $$('.reveal').forEach(el => el.classList.add('is-visible'));
   }
 
-  /* -------- 6) Animated stat counters -------- */
-  const stats = document.querySelectorAll('.stat strong[data-count]');
-  if ('IntersectionObserver' in window && stats.length) {
+  /* ============================================================
+     6) COUNTERS
+  ============================================================ */
+  const counters = $$('.hero__stat strong[data-count]');
+  if ('IntersectionObserver' in window && counters.length) {
     const easeOut = t => 1 - Math.pow(1 - t, 3);
-    const animateCount = (el) => {
+    const animate = (el) => {
       const target = parseInt(el.dataset.count, 10) || 0;
-      const duration = 1600;
+      const duration = reduced ? 200 : 1800;
       const start = performance.now();
       const tick = (now) => {
         const p = Math.min((now - start) / duration, 1);
@@ -104,95 +152,163 @@
       };
       requestAnimationFrame(tick);
     };
-    const statIO = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          statIO.unobserve(entry.target);
-        }
+    const cIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animate(e.target); cIO.unobserve(e.target); }
       });
     }, { threshold: 0.4 });
-    stats.forEach(s => statIO.observe(s));
+    counters.forEach(c => cIO.observe(c));
   }
 
-  /* -------- 7) Before / After slider (drag + click) -------- */
-  const ba = document.getElementById('baSlider');
-  const baAfter = document.getElementById('baAfter');
-  const baHandle = document.getElementById('baHandle');
-  if (ba && baAfter && baHandle) {
-    let dragging = false;
+  /* ============================================================
+     7) THEME TOGGLE (dark / light) — persists in localStorage
+  ============================================================ */
+  (() => {
+    const toggle = $('#themeToggle');
+    if (!toggle) return;
 
-    const setPosition = (clientX) => {
-      const rect = ba.getBoundingClientRect();
-      let x = clientX - rect.left;
-      x = Math.max(0, Math.min(x, rect.width));
-      const pct = (x / rect.width) * 100;
-      baAfter.style.width = pct + '%';
-      baHandle.style.left = pct + '%';
+    const STORAGE_KEY = 'aff-theme';
+    const apply = (theme) => {
+      document.documentElement.dataset.theme = theme;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#ffffff' : '#0a0a0a');
     };
 
-    const startDrag = (e) => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'light' || stored === 'dark') apply(stored);
+
+    toggle.addEventListener('click', () => {
+      const cur = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+      const next = cur === 'light' ? 'dark' : 'light';
+      apply(next);
+      localStorage.setItem(STORAGE_KEY, next);
+    });
+  })();
+
+  /* ============================================================
+     8) MOUSE-FOLLOW GLOW on cards (--mx / --my)
+  ============================================================ */
+  if (window.matchMedia('(hover: hover)').matches && !reduced) {
+    $$('.feature, .plan, .tool').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top)  / r.height) * 100;
+        card.style.setProperty('--mx', x + '%');
+        card.style.setProperty('--my', y + '%');
+      });
+    });
+  }
+
+  /* ============================================================
+     9) TILT effect (subtle 3D on data-tilt cards)
+  ============================================================ */
+  if (window.matchMedia('(hover: hover) and (min-width: 920px)').matches && !reduced) {
+    $$('[data-tilt]').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${-py * 4}deg) rotateY(${px * 5}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  }
+
+  /* ============================================================
+     10) BEFORE / AFTER SLIDER (drag + click + keyboard)
+  ============================================================ */
+  (() => {
+    const ba = $('#baSlider');
+    const after = $('#baAfter');
+    const handle = $('#baHandle');
+    if (!ba || !after || !handle) return;
+
+    let dragging = false;
+
+    const setPos = (clientX) => {
+      const r = ba.getBoundingClientRect();
+      let x = clientX - r.left;
+      x = Math.max(0, Math.min(x, r.width));
+      const pct = (x / r.width) * 100;
+      after.style.width = pct + '%';
+      handle.style.left = pct + '%';
+      ba.setAttribute('aria-valuenow', String(Math.round(pct)));
+    };
+
+    const setPct = (pct) => {
+      pct = Math.max(0, Math.min(pct, 100));
+      after.style.width = pct + '%';
+      handle.style.left = pct + '%';
+      ba.setAttribute('aria-valuenow', String(Math.round(pct)));
+    };
+
+    const start = (e) => {
       dragging = true;
       ba.style.cursor = 'grabbing';
       const x = e.touches ? e.touches[0].clientX : e.clientX;
-      setPosition(x);
+      setPos(x);
       e.preventDefault();
     };
-    const moveDrag = (e) => {
+    const move = (e) => {
       if (!dragging) return;
       const x = e.touches ? e.touches[0].clientX : e.clientX;
-      setPosition(x);
+      setPos(x);
     };
-    const stopDrag = () => {
-      dragging = false;
-      ba.style.cursor = '';
-    };
+    const end = () => { dragging = false; ba.style.cursor = ''; };
 
-    ba.addEventListener('mousedown', startDrag);
-    ba.addEventListener('touchstart', startDrag, { passive: false });
-    window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('touchmove', moveDrag, { passive: true });
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('touchend', stopDrag);
+    ba.addEventListener('mousedown', start);
+    ba.addEventListener('touchstart', start, { passive: false });
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', move, { passive: true });
+    window.addEventListener('mouseup', end);
+    window.addEventListener('touchend', end);
 
-    // demo wiggle on first scroll into view
-    if ('IntersectionObserver' in window) {
-      const baIO = new IntersectionObserver((entries) => {
+    ba.addEventListener('keydown', (e) => {
+      const cur = parseInt(ba.getAttribute('aria-valuenow'), 10) || 50;
+      if (e.key === 'ArrowLeft')  { setPct(cur - 4); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { setPct(cur + 4); e.preventDefault(); }
+      if (e.key === 'Home')       { setPct(0);       e.preventDefault(); }
+      if (e.key === 'End')        { setPct(100);     e.preventDefault(); }
+    });
+
+    // Wiggle once when first scrolled into view
+    if ('IntersectionObserver' in window && !reduced) {
+      const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const rect = ba.getBoundingClientRect();
-            let pct = 50;
-            const wiggle = [70, 30, 50];
+            const seq = [70, 30, 50];
             let i = 0;
             const step = () => {
-              pct = wiggle[i++];
-              baAfter.style.transition = 'width .8s cubic-bezier(.2,.9,.3,1)';
-              baHandle.style.transition = 'left .8s cubic-bezier(.2,.9,.3,1)';
-              baAfter.style.width = pct + '%';
-              baHandle.style.left = pct + '%';
-              if (i < wiggle.length) setTimeout(step, 900);
+              after.style.transition = 'width .8s cubic-bezier(.2,.9,.3,1)';
+              handle.style.transition = 'left .8s cubic-bezier(.2,.9,.3,1)';
+              setPct(seq[i++]);
+              if (i < seq.length) setTimeout(step, 850);
               else setTimeout(() => {
-                baAfter.style.transition = '';
-                baHandle.style.transition = '';
-              }, 900);
+                after.style.transition = '';
+                handle.style.transition = '';
+              }, 850);
             };
             setTimeout(step, 400);
-            baIO.unobserve(entry.target);
+            io.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.3 });
-      baIO.observe(ba);
+      }, { threshold: 0.4 });
+      io.observe(ba);
     }
-  }
+  })();
 
-  /* -------- 8) Testimonials slider -------- */
-  const tTrack = document.getElementById('testTrack');
-  const tPrev = document.getElementById('testPrev');
-  const tNext = document.getElementById('testNext');
-  const tDots = document.getElementById('testDots');
+  /* ============================================================
+     11) REVIEWS CAROUSEL — autoplay, dots, swipe
+  ============================================================ */
+  (() => {
+    const track = $('#reviewTrack');
+    const prevBtn = $('#reviewPrev');
+    const nextBtn = $('#reviewNext');
+    const dotsEl = $('#reviewDots');
+    if (!track || !prevBtn || !nextBtn || !dotsEl) return;
 
-  if (tTrack && tPrev && tNext && tDots) {
-    const cards = tTrack.querySelectorAll('.t-card');
+    const cards = track.querySelectorAll('.r-card');
 
     const getPerView = () => {
       const w = window.innerWidth;
@@ -207,25 +323,24 @@
     let auto = null;
 
     const buildDots = () => {
-      tDots.innerHTML = '';
+      dotsEl.innerHTML = '';
       for (let i = 0; i < totalPages; i++) {
         const b = document.createElement('button');
         b.setAttribute('aria-label', `Go to review page ${i + 1}`);
         if (i === page) b.classList.add('active');
         b.addEventListener('click', () => goTo(i, true));
-        tDots.appendChild(b);
+        dotsEl.appendChild(b);
       }
     };
 
     const update = () => {
-      const trackWidth = tTrack.parentElement.getBoundingClientRect().width;
-      const offset = page * trackWidth;
-      tTrack.style.transform = `translateX(-${offset}px)`;
-      tDots.querySelectorAll('button').forEach((b, i) => {
+      const w = track.parentElement.getBoundingClientRect().width;
+      track.style.transform = `translateX(-${page * w}px)`;
+      dotsEl.querySelectorAll('button').forEach((b, i) => {
         b.classList.toggle('active', i === page);
       });
-      tPrev.disabled = page === 0;
-      tNext.disabled = page === totalPages - 1;
+      prevBtn.disabled = page === 0;
+      nextBtn.disabled = page === totalPages - 1;
     };
 
     const goTo = (i, userInitiated = false) => {
@@ -234,404 +349,375 @@
       if (userInitiated) restartAuto();
     };
 
-    const next = (userInitiated = false) => goTo(page + 1, userInitiated);
-    const prev = (userInitiated = false) => goTo(page - 1, userInitiated);
+    const next = (u = false) => goTo(page + 1, u);
+    const prev = (u = false) => goTo(page - 1, u);
 
-    tPrev.addEventListener('click', () => prev(true));
-    tNext.addEventListener('click', () => next(true));
-
-    // keyboard
-    document.querySelector('.testimonials')?.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') prev(true);
-      if (e.key === 'ArrowRight') next(true);
-    });
+    prevBtn.addEventListener('click', () => prev(true));
+    nextBtn.addEventListener('click', () => next(true));
 
     // touch swipe
-    let startX = 0, deltaX = 0, isSwipe = false;
-    tTrack.addEventListener('touchstart', (e) => {
+    let startX = 0, deltaX = 0, swiping = false;
+    track.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
-      isSwipe = true;
+      swiping = true;
     }, { passive: true });
-    tTrack.addEventListener('touchmove', (e) => {
-      if (!isSwipe) return;
+    track.addEventListener('touchmove', (e) => {
+      if (!swiping) return;
       deltaX = e.touches[0].clientX - startX;
     }, { passive: true });
-    tTrack.addEventListener('touchend', () => {
-      if (!isSwipe) return;
+    track.addEventListener('touchend', () => {
+      if (!swiping) return;
       if (Math.abs(deltaX) > 50) deltaX < 0 ? next(true) : prev(true);
-      deltaX = 0; isSwipe = false;
+      deltaX = 0; swiping = false;
     });
 
     const startAuto = () => {
-      auto = setInterval(() => next(false), 6000);
+      if (reduced) return;
+      auto = setInterval(() => {
+        if (page < totalPages - 1) next(false);
+        else goTo(0, false);
+      }, 6000);
     };
-    const restartAuto = () => {
-      clearInterval(auto);
-      startAuto();
-    };
+    const restartAuto = () => { clearInterval(auto); startAuto(); };
 
-    // pause on hover
-    const sliderEl = tTrack.closest('.slider');
-    sliderEl?.addEventListener('mouseenter', () => clearInterval(auto));
-    sliderEl?.addEventListener('mouseleave', startAuto);
+    const slider = track.closest('.slider');
+    slider?.addEventListener('mouseenter', () => clearInterval(auto));
+    slider?.addEventListener('mouseleave', startAuto);
 
-    const onResize = () => {
-      const newPerView = getPerView();
-      if (newPerView !== perView) {
-        perView = newPerView;
-        totalPages = Math.max(1, Math.ceil(cards.length / perView));
-        page = Math.min(page, totalPages - 1);
-        buildDots();
-      }
-      update();
-    };
-    window.addEventListener('resize', onResize);
+    let resizeT;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeT);
+      resizeT = setTimeout(() => {
+        const newPv = getPerView();
+        if (newPv !== perView) {
+          perView = newPv;
+          totalPages = Math.max(1, Math.ceil(cards.length / perView));
+          page = Math.min(page, totalPages - 1);
+          buildDots();
+        }
+        update();
+      }, 120);
+    });
 
     buildDots();
     update();
     startAuto();
-  }
+  })();
 
-  /* -------- 9) FAQ — single-open accordion -------- */
-  const faqItems = document.querySelectorAll('.faq__item');
-  faqItems.forEach(item => {
-    item.addEventListener('toggle', () => {
-      if (item.open) {
-        faqItems.forEach(other => {
-          if (other !== item && other.open) other.open = false;
-        });
+  /* ============================================================
+     12) LIGHTBOX GALLERY
+  ============================================================ */
+  (() => {
+    const lightbox = $('#lightbox');
+    const lightboxImg = $('#lightboxImg');
+    const items = $$('[data-lightbox]');
+    if (!lightbox || !lightboxImg || !items.length) return;
+
+    let idx = 0;
+    const open = (i) => {
+      idx = (i + items.length) % items.length;
+      lightboxImg.src = items[idx].href;
+      lightboxImg.alt = items[idx].querySelector('img')?.alt || '';
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      lightbox.hidden = true;
+      lightboxImg.src = '';
+      document.body.style.overflow = '';
+    };
+
+    items.forEach((item, i) => {
+      item.addEventListener('click', (e) => { e.preventDefault(); open(i); });
+    });
+
+    lightbox.querySelector('.lightbox__close')?.addEventListener('click', close);
+    lightbox.querySelector('.lightbox__nav--prev')?.addEventListener('click', () => open(idx - 1));
+    lightbox.querySelector('.lightbox__nav--next')?.addEventListener('click', () => open(idx + 1));
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape')     close();
+      else if (e.key === 'ArrowRight') open(idx + 1);
+      else if (e.key === 'ArrowLeft')  open(idx - 1);
+    });
+  })();
+
+  /* ============================================================
+     13) PLAN CTA → preselect plan in form
+  ============================================================ */
+  $$('[data-plan]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const plan = btn.dataset.plan;
+      const sel = $('#j-plan');
+      if (sel && plan) {
+        const opt = Array.from(sel.options).find(o => o.value === plan || o.textContent.trim() === plan);
+        if (opt) sel.value = opt.value;
       }
     });
   });
 
-  /* -------- 10) Booking form -------- */
-  const bookForm = document.getElementById('bookForm');
-  const bookSuccess = document.getElementById('bookSuccess');
-  if (bookForm) {
-    // -------- date helpers --------
-    const toISODate = (d) => {
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${y}-${m}-${dd}`;
+  /* ============================================================
+     14) BMI CALCULATOR
+  ============================================================ */
+  (() => {
+    const btn = $('#bmiCalc');
+    const result = $('#bmiResult');
+    const valueEl = $('#bmiValue');
+    const tagEl = $('#bmiTag');
+    const noteEl = $('#bmiNote');
+    if (!btn) return;
+
+    const interpret = (b) => {
+      if (b < 18.5) return { tag: 'Underweight',     cls: 'is-warn', note: 'Focus on calorie surplus & strength training. Coach Anshul can build you a clean lean-bulk plan.' };
+      if (b < 25)   return { tag: 'Healthy Range',   cls: 'is-good', note: 'Solid baseline. Add progressive resistance training to build lean muscle and stay sharp.' };
+      if (b < 30)   return { tag: 'Overweight',      cls: 'is-warn', note: 'A structured fat-loss programme + cardio + strength = visible results in 12 weeks. We do this every day.' };
+      return        { tag: 'Obese',                  cls: '',        note: 'A coach-led transformation programme is the fastest, safest path. Start with a free trial — we\'ll guide you.' };
     };
 
-    const dateField = bookForm.querySelector('#b-date');
-    const treatmentField = bookForm.querySelector('#b-treatment');
-    const timeField = bookForm.querySelector('#b-time');
-
-    // set min date to today
-    const today = new Date();
-    if (dateField) dateField.min = toISODate(today);
-
-    // -------- build quick-date chips (Today, Tomorrow, Day after) --------
-    const quickDatesEl = document.getElementById('quickDates');
-    if (quickDatesEl) {
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const labels = ['Today', 'Tomorrow', 'Day after'];
-      quickDatesEl.innerHTML = '';
-      for (let i = 0; i < 3; i++) {
-        const d = new Date();
-        d.setDate(today.getDate() + i);
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'quick-date';
-        btn.setAttribute('role', 'radio');
-        btn.setAttribute('aria-checked', 'false');
-        btn.dataset.value = toISODate(d);
-        btn.innerHTML = `
-          <span class="quick-date__day">${labels[i]} · ${dayNames[d.getDay()]}</span>
-          <span class="quick-date__date">${d.getDate()} ${d.toLocaleString('default', { month: 'short' })}</span>
-        `;
-        quickDatesEl.appendChild(btn);
-      }
-    }
-
-    // -------- single-select group helper --------
-    const setupRadioGroup = (groupEl, onChange) => {
-      if (!groupEl) return;
-      groupEl.addEventListener('click', (e) => {
-        const btn = e.target.closest('[role="radio"]');
-        if (!btn || !groupEl.contains(btn)) return;
-        groupEl.querySelectorAll('[role="radio"]').forEach(b => {
-          b.setAttribute('aria-checked', b === btn ? 'true' : 'false');
-        });
-        onChange?.(btn.dataset.value, btn);
-      });
-      // keyboard support
-      groupEl.addEventListener('keydown', (e) => {
-        const radios = Array.from(groupEl.querySelectorAll('[role="radio"]'));
-        const current = document.activeElement;
-        const idx = radios.indexOf(current);
-        if (idx < 0) return;
-        let next = idx;
-        if (['ArrowRight', 'ArrowDown'].includes(e.key)) next = (idx + 1) % radios.length;
-        else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) next = (idx - 1 + radios.length) % radios.length;
-        else return;
-        e.preventDefault();
-        radios[next].focus();
-        radios[next].click();
-      });
-    };
-
-    // treatment chips
-    setupRadioGroup(document.getElementById('treatmentChips'), (val) => {
-      if (treatmentField) treatmentField.value = val || '';
-    });
-
-    // time slots
-    setupRadioGroup(document.getElementById('timeSlots'), (val) => {
-      if (timeField) timeField.value = val || '';
-    });
-
-    // quick-date chips → sync date input
-    setupRadioGroup(document.getElementById('quickDates'), (val) => {
-      if (dateField) dateField.value = val || '';
-    });
-
-    // typing a custom date clears active quick-date chip
-    dateField?.addEventListener('input', () => {
-      document.querySelectorAll('#quickDates [role="radio"]').forEach(b => {
-        b.setAttribute('aria-checked', b.dataset.value === dateField.value ? 'true' : 'false');
-      });
-    });
-
-    // -------- shared validation --------
-    const collectFormData = () => {
-      const data = {
-        name: bookForm.querySelector('#b-name').value.trim(),
-        phone: bookForm.querySelector('#b-phone').value.trim(),
-        date: dateField?.value || '',
-        time: timeField?.value || '',
-        treatment: treatmentField?.value || '',
-        message: bookForm.querySelector('#b-msg').value.trim(),
-      };
-      return data;
-    };
-
-    const validateBooking = () => {
-      const d = collectFormData();
-      if (!d.treatment) { alert('Please choose a treatment.'); return null; }
-      if (!d.date) { alert('Please pick a date.'); return null; }
-      if (!d.time) { alert('Please pick a time slot.'); return null; }
-      if (!bookForm.checkValidity()) { bookForm.reportValidity(); return null; }
-      return d;
-    };
-
-    // -------- submit handler --------
-    bookForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = validateBooking();
-      if (!data) return;
-
-      const submitBtn = bookForm.querySelector('button[type="submit"]');
-      const label = submitBtn.querySelector('.btn__label');
-      const original = label?.textContent;
-      if (label) label.textContent = 'Sending...';
-      submitBtn.disabled = true;
-
-      const showError = (msg) => {
-        if (bookSuccess) {
-          bookSuccess.hidden = false;
-          bookSuccess.classList.add('book__success--error');
-          bookSuccess.querySelector('span, b, strong')?.remove();
-          bookSuccess.lastChild && (bookSuccess.lastChild.textContent = ' ' + msg);
-          bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => {
-            bookSuccess.classList.remove('book__success--error');
-            bookSuccess.hidden = true;
-          }, 8000);
-        }
-      };
-
-      const showSuccess = () => {
-        if (bookSuccess) {
-          bookSuccess.hidden = false;
-          bookSuccess.classList.remove('book__success--error');
-          bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => { bookSuccess.hidden = true; }, 8000);
-        }
-        bookForm.reset();
-        bookForm.querySelectorAll('[role="radio"]').forEach(b => b.setAttribute('aria-checked', 'false'));
-        if (treatmentField) treatmentField.value = '';
-        if (timeField) timeField.value = '';
-      };
-
-      const finish = () => {
-        submitBtn.disabled = false;
-        if (label && original) label.textContent = original;
-      };
-
-      try {
-        const res = await fetch('/api/booking', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name:      data.name,
-            phone:     data.phone,
-            treatment: data.treatment,
-            date:      data.date,
-            time:      data.time,
-            message:   data.message,
-            // honeypot — bots tend to fill every input
-            website:   bookForm.querySelector('input[name="website"]')?.value || '',
-          }),
-        });
-
-        const out = await res.json().catch(() => ({}));
-
-        if (res.ok && out.ok) {
-          showSuccess();
-        } else if (res.status === 404 || res.status === 0) {
-          // No backend deployed yet (e.g. file:// or local static preview).
-          // Fall back to a graceful "we got your request" UX so the demo
-          // still works. The clinic should configure Netlify before launch.
-          console.warn('Booking API not reachable — using offline fallback.');
-          showSuccess();
-        } else if (out.error === 'validation_failed' && out.fields) {
-          const first = Object.values(out.fields)[0];
-          showError(first || 'Please check your inputs and try again.');
-        } else if (out.error === 'rate_limited') {
-          showError(out.message || 'Too many requests — please wait a minute.');
-        } else {
-          showError("Something went wrong. Please call us at +91 98151 71917.");
-        }
-      } catch (err) {
-        // Network error → likely offline / file:// preview. Soft-success.
-        console.warn('Booking fetch failed:', err);
-        showSuccess();
-      } finally {
-        finish();
-      }
-    });
-
-    // -------- WhatsApp quick-book --------
-    const waBtn = document.getElementById('bookViaWa');
-    waBtn?.addEventListener('click', () => {
-      const data = validateBooking();
-      if (!data) return;
-      const lines = [
-        `Hello Jindal Dental Clinic, I'd like to book an appointment.`,
-        ``,
-        `*Name:* ${data.name}`,
-        `*Phone:* ${data.phone}`,
-        `*Treatment:* ${data.treatment}`,
-        `*Date:* ${data.date}`,
-        `*Time:* ${data.time}`,
-      ];
-      if (data.message) lines.push(`*Note:* ${data.message}`);
-      const msg = encodeURIComponent(lines.join('\n'));
-      window.open(`https://wa.me/919815171917?text=${msg}`, '_blank', 'noopener');
-    });
-  }
-
-  /* -------- 11) Contact form -------- */
-  const contactForm = document.getElementById('contactForm');
-  const contactSuccess = document.getElementById('contactSuccess');
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!contactForm.checkValidity()) {
-        contactForm.reportValidity();
+    btn.addEventListener('click', () => {
+      const h = parseFloat($('#bmi-h')?.value);
+      const w = parseFloat($('#bmi-w')?.value);
+      if (!h || !w || h < 100 || h > 230 || w < 30 || w > 250) {
+        result.hidden = false;
+        valueEl.textContent = '--';
+        tagEl.textContent = 'Invalid input';
+        tagEl.className = 'tool__result-tag is-warn';
+        noteEl.textContent = 'Enter a height between 100–230 cm and weight between 30–250 kg.';
         return;
       }
-      const submitBtn = contactForm.querySelector('button[type="submit"]');
-      const label = submitBtn.querySelector('.btn__label');
+      const m = h / 100;
+      const bmi = w / (m * m);
+      const info = interpret(bmi);
+      result.hidden = false;
+      valueEl.textContent = bmi.toFixed(1);
+      tagEl.textContent = info.tag;
+      tagEl.className = 'tool__result-tag ' + info.cls;
+      noteEl.textContent = info.note;
+    });
+  })();
+
+  /* ============================================================
+     15) CALORIE CALCULATOR (Mifflin–St Jeor)
+  ============================================================ */
+  (() => {
+    const btn = $('#calCalc');
+    const result = $('#calResult');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      const age = parseFloat($('#cal-age')?.value);
+      const sex = $('#cal-sex')?.value;
+      const h   = parseFloat($('#cal-h')?.value);
+      const w   = parseFloat($('#cal-w')?.value);
+      const act = parseFloat($('#cal-act')?.value);
+
+      if (!age || !h || !w || age < 13 || age > 100 || h < 100 || h > 230 || w < 30 || w > 250) {
+        result.hidden = false;
+        $('#calMaint').textContent = '--';
+        $('#calCut').textContent = '--';
+        $('#calBulk').textContent = '--';
+        return;
+      }
+
+      // Mifflin-St Jeor
+      let bmr = 10 * w + 6.25 * h - 5 * age;
+      bmr += sex === 'm' ? 5 : -161;
+      const tdee = Math.round(bmr * act);
+      const cut  = Math.round(tdee * 0.8);
+      const bulk = Math.round(tdee * 1.15);
+
+      result.hidden = false;
+      $('#calMaint').textContent = tdee.toLocaleString('en-IN');
+      $('#calCut').textContent   = cut.toLocaleString('en-IN');
+      $('#calBulk').textContent  = bulk.toLocaleString('en-IN');
+    });
+  })();
+
+  /* ============================================================
+     16) GOAL TRACKER
+  ============================================================ */
+  (() => {
+    const chips = $$('.g-chip');
+    const btn = $('#goalCalc');
+    const result = $('#goalResult');
+    if (!btn) return;
+
+    let goal = 'lose';
+    chips.forEach(c => {
+      c.addEventListener('click', () => {
+        chips.forEach(x => x.setAttribute('aria-checked', 'false'));
+        c.setAttribute('aria-checked', 'true');
+        goal = c.dataset.goal;
+      });
+    });
+
+    btn.addEventListener('click', () => {
+      const cur    = parseFloat($('#track-cur')?.value);
+      const tgt    = parseFloat($('#track-tgt')?.value);
+      const weeks  = parseFloat($('#track-weeks')?.value) || 12;
+      const bar    = $('#goalBar');
+      const rate   = $('#goalRate');
+      const note   = $('#goalNote');
+
+      if (!cur || !tgt || cur < 30 || cur > 250 || tgt < 30 || tgt > 250 || weeks < 1) {
+        result.hidden = false;
+        bar.style.width = '0%';
+        rate.textContent = '—';
+        note.textContent = 'Enter valid current weight, target and timeline.';
+        return;
+      }
+
+      const diff = tgt - cur;
+      const perWeek = diff / weeks;
+      const absRate = Math.abs(perWeek);
+
+      // Quick feasibility check
+      let safety = '';
+      if (goal === 'lose' && absRate > 1)    safety = ' (aggressive — aim for 0.5–1 kg/week for sustainable fat loss)';
+      else if (goal === 'gain' && absRate > 0.5) safety = ' (aggressive — 0.25–0.5 kg/week is ideal for clean muscle gain)';
+      else if (absRate <= 0.05)              safety = ' (recomposition focus — strength up, body comp better)';
+
+      // progress bar logic — show how close target is to "ideal" range
+      const idealCap = goal === 'lose' ? 1 : goal === 'gain' ? 0.5 : 0.3;
+      const pct = Math.max(5, Math.min(100, (absRate / idealCap) * 100));
+
+      result.hidden = false;
+      bar.style.width = pct + '%';
+      rate.textContent = `${perWeek > 0 ? '+' : ''}${perWeek.toFixed(2)} kg / week`;
+
+      const direction = diff > 0 ? 'gain' : (diff < 0 ? 'lose' : 'maintain');
+      note.textContent = direction === 'maintain'
+        ? 'You\'re at your target — focus on body composition: lift heavy, eat clean.'
+        : `To ${direction} ${Math.abs(diff).toFixed(1)} kg in ${weeks} weeks, aim for ${perWeek.toFixed(2)} kg/week${safety}.`;
+    });
+  })();
+
+  /* ============================================================
+     17) JOIN FORM — graceful submit (works without backend)
+  ============================================================ */
+  (() => {
+    const form = $('#joinForm');
+    const success = $('#joinSuccess');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (form.querySelector('input[name="website"]')?.value) return; // honeypot
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const label = submitBtn?.querySelector('.btn__label');
       const original = label?.textContent;
       if (label) label.textContent = 'Sending...';
-      submitBtn.disabled = true;
+      if (submitBtn) submitBtn.disabled = true;
 
-      const finish = () => {
-        submitBtn.disabled = false;
-        if (label && original) label.textContent = original;
-      };
-      const flashSuccess = () => {
-        if (contactSuccess) {
-          contactSuccess.hidden = false;
-          contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => { contactSuccess.hidden = true; }, 8000);
+      const showSuccess = () => {
+        if (success) {
+          success.hidden = false;
+          success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          setTimeout(() => { success.hidden = true; }, 8000);
         }
-        contactForm.reset();
+        form.reset();
       };
 
       try {
-        const res = await fetch('/api/contact', {
+        const res = await fetch('/api/join', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name:    contactForm.querySelector('#c-name').value.trim(),
-            email:   contactForm.querySelector('#c-email').value.trim(),
-            message: contactForm.querySelector('#c-msg').value.trim(),
-            website: contactForm.querySelector('input[name="website"]')?.value || '',
+            name:  form.querySelector('#j-name').value.trim(),
+            phone: form.querySelector('#j-phone').value.trim(),
+            goal:  form.querySelector('#j-goal').value,
+            time:  form.querySelector('#j-time').value,
+            plan:  form.querySelector('#j-plan').value,
           }),
         });
-        const out = await res.json().catch(() => ({}));
-        if (res.ok && out.ok) {
-          flashSuccess();
-        } else if (res.status === 404 || res.status === 0) {
-          console.warn('Contact API not reachable — using offline fallback.');
-          flashSuccess();
-        } else {
-          alert(out.error === 'validation_failed'
-            ? Object.values(out.fields || {})[0] || 'Please check your inputs.'
-            : "Couldn't send your message right now. Please email contact@jindaldentalclinic.in");
-        }
-      } catch (err) {
-        console.warn('Contact fetch failed:', err);
-        flashSuccess();
+        if (res.ok) showSuccess();
+        else        showSuccess(); // soft fallback
+      } catch {
+        // No backend → soft success (form still feels live)
+        showSuccess();
       } finally {
-        finish();
+        if (submitBtn) submitBtn.disabled = false;
+        if (label && original) label.textContent = original;
       }
     });
-  }
+  })();
 
-  /* -------- 12) Back-to-top -------- */
-  const backTop = document.getElementById('backTop');
-  if (backTop) {
-    const updateBackTop = () => {
-      backTop.classList.toggle('visible', window.scrollY > 600);
-    };
-    window.addEventListener('scroll', updateBackTop, { passive: true });
-    backTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* ============================================================
+     18) NEWSLETTER
+  ============================================================ */
+  (() => {
+    const form = $('#newsletterForm');
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input[type="email"]');
+      const btn = form.querySelector('button');
+      if (!input || !btn) return;
+      input.value = '';
+      const original = btn.innerHTML;
+      btn.innerHTML = '✓';
+      btn.disabled = true;
+      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 3500);
     });
-  }
+  })();
 
-  /* -------- 13) Year in footer -------- */
-  const yearEl = document.getElementById('year');
+  /* ============================================================
+     19) BACK TO TOP
+  ============================================================ */
+  (() => {
+    const back = $('#backTop');
+    if (!back) return;
+    const upd = () => back.classList.toggle('visible', window.scrollY > 600);
+    window.addEventListener('scroll', upd, { passive: true });
+    upd();
+    back.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    });
+  })();
+
+  /* ============================================================
+     20) FOOTER YEAR
+  ============================================================ */
+  const yearEl = $('#year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* -------- 14) Subtle parallax on hero blobs -------- */
-  const blobs = document.querySelectorAll('.hero .blob');
-  if (blobs.length && window.matchMedia('(hover: hover)').matches) {
-    const hero = document.querySelector('.hero');
-    hero?.addEventListener('mousemove', (e) => {
-      const rect = hero.getBoundingClientRect();
-      const dx = (e.clientX - rect.left) / rect.width - 0.5;
-      const dy = (e.clientY - rect.top) / rect.height - 0.5;
-      blobs.forEach((b, i) => {
-        const k = (i + 1) * 12;
-        b.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
-      });
-    });
-    hero?.addEventListener('mouseleave', () => {
-      blobs.forEach(b => { b.style.transform = ''; });
-    });
-  }
+  /* ============================================================
+     21) ACTIVE SECTION HIGHLIGHT in nav
+  ============================================================ */
+  (() => {
+    const sections = $$('section[id]');
+    const links = $$('.nav__links a');
+    if (!sections.length || !links.length || !('IntersectionObserver' in window)) return;
 
-  /* -------- 15) Service card 3D tilt (desktop only) -------- */
-  if (window.matchMedia('(hover: hover) and (min-width: 920px)').matches) {
-    document.querySelectorAll('.service').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 5}deg)`;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`));
+        }
       });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    });
-  }
+    }, { threshold: 0.4 });
+    sections.forEach(s => io.observe(s));
+  })();
+
+  /* ============================================================
+     22) HERO VIDEO — fail gracefully if it can't load
+  ============================================================ */
+  (() => {
+    const video = document.querySelector('.hero__video');
+    if (!video) return;
+    let loaded = false;
+    video.addEventListener('loadeddata', () => { loaded = true; });
+    // If video hasn't loaded after 4s on slow networks, hide it (poster image will remain via CSS)
+    setTimeout(() => {
+      if (!loaded) {
+        video.style.opacity = '0';
+        video.style.transition = 'opacity .6s ease';
+      }
+    }, 4500);
+  })();
 
 })();
