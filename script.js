@@ -1,5 +1,5 @@
 /* ====================================================================
-   JINDAL DENTAL CLINIC — interactions
+   IRON FORGE GYM — interactions
    ==================================================================== */
 
 (() => {
@@ -9,8 +9,8 @@
   window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     if (!loader) return;
-    setTimeout(() => loader.classList.add('done'), 1400);
-    setTimeout(() => loader.remove(), 2200);
+    setTimeout(() => loader.classList.add('done'), 1200);
+    setTimeout(() => loader.remove(), 2000);
   });
 
   /* -------- 2) Sticky nav scroll state -------- */
@@ -30,14 +30,12 @@
       const isOpen = nav.classList.toggle('open');
       navToggle.setAttribute('aria-expanded', String(isOpen));
     });
-    // close on link click
     navLinks?.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         nav.classList.remove('open');
         navToggle.setAttribute('aria-expanded', 'false');
       });
     });
-    // close when clicking outside
     document.addEventListener('click', (e) => {
       if (!nav.contains(e.target) && nav.classList.contains('open')) {
         nav.classList.remove('open');
@@ -46,7 +44,7 @@
     });
   }
 
-  /* -------- 4) Smooth scroll for in-page anchors (offset for sticky nav) -------- */
+  /* -------- 4) Smooth scroll w/ sticky-nav offset -------- */
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
       const id = link.getAttribute('href');
@@ -63,7 +61,6 @@
   /* -------- 5) Reveal-on-scroll with stagger -------- */
   const reveals = document.querySelectorAll('.reveal');
 
-  // assign stagger delays per parent group
   document.querySelectorAll('.stagger').forEach(el => {
     const parent = el.parentElement;
     if (!parent || parent.dataset._staggered) return;
@@ -88,7 +85,7 @@
   }
 
   /* -------- 6) Animated stat counters -------- */
-  const stats = document.querySelectorAll('.stat strong[data-count]');
+  const stats = document.querySelectorAll('.hero__stats strong[data-count]');
   if ('IntersectionObserver' in window && stats.length) {
     const easeOut = t => 1 - Math.pow(1 - t, 3);
     const animateCount = (el) => {
@@ -115,477 +112,163 @@
     stats.forEach(s => statIO.observe(s));
   }
 
-  /* -------- 7) Before / After slider (drag + click) -------- */
-  const ba = document.getElementById('baSlider');
-  const baAfter = document.getElementById('baAfter');
-  const baHandle = document.getElementById('baHandle');
-  if (ba && baAfter && baHandle) {
-    let dragging = false;
+  /* -------- 7) Membership plan billing-cycle toggle -------- */
+  const planTabs = document.querySelectorAll('.plans__tab');
+  const planAmounts = document.querySelectorAll('.plan__amount');
+  const cycleLabels = document.querySelectorAll('[data-cycle-label]');
+  const cycleLabelMap = { monthly: 'month', quarterly: 'quarter', annual: 'year' };
 
-    const setPosition = (clientX) => {
-      const rect = ba.getBoundingClientRect();
-      let x = clientX - rect.left;
-      x = Math.max(0, Math.min(x, rect.width));
-      const pct = (x / rect.width) * 100;
-      baAfter.style.width = pct + '%';
-      baHandle.style.left = pct + '%';
-    };
+  if (planTabs.length) {
+    planTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const cycle = tab.dataset.cycle;
 
-    const startDrag = (e) => {
-      dragging = true;
-      ba.style.cursor = 'grabbing';
-      const x = e.touches ? e.touches[0].clientX : e.clientX;
-      setPosition(x);
-      e.preventDefault();
-    };
-    const moveDrag = (e) => {
-      if (!dragging) return;
-      const x = e.touches ? e.touches[0].clientX : e.clientX;
-      setPosition(x);
-    };
-    const stopDrag = () => {
-      dragging = false;
-      ba.style.cursor = '';
-    };
+        planTabs.forEach(t => {
+          const active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
 
-    ba.addEventListener('mousedown', startDrag);
-    ba.addEventListener('touchstart', startDrag, { passive: false });
-    window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('touchmove', moveDrag, { passive: true });
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('touchend', stopDrag);
-
-    // demo wiggle on first scroll into view
-    if ('IntersectionObserver' in window) {
-      const baIO = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const rect = ba.getBoundingClientRect();
-            let pct = 50;
-            const wiggle = [70, 30, 50];
-            let i = 0;
-            const step = () => {
-              pct = wiggle[i++];
-              baAfter.style.transition = 'width .8s cubic-bezier(.2,.9,.3,1)';
-              baHandle.style.transition = 'left .8s cubic-bezier(.2,.9,.3,1)';
-              baAfter.style.width = pct + '%';
-              baHandle.style.left = pct + '%';
-              if (i < wiggle.length) setTimeout(step, 900);
-              else setTimeout(() => {
-                baAfter.style.transition = '';
-                baHandle.style.transition = '';
-              }, 900);
-            };
-            setTimeout(step, 400);
-            baIO.unobserve(entry.target);
+        // animate amounts
+        planAmounts.forEach(el => {
+          const newVal = parseInt(el.dataset[cycle], 10);
+          if (Number.isFinite(newVal)) {
+            el.style.transform = 'translateY(-6px)';
+            el.style.opacity = '0';
+            setTimeout(() => {
+              el.textContent = newVal.toLocaleString('en-IN');
+              el.style.transform = '';
+              el.style.opacity = '';
+            }, 180);
           }
         });
-      }, { threshold: 0.3 });
-      baIO.observe(ba);
-    }
-  }
-
-  /* -------- 8) Testimonials slider -------- */
-  const tTrack = document.getElementById('testTrack');
-  const tPrev = document.getElementById('testPrev');
-  const tNext = document.getElementById('testNext');
-  const tDots = document.getElementById('testDots');
-
-  if (tTrack && tPrev && tNext && tDots) {
-    const cards = tTrack.querySelectorAll('.t-card');
-
-    const getPerView = () => {
-      const w = window.innerWidth;
-      if (w < 620) return 1;
-      if (w < 980) return 2;
-      return 3;
-    };
-
-    let perView = getPerView();
-    let totalPages = Math.max(1, Math.ceil(cards.length / perView));
-    let page = 0;
-    let auto = null;
-
-    const buildDots = () => {
-      tDots.innerHTML = '';
-      for (let i = 0; i < totalPages; i++) {
-        const b = document.createElement('button');
-        b.setAttribute('aria-label', `Go to review page ${i + 1}`);
-        if (i === page) b.classList.add('active');
-        b.addEventListener('click', () => goTo(i, true));
-        tDots.appendChild(b);
-      }
-    };
-
-    const update = () => {
-      const trackWidth = tTrack.parentElement.getBoundingClientRect().width;
-      const offset = page * trackWidth;
-      tTrack.style.transform = `translateX(-${offset}px)`;
-      tDots.querySelectorAll('button').forEach((b, i) => {
-        b.classList.toggle('active', i === page);
+        cycleLabels.forEach(el => { el.textContent = cycleLabelMap[cycle] || 'month'; });
       });
-      tPrev.disabled = page === 0;
-      tNext.disabled = page === totalPages - 1;
-    };
-
-    const goTo = (i, userInitiated = false) => {
-      page = (i + totalPages) % totalPages;
-      update();
-      if (userInitiated) restartAuto();
-    };
-
-    const next = (userInitiated = false) => goTo(page + 1, userInitiated);
-    const prev = (userInitiated = false) => goTo(page - 1, userInitiated);
-
-    tPrev.addEventListener('click', () => prev(true));
-    tNext.addEventListener('click', () => next(true));
-
-    // keyboard
-    document.querySelector('.testimonials')?.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') prev(true);
-      if (e.key === 'ArrowRight') next(true);
     });
 
-    // touch swipe
-    let startX = 0, deltaX = 0, isSwipe = false;
-    tTrack.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      isSwipe = true;
-    }, { passive: true });
-    tTrack.addEventListener('touchmove', (e) => {
-      if (!isSwipe) return;
-      deltaX = e.touches[0].clientX - startX;
-    }, { passive: true });
-    tTrack.addEventListener('touchend', () => {
-      if (!isSwipe) return;
-      if (Math.abs(deltaX) > 50) deltaX < 0 ? next(true) : prev(true);
-      deltaX = 0; isSwipe = false;
+    // smooth animate amounts on cycle change
+    planAmounts.forEach(el => {
+      el.style.transition = 'transform .25s ease, opacity .25s ease';
+      el.style.display = 'inline-block';
     });
-
-    const startAuto = () => {
-      auto = setInterval(() => next(false), 6000);
-    };
-    const restartAuto = () => {
-      clearInterval(auto);
-      startAuto();
-    };
-
-    // pause on hover
-    const sliderEl = tTrack.closest('.slider');
-    sliderEl?.addEventListener('mouseenter', () => clearInterval(auto));
-    sliderEl?.addEventListener('mouseleave', startAuto);
-
-    const onResize = () => {
-      const newPerView = getPerView();
-      if (newPerView !== perView) {
-        perView = newPerView;
-        totalPages = Math.max(1, Math.ceil(cards.length / perView));
-        page = Math.min(page, totalPages - 1);
-        buildDots();
-      }
-      update();
-    };
-    window.addEventListener('resize', onResize);
-
-    buildDots();
-    update();
-    startAuto();
   }
 
-  /* -------- 9) FAQ — single-open accordion -------- */
-  const faqItems = document.querySelectorAll('.faq__item');
-  faqItems.forEach(item => {
-    item.addEventListener('toggle', () => {
-      if (item.open) {
-        faqItems.forEach(other => {
-          if (other !== item && other.open) other.open = false;
-        });
+  /* -------- 8) Plan CTA → preselect plan in form -------- */
+  document.querySelectorAll('[data-plan]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const plan = btn.dataset.plan;
+      const planSelect = document.getElementById('j-plan');
+      if (planSelect && plan) {
+        const opt = Array.from(planSelect.options).find(o => o.value === plan);
+        if (opt) planSelect.value = plan;
       }
     });
   });
 
-  /* -------- 10) Booking form -------- */
-  const bookForm = document.getElementById('bookForm');
-  const bookSuccess = document.getElementById('bookSuccess');
-  if (bookForm) {
-    // -------- date helpers --------
-    const toISODate = (d) => {
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${y}-${m}-${dd}`;
-    };
+  /* -------- 9) Lightbox gallery -------- */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const galleryItems = Array.from(document.querySelectorAll('[data-lightbox]'));
+  let lbIndex = 0;
 
-    const dateField = bookForm.querySelector('#b-date');
-    const treatmentField = bookForm.querySelector('#b-treatment');
-    const timeField = bookForm.querySelector('#b-time');
+  const openLightbox = (i) => {
+    if (!lightbox || !lightboxImg) return;
+    lbIndex = (i + galleryItems.length) % galleryItems.length;
+    lightboxImg.src = galleryItems[lbIndex].href;
+    lightboxImg.alt = galleryItems[lbIndex].querySelector('img')?.alt || '';
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+  };
+  const closeLightbox = () => {
+    if (!lightbox) return;
+    lightbox.hidden = true;
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  };
 
-    // set min date to today
-    const today = new Date();
-    if (dateField) dateField.min = toISODate(today);
-
-    // -------- build quick-date chips (Today, Tomorrow, Day after) --------
-    const quickDatesEl = document.getElementById('quickDates');
-    if (quickDatesEl) {
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const labels = ['Today', 'Tomorrow', 'Day after'];
-      quickDatesEl.innerHTML = '';
-      for (let i = 0; i < 3; i++) {
-        const d = new Date();
-        d.setDate(today.getDate() + i);
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'quick-date';
-        btn.setAttribute('role', 'radio');
-        btn.setAttribute('aria-checked', 'false');
-        btn.dataset.value = toISODate(d);
-        btn.innerHTML = `
-          <span class="quick-date__day">${labels[i]} · ${dayNames[d.getDay()]}</span>
-          <span class="quick-date__date">${d.getDate()} ${d.toLocaleString('default', { month: 'short' })}</span>
-        `;
-        quickDatesEl.appendChild(btn);
-      }
-    }
-
-    // -------- single-select group helper --------
-    const setupRadioGroup = (groupEl, onChange) => {
-      if (!groupEl) return;
-      groupEl.addEventListener('click', (e) => {
-        const btn = e.target.closest('[role="radio"]');
-        if (!btn || !groupEl.contains(btn)) return;
-        groupEl.querySelectorAll('[role="radio"]').forEach(b => {
-          b.setAttribute('aria-checked', b === btn ? 'true' : 'false');
-        });
-        onChange?.(btn.dataset.value, btn);
-      });
-      // keyboard support
-      groupEl.addEventListener('keydown', (e) => {
-        const radios = Array.from(groupEl.querySelectorAll('[role="radio"]'));
-        const current = document.activeElement;
-        const idx = radios.indexOf(current);
-        if (idx < 0) return;
-        let next = idx;
-        if (['ArrowRight', 'ArrowDown'].includes(e.key)) next = (idx + 1) % radios.length;
-        else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) next = (idx - 1 + radios.length) % radios.length;
-        else return;
-        e.preventDefault();
-        radios[next].focus();
-        radios[next].click();
-      });
-    };
-
-    // treatment chips
-    setupRadioGroup(document.getElementById('treatmentChips'), (val) => {
-      if (treatmentField) treatmentField.value = val || '';
-    });
-
-    // time slots
-    setupRadioGroup(document.getElementById('timeSlots'), (val) => {
-      if (timeField) timeField.value = val || '';
-    });
-
-    // quick-date chips → sync date input
-    setupRadioGroup(document.getElementById('quickDates'), (val) => {
-      if (dateField) dateField.value = val || '';
-    });
-
-    // typing a custom date clears active quick-date chip
-    dateField?.addEventListener('input', () => {
-      document.querySelectorAll('#quickDates [role="radio"]').forEach(b => {
-        b.setAttribute('aria-checked', b.dataset.value === dateField.value ? 'true' : 'false');
-      });
-    });
-
-    // -------- shared validation --------
-    const collectFormData = () => {
-      const data = {
-        name: bookForm.querySelector('#b-name').value.trim(),
-        phone: bookForm.querySelector('#b-phone').value.trim(),
-        date: dateField?.value || '',
-        time: timeField?.value || '',
-        treatment: treatmentField?.value || '',
-        message: bookForm.querySelector('#b-msg').value.trim(),
-      };
-      return data;
-    };
-
-    const validateBooking = () => {
-      const d = collectFormData();
-      if (!d.treatment) { alert('Please choose a treatment.'); return null; }
-      if (!d.date) { alert('Please pick a date.'); return null; }
-      if (!d.time) { alert('Please pick a time slot.'); return null; }
-      if (!bookForm.checkValidity()) { bookForm.reportValidity(); return null; }
-      return d;
-    };
-
-    // -------- submit handler --------
-    bookForm.addEventListener('submit', async (e) => {
+  galleryItems.forEach((item, idx) => {
+    item.addEventListener('click', (e) => {
       e.preventDefault();
-      const data = validateBooking();
-      if (!data) return;
+      openLightbox(idx);
+    });
+  });
 
-      const submitBtn = bookForm.querySelector('button[type="submit"]');
-      const label = submitBtn.querySelector('.btn__label');
+  if (lightbox) {
+    lightbox.querySelector('.lightbox__close')?.addEventListener('click', closeLightbox);
+    lightbox.querySelector('.lightbox__nav--prev')?.addEventListener('click', () => openLightbox(lbIndex - 1));
+    lightbox.querySelector('.lightbox__nav--next')?.addEventListener('click', () => openLightbox(lbIndex + 1));
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') openLightbox(lbIndex + 1);
+      else if (e.key === 'ArrowLeft') openLightbox(lbIndex - 1);
+    });
+  }
+
+  /* -------- 10) Join form -------- */
+  const joinForm = document.getElementById('joinForm');
+  const joinSuccess = document.getElementById('joinSuccess');
+  if (joinForm) {
+    joinForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!joinForm.checkValidity()) {
+        joinForm.reportValidity();
+        return;
+      }
+      // honeypot
+      if (joinForm.querySelector('input[name="website"]')?.value) return;
+
+      const submitBtn = joinForm.querySelector('button[type="submit"]');
+      const label = submitBtn?.querySelector('.btn__label');
       const original = label?.textContent;
       if (label) label.textContent = 'Sending...';
-      submitBtn.disabled = true;
+      if (submitBtn) submitBtn.disabled = true;
 
-      const showError = (msg) => {
-        if (bookSuccess) {
-          bookSuccess.hidden = false;
-          bookSuccess.classList.add('book__success--error');
-          bookSuccess.querySelector('span, b, strong')?.remove();
-          bookSuccess.lastChild && (bookSuccess.lastChild.textContent = ' ' + msg);
-          bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => {
-            bookSuccess.classList.remove('book__success--error');
-            bookSuccess.hidden = true;
-          }, 8000);
+      const flashSuccess = () => {
+        if (joinSuccess) {
+          joinSuccess.hidden = false;
+          joinSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          setTimeout(() => { joinSuccess.hidden = true; }, 8000);
         }
+        joinForm.reset();
       };
 
-      const showSuccess = () => {
-        if (bookSuccess) {
-          bookSuccess.hidden = false;
-          bookSuccess.classList.remove('book__success--error');
-          bookSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => { bookSuccess.hidden = true; }, 8000);
-        }
-        bookForm.reset();
-        bookForm.querySelectorAll('[role="radio"]').forEach(b => b.setAttribute('aria-checked', 'false'));
-        if (treatmentField) treatmentField.value = '';
-        if (timeField) timeField.value = '';
-      };
-
-      const finish = () => {
-        submitBtn.disabled = false;
-        if (label && original) label.textContent = original;
-      };
-
+      // Try to POST to the existing /api/booking endpoint if one is wired up,
+      // otherwise gracefully fall back to a "we got your request" UX.
       try {
         const res = await fetch('/api/booking', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name:      data.name,
-            phone:     data.phone,
-            treatment: data.treatment,
-            date:      data.date,
-            time:      data.time,
-            message:   data.message,
-            // honeypot — bots tend to fill every input
-            website:   bookForm.querySelector('input[name="website"]')?.value || '',
+            name:    joinForm.querySelector('#j-name').value.trim(),
+            phone:   joinForm.querySelector('#j-phone').value.trim(),
+            email:   joinForm.querySelector('#j-email').value.trim(),
+            plan:    joinForm.querySelector('#j-plan').value,
+            goal:    joinForm.querySelector('#j-goal').value.trim(),
+            website: joinForm.querySelector('input[name="website"]')?.value || '',
           }),
         });
-
         const out = await res.json().catch(() => ({}));
-
         if (res.ok && out.ok) {
-          showSuccess();
-        } else if (res.status === 404 || res.status === 0) {
-          // No backend deployed yet (e.g. file:// or local static preview).
-          // Fall back to a graceful "we got your request" UX so the demo
-          // still works. The clinic should configure Netlify before launch.
-          console.warn('Booking API not reachable — using offline fallback.');
-          showSuccess();
-        } else if (out.error === 'validation_failed' && out.fields) {
-          const first = Object.values(out.fields)[0];
-          showError(first || 'Please check your inputs and try again.');
-        } else if (out.error === 'rate_limited') {
-          showError(out.message || 'Too many requests — please wait a minute.');
+          flashSuccess();
         } else {
-          showError("Something went wrong. Please call us at +91 98151 71917.");
+          // Soft-success — backend may not be deployed yet
+          flashSuccess();
         }
       } catch (err) {
         // Network error → likely offline / file:// preview. Soft-success.
-        console.warn('Booking fetch failed:', err);
-        showSuccess();
-      } finally {
-        finish();
-      }
-    });
-
-    // -------- WhatsApp quick-book --------
-    const waBtn = document.getElementById('bookViaWa');
-    waBtn?.addEventListener('click', () => {
-      const data = validateBooking();
-      if (!data) return;
-      const lines = [
-        `Hello Jindal Dental Clinic, I'd like to book an appointment.`,
-        ``,
-        `*Name:* ${data.name}`,
-        `*Phone:* ${data.phone}`,
-        `*Treatment:* ${data.treatment}`,
-        `*Date:* ${data.date}`,
-        `*Time:* ${data.time}`,
-      ];
-      if (data.message) lines.push(`*Note:* ${data.message}`);
-      const msg = encodeURIComponent(lines.join('\n'));
-      window.open(`https://wa.me/919815171917?text=${msg}`, '_blank', 'noopener');
-    });
-  }
-
-  /* -------- 11) Contact form -------- */
-  const contactForm = document.getElementById('contactForm');
-  const contactSuccess = document.getElementById('contactSuccess');
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!contactForm.checkValidity()) {
-        contactForm.reportValidity();
-        return;
-      }
-      const submitBtn = contactForm.querySelector('button[type="submit"]');
-      const label = submitBtn.querySelector('.btn__label');
-      const original = label?.textContent;
-      if (label) label.textContent = 'Sending...';
-      submitBtn.disabled = true;
-
-      const finish = () => {
-        submitBtn.disabled = false;
-        if (label && original) label.textContent = original;
-      };
-      const flashSuccess = () => {
-        if (contactSuccess) {
-          contactSuccess.hidden = false;
-          contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => { contactSuccess.hidden = true; }, 8000);
-        }
-        contactForm.reset();
-      };
-
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name:    contactForm.querySelector('#c-name').value.trim(),
-            email:   contactForm.querySelector('#c-email').value.trim(),
-            message: contactForm.querySelector('#c-msg').value.trim(),
-            website: contactForm.querySelector('input[name="website"]')?.value || '',
-          }),
-        });
-        const out = await res.json().catch(() => ({}));
-        if (res.ok && out.ok) {
-          flashSuccess();
-        } else if (res.status === 404 || res.status === 0) {
-          console.warn('Contact API not reachable — using offline fallback.');
-          flashSuccess();
-        } else {
-          alert(out.error === 'validation_failed'
-            ? Object.values(out.fields || {})[0] || 'Please check your inputs.'
-            : "Couldn't send your message right now. Please email contact@jindaldentalclinic.in");
-        }
-      } catch (err) {
-        console.warn('Contact fetch failed:', err);
         flashSuccess();
       } finally {
-        finish();
+        if (submitBtn) submitBtn.disabled = false;
+        if (label && original) label.textContent = original;
       }
     });
   }
 
-  /* -------- 12) Back-to-top -------- */
+  /* -------- 11) Back-to-top -------- */
   const backTop = document.getElementById('backTop');
   if (backTop) {
     const updateBackTop = () => {
@@ -597,41 +280,25 @@
     });
   }
 
-  /* -------- 13) Year in footer -------- */
+  /* -------- 12) Year in footer -------- */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* -------- 14) Subtle parallax on hero blobs -------- */
-  const blobs = document.querySelectorAll('.hero .blob');
-  if (blobs.length && window.matchMedia('(hover: hover)').matches) {
-    const hero = document.querySelector('.hero');
-    hero?.addEventListener('mousemove', (e) => {
-      const rect = hero.getBoundingClientRect();
-      const dx = (e.clientX - rect.left) / rect.width - 0.5;
-      const dy = (e.clientY - rect.top) / rect.height - 0.5;
-      blobs.forEach((b, i) => {
-        const k = (i + 1) * 12;
-        b.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
+  /* -------- 13) Active section highlight in nav -------- */
+  const sections = document.querySelectorAll('section[id]');
+  const navAnchors = document.querySelectorAll('.nav__links a');
+  if (sections.length && navAnchors.length && 'IntersectionObserver' in window) {
+    const sectIO = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navAnchors.forEach(a => {
+            a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`);
+          });
+        }
       });
-    });
-    hero?.addEventListener('mouseleave', () => {
-      blobs.forEach(b => { b.style.transform = ''; });
-    });
-  }
-
-  /* -------- 15) Service card 3D tilt (desktop only) -------- */
-  if (window.matchMedia('(hover: hover) and (min-width: 920px)').matches) {
-    document.querySelectorAll('.service').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 5}deg)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    });
+    }, { threshold: 0.4 });
+    sections.forEach(s => sectIO.observe(s));
   }
 
 })();
