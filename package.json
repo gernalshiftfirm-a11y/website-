@@ -1,7 +1,7 @@
 {
-  "name": "jindal-dental-clinic",
+  "name": "iron-forge-gym",
   "version": "1.0.0",
-  "description": "Jindal Dental Clinic — premium dental care website with Netlify Functions backend",
+  "description": "Iron Forge Gym — modern fitness website with membership plans, photo gallery, amenities and location",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,9 +10,6 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.0"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
