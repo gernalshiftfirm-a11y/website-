@@ -25,7 +25,7 @@ build step, runs anywhere.
 | **Transformations** | Drag/touch/keyboard before-after slider with neon handle, plus 4 result cards |
 | **Reviews** | Auto-rotating carousel of 6 glassmorphism review cards |
 | **Gallery** | 9-image masonry with full-screen lightbox (arrow-key + Esc nav) |
-| **Free Trial CTA** | Glassmorphism form (name, phone, goal, timing, plan), tap-to-call & WhatsApp |
+| **Free Trial CTA** | WhatsApp-only flow — glass panel with live "coaches online" indicator, tap-to-WhatsApp + tap-to-call buttons (no form to fill) |
 | **Fitness Tools** | **BMI Calculator** (with category interpretation), **Calorie Calculator** (Mifflin–St Jeor → maintain / cut / bulk), **Goal Tracker** with progress bar |
 | **Location** | Embedded Google Map (dark-themed), address, hours, Instagram, Get Directions / Call / WhatsApp buttons |
 | **FAQ** | 8 accordion items |

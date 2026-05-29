@@ -444,18 +444,9 @@
   })();
 
   /* ============================================================
-     13) PLAN CTA → preselect plan in form
+     13) PLAN CTA → Plan cards now link directly to WhatsApp,
+                    so no preselect logic needed.
   ============================================================ */
-  $$('[data-plan]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const plan = btn.dataset.plan;
-      const sel = $('#j-plan');
-      if (sel && plan) {
-        const opt = Array.from(sel.options).find(o => o.value === plan || o.textContent.trim() === plan);
-        if (opt) sel.value = opt.value;
-      }
-    });
-  });
 
   /* ============================================================
      14) BMI CALCULATOR
@@ -594,56 +585,8 @@
   })();
 
   /* ============================================================
-     17) JOIN FORM — graceful submit (works without backend)
+     17) JOIN FORM — removed (WhatsApp-only flow now)
   ============================================================ */
-  (() => {
-    const form = $('#joinForm');
-    const success = $('#joinSuccess');
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (form.querySelector('input[name="website"]')?.value) return; // honeypot
-
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const label = submitBtn?.querySelector('.btn__label');
-      const original = label?.textContent;
-      if (label) label.textContent = 'Sending...';
-      if (submitBtn) submitBtn.disabled = true;
-
-      const showSuccess = () => {
-        if (success) {
-          success.hidden = false;
-          success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          setTimeout(() => { success.hidden = true; }, 8000);
-        }
-        form.reset();
-      };
-
-      try {
-        const res = await fetch('/api/join', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name:  form.querySelector('#j-name').value.trim(),
-            phone: form.querySelector('#j-phone').value.trim(),
-            goal:  form.querySelector('#j-goal').value,
-            time:  form.querySelector('#j-time').value,
-            plan:  form.querySelector('#j-plan').value,
-          }),
-        });
-        if (res.ok) showSuccess();
-        else        showSuccess(); // soft fallback
-      } catch {
-        // No backend → soft success (form still feels live)
-        showSuccess();
-      } finally {
-        if (submitBtn) submitBtn.disabled = false;
-        if (label && original) label.textContent = original;
-      }
-    });
-  })();
 
   /* ============================================================
      18) NEWSLETTER
