@@ -1,7 +1,7 @@
 {
-  "name": "iron-forge-gym",
+  "name": "maths-with-sahil-verma",
   "version": "1.0.0",
-  "description": "Iron Forge Gym — modern fitness website with membership plans, photo gallery, amenities and location",
+  "description": "SG Coaching Centre, Sangrur — premium Maths coaching website with a Free Demo form that sends submissions directly to WhatsApp.",
   "private": true,
   "type": "module",
   "scripts": {

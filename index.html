@@ -1,710 +1,1065 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Iron Forge Gym — premium fitness, world-class equipment, expert trainers and flexible membership plans. Step in, level up." />
-  <meta name="theme-color" content="#0a0a0a" />
-  <title>Iron Forge Gym — Train Hard. Live Strong.</title>
+  <meta name="theme-color" content="#0a2540" />
 
+  <!-- SEO -->
+  <title>Maths with Sahil Verma | SG Coaching Centre Sangrur — Premium Maths Coaching</title>
+  <meta name="description" content="Master Mathematics with Sahil Verma at SG Coaching Centre, Sangrur. Premium concept-based coaching for Class 9-12, CBSE, Punjab Board & competitive exam foundation. Small batches, daily practice, weekly tests, doubt sessions and proven results." />
+  <meta name="keywords" content="Maths Coaching Sangrur, Sahil Verma Maths, SG Coaching Centre, Class 10 Maths, Class 12 Maths, CBSE Maths Coaching, Punjab Board Maths, Mathematics Tutor Sangrur" />
+  <meta name="author" content="SG Coaching Centre" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Maths with Sahil Verma — SG Coaching Centre Sangrur" />
+  <meta property="og:description" content="Premium concept-based Mathematics coaching in Sangrur. Join free demo class today!" />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23facc15' d='M20.5 6h2v20h-2zm-11 0h2v20h-2zM6 11h2v10H6zm18 0h2v10h-2zM12 14h8v4h-8z'/%3E%3C/svg%3E" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%231e6cf5'/%3E%3Cstop offset='1' stop-color='%230a2540'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-family='Georgia' font-weight='800' font-size='34' fill='%23f5c518'%3ESV%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 
-  <a class="skip-link" href="#main">Skip to main content</a>
-
-  <!-- ============ LOADER ============ -->
-  <div class="loader" id="loader">
-    <div class="loader__logo" aria-hidden="true">
-      <svg viewBox="0 0 64 64"><path d="M42 14h4v36h-4zm-24 0h4v36h-4zM10 22h4v20h-4zm40 0h4v20h-4zM22 28h20v8H22z"/></svg>
-    </div>
-    <div class="loader__text">IRON FORGE</div>
-    <div class="loader__bar"><span></span></div>
-  </div>
-
-  <!-- ============ TOP ANNOUNCEMENT BAR ============ -->
-  <div class="topbar">
-    <div class="topbar__inner">
-      <span class="topbar__item"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm.5 5H11v6l5 3 .8-1.3-4.3-2.5z"/></svg> Open Mon–Sat: 5:00 AM – 11:00 PM · Sun: 6:00 AM – 2:00 PM</span>
-      <span class="topbar__item"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15 15 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .2-1A11.4 11.4 0 0 1 8.5 4 1 1 0 0 0 7.5 3H4a1 1 0 0 0-1 1 17 17 0 0 0 17 17 1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg> +91 90000 00000</span>
-      <span class="topbar__item topbar__item--promo">7-DAY FREE TRIAL · No commitment</span>
+  <!-- ===== Loading Screen ===== -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-logo">
+        <span class="loader-mark">&Sigma;</span>
+      </div>
+      <div class="loader-text">SG Coaching Centre</div>
+      <div class="loader-bar"><span></span></div>
     </div>
   </div>
 
-  <!-- ============ NAVBAR ============ -->
+  <!-- ===== Announcement Bar ===== -->
+  <div class="announce" id="announceBar">
+    <div class="announce-track">
+      <span><i class="fa-solid fa-bolt"></i> New Batch Starting Soon — Limited Seats!</span>
+      <span><i class="fa-solid fa-graduation-cap"></i> 100% Concept-Based Teaching</span>
+      <span><i class="fa-solid fa-trophy"></i> Top Results in Class 10 &amp; 12 Boards</span>
+      <span><i class="fa-solid fa-phone"></i> Call: +91 79864 22304</span>
+      <span><i class="fa-solid fa-bolt"></i> New Batch Starting Soon — Limited Seats!</span>
+      <span><i class="fa-solid fa-graduation-cap"></i> 100% Concept-Based Teaching</span>
+      <span><i class="fa-solid fa-trophy"></i> Top Results in Class 10 &amp; 12 Boards</span>
+      <span><i class="fa-solid fa-phone"></i> Call: +91 79864 22304</span>
+    </div>
+  </div>
+
+  <!-- ===== Navbar ===== -->
   <header class="nav" id="nav">
-    <a href="#top" class="nav__brand">
-      <span class="nav__brand-icon" aria-hidden="true">
-        <svg viewBox="0 0 64 64"><path d="M42 14h4v36h-4zm-24 0h4v36h-4zM10 22h4v20h-4zm40 0h4v20h-4zM22 28h20v8H22z"/></svg>
-      </span>
-      <span class="nav__brand-text">
-        <strong>Iron<span>Forge</span></strong>
-        <em>Strength · Endurance · Community</em>
-      </span>
-    </a>
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <span class="brand-logo">SV</span>
+        <span class="brand-text">
+          <strong>Maths with Sahil Verma</strong>
+          <small>SG Coaching Centre · Sangrur</small>
+        </span>
+      </a>
 
-    <nav class="nav__links" id="navLinks" aria-label="Main">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#amenities">Amenities</a>
-      <a href="#membership">Membership</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#trainers">Trainers</a>
-      <a href="#location">Location</a>
-    </nav>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#courses">Courses</a>
+        <a href="#why">Why Us</a>
+        <a href="#results">Results</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#resources">Resources</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-    <a href="#join" class="nav__cta">
-      Join Now
-      <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-    </a>
-
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="#demo" class="btn btn-primary nav-cta">Book Free Demo</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero" id="home">
-    <a id="main" tabindex="-1" aria-hidden="true"></a>
-
-    <div class="hero__bg" aria-hidden="true">
-      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=80" alt="" />
-      <div class="hero__overlay"></div>
-      <div class="hero__grid"></div>
-    </div>
-
-    <div class="hero__inner" id="top">
-      <span class="hero__pill">
-        <span class="hero__pill-dot"></span>
-        Now accepting new members
-      </span>
-
-      <h1 class="hero__title">
-        Train Hard.<br/>
-        <span class="hero__title-grad">Live Strong.</span>
-      </h1>
-
-      <p class="hero__sub">
-        World-class equipment, certified coaches, and a community that pushes you forward — every single rep. Your transformation starts the moment you walk in.
-      </p>
-
-      <div class="hero__cta">
-        <a href="#join" class="btn btn--primary">
-          Start Free Trial
-          <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-        </a>
-        <a href="#membership" class="btn btn--ghost">
-          View Plans
-        </a>
-      </div>
-
-      <div class="hero__stats">
-        <div><strong data-count="2500">0</strong><span>+</span><p>Active Members</p></div>
-        <div><strong data-count="40">0</strong><span>+</span><p>Expert Trainers</p></div>
-        <div><strong data-count="150">0</strong><span>+</span><p>Equipment</p></div>
-        <div><strong data-count="12">0</strong><span></span><p>Years Strong</p></div>
-      </div>
-    </div>
-
-    <a href="#about" class="hero__scroll" aria-label="Scroll down">
-      <span></span>
-    </a>
-  </section>
-
-  <!-- ============ MARQUEE ============ -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span>NO EXCUSES</span><span>★</span>
-      <span>BUILD STRENGTH</span><span>★</span>
-      <span>FORGE YOUR BODY</span><span>★</span>
-      <span>SWEAT · LIFT · REPEAT</span><span>★</span>
-      <span>NO EXCUSES</span><span>★</span>
-      <span>BUILD STRENGTH</span><span>★</span>
-      <span>FORGE YOUR BODY</span><span>★</span>
-      <span>SWEAT · LIFT · REPEAT</span><span>★</span>
-    </div>
-  </div>
-
-  <!-- ============ ABOUT ============ -->
-  <section class="about" id="about">
-    <div class="about__inner">
-      <div class="about__visual reveal">
-        <div class="about__photo about__photo--main">
-          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80" alt="Member training in the weights area" loading="lazy" />
-        </div>
-        <div class="about__photo about__photo--small">
-          <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=600&q=80" alt="Coach guiding a member through a deadlift" loading="lazy" />
-        </div>
-        <div class="about__badge">
-          <strong>12+</strong>
-          <span>Years of forging champions</span>
+  <main>
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="home">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="grid-overlay"></div>
+        <div class="floating-symbols">
+          <span style="--x:8%; --y:18%; --d:0s">&int;</span>
+          <span style="--x:84%; --y:22%; --d:1s">&pi;</span>
+          <span style="--x:14%; --y:72%; --d:2s">&radic;</span>
+          <span style="--x:78%; --y:78%; --d:1.5s">&Sigma;</span>
+          <span style="--x:46%; --y:12%; --d:0.7s">&theta;</span>
+          <span style="--x:90%; --y:50%; --d:2.4s">&infin;</span>
+          <span style="--x:4%; --y:46%; --d:1.2s">&Delta;</span>
         </div>
       </div>
 
-      <div class="about__copy">
-        <p class="kicker reveal">// About Iron Forge</p>
-        <h2 class="reveal stagger">Where ordinary people become <span class="grad">extraordinary.</span></h2>
-        <p class="reveal stagger">Iron Forge isn't just a gym — it's a 10,000 sq ft strength laboratory built around one idea: results. From the moment you step in, you're surrounded by world-class equipment, expert coaches, and a community that refuses to settle.</p>
-
-        <ul class="about__list">
-          <li class="reveal stagger">
-            <span class="about__list-icon">01</span>
-            <div>
-              <strong>Premium Equipment</strong>
-              <p>Hammer Strength, Cybex, Rogue, and Eleiko — the same gear used by elite athletes worldwide.</p>
-            </div>
-          </li>
-          <li class="reveal stagger">
-            <span class="about__list-icon">02</span>
-            <div>
-              <strong>Certified Coaches</strong>
-              <p>Our trainers carry NASM, ACSM, and CrossFit L2 certifications — your form & progress are in expert hands.</p>
-            </div>
-          </li>
-          <li class="reveal stagger">
-            <span class="about__list-icon">03</span>
-            <div>
-              <strong>24×7 Member Access</strong>
-              <p>Train on your schedule with secure keycard access — early bird, lunch break, or midnight grind.</p>
-            </div>
-          </li>
-          <li class="reveal stagger">
-            <span class="about__list-icon">04</span>
-            <div>
-              <strong>Real Community</strong>
-              <p>From newcomer to veteran lifter, our floor is the most welcoming room in town. We rise together.</p>
-            </div>
-          </li>
-        </ul>
-
-        <a href="#join" class="btn btn--primary reveal stagger">
-          Claim Your Free Trial
-          <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ AMENITIES ============ -->
-  <section class="amenities" id="amenities">
-    <div class="amenities__head">
-      <p class="kicker reveal">// What's Inside</p>
-      <h2 class="reveal stagger">Everything you need. <span class="grad">Nothing you don't.</span></h2>
-      <p class="reveal stagger amenities__sub">Step into a fully-loaded fitness floor designed for every goal — from your first pushup to your next personal record.</p>
-    </div>
-
-    <div class="amenities__grid">
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M20.5 6h2v12h-2zm-19 0h2v12h-2zM4 9h2v6H4zm14 0h2v6h-2zM7 11h10v2H7z"/></svg>
-        </div>
-        <h3>Strength Zone</h3>
-        <p>Olympic platforms, power racks, deadlift bars, kettlebells & 5,000+ lbs of plates. Built for serious lifters.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M13.5 5.5C13.5 4.1 14.6 3 16 3s2.5 1.1 2.5 2.5S17.4 8 16 8s-2.5-1.1-2.5-2.5zM10 21l1-6-3-2v-5c0-1.1.9-2 2-2h3l3 3 2-1 1 1.5L14 11l-2-1.5V14l3 2-1 5h-4z"/></svg>
-        </div>
-        <h3>Cardio Floor</h3>
-        <p>40+ machines: treadmills, ellipticals, stair climbers, rowers, assault bikes & curved sprint tracks.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3 9 8 10 5-1 8-5 8-10V6zm0 5 1 3h3l-2.5 2 1 3-2.5-2-2.5 2 1-3L8 10h3z"/></svg>
-        </div>
-        <h3>Functional Studio</h3>
-        <p>Open-floor space for HIIT, kettlebell circuits, battle ropes, sleds & sandbags. Group classes daily.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 16.92V19H7v2h10v-2h-4v-2.08A5.01 5.01 0 0 0 16.61 13C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
-        </div>
-        <h3>CrossFit Box</h3>
-        <p>Dedicated rig with rings, ropes, GHDs and pullup stations. Daily WODs led by L2-certified coaches.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M19.92 12.08a8 8 0 1 0-15.84 0A8 8 0 0 0 12 20a8 8 0 0 0 7.92-7.92zM12 18a6 6 0 1 1 6-6 6 6 0 0 1-6 6zm0-10a4 4 0 1 0 4 4 4 4 0 0 0-4-4zm0 6a2 2 0 1 1 2-2 2 2 0 0 1-2 2z"/></svg>
-        </div>
-        <h3>Spin Studio</h3>
-        <p>30 stadium-style spin bikes, immersive lighting & a sound system that turns every class into a concert.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M12 4a4 4 0 1 1-4 4 4 4 0 0 1 4-4zm0 10c4 0 8 2 8 5v3H4v-3c0-3 4-5 8-5z"/></svg>
-        </div>
-        <h3>Yoga & Mobility</h3>
-        <p>Heated yoga room with bamboo flooring. Hatha, vinyasa, mobility & meditation classes 7 days a week.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M9 2v6H3v14h18V8h-6V2zm2 2h2v4h-2zm-6 6h14v10H5z"/></svg>
-        </div>
-        <h3>Locker Rooms</h3>
-        <p>Men's & women's premium locker rooms with rain showers, towel service, hair-dryers & toiletries.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9v3l-2 4 2 1v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4l2-1-2-4V9c0-4-3-7-7-7zm0 4a3 3 0 0 1 3 3v3h-6V9a3 3 0 0 1 3-3z"/></svg>
-        </div>
-        <h3>Sauna & Steam</h3>
-        <p>Finnish sauna and full-spectrum steam rooms — the perfect post-workout recovery ritual.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 4h14v2H5zm0 4h14v2H5zm0 4h10v2H5z"/></svg>
-        </div>
-        <h3>Smoothie Bar</h3>
-        <p>Fresh post-workout smoothies, cold brew, protein shakes & healthy snacks. Members get 15% off.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3zm0 4h2v-2H3zm0-8h2V7H3zm4 4h14v-2H7zm0 4h14v-2H7zM7 7v2h14V7z"/></svg>
-        </div>
-        <h3>Free Parking</h3>
-        <p>Spacious well-lit parking — plus dedicated 2-wheeler bays. Park, train, leave. No hassle.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M21 9V7l-5-1-1-2H9L8 6 3 7v2l5 1 1 2-1 4 4-2 4 2-1-4 1-2zM12 15a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg>
-        </div>
-        <h3>Personal Training</h3>
-        <p>1-on-1 coaching tailored to your body, goals & schedule. Custom nutrition plans included.</p>
-      </article>
-
-      <article class="amenity reveal">
-        <div class="amenity__icon">
-          <svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 14L7 11l1.4-1.4L11 12.2l5.6-5.6L18 8z"/></svg>
-        </div>
-        <h3>Free Wi-Fi & App</h3>
-        <p>Free high-speed Wi-Fi, plus our member app — book classes, track workouts, log progress.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ MEMBERSHIP ============ -->
-  <section class="plans" id="membership">
-    <div class="plans__head">
-      <p class="kicker reveal">// Membership</p>
-      <h2 class="reveal stagger">Pick a plan. <span class="grad">Start forging.</span></h2>
-      <p class="reveal stagger plans__sub">Simple, honest pricing. No hidden fees, no joining fees, no contracts longer than you want.</p>
-
-      <div class="plans__toggle reveal" role="tablist" aria-label="Billing cycle">
-        <button class="plans__tab is-active" data-cycle="monthly" role="tab" aria-selected="true">Monthly</button>
-        <button class="plans__tab" data-cycle="quarterly" role="tab" aria-selected="false">Quarterly <em>−10%</em></button>
-        <button class="plans__tab" data-cycle="annual" role="tab" aria-selected="false">Annual <em>−25%</em></button>
-      </div>
-    </div>
-
-    <div class="plans__grid">
-
-      <article class="plan reveal">
-        <header class="plan__head">
-          <h3>Starter</h3>
-          <p>For first-timers ready to build the habit.</p>
-        </header>
-        <div class="plan__price">
-          <span class="plan__currency">₹</span>
-          <strong class="plan__amount" data-monthly="1499" data-quarterly="4049" data-annual="13491">1,499</strong>
-          <span class="plan__cycle">/<span data-cycle-label>month</span></span>
-        </div>
-        <ul class="plan__list">
-          <li>Full access to gym floor</li>
-          <li>Cardio + strength zones</li>
-          <li>Locker room access</li>
-          <li>Free Wi-Fi & member app</li>
-          <li class="muted">Group classes (pay-per-class)</li>
-          <li class="muted">No personal training sessions</li>
-        </ul>
-        <a href="#join" class="btn btn--ghost btn--block" data-plan="Starter">Choose Starter</a>
-      </article>
-
-      <article class="plan plan--featured reveal">
-        <span class="plan__badge">Most Popular</span>
-        <header class="plan__head">
-          <h3>Pro</h3>
-          <p>The complete fitness package — best value.</p>
-        </header>
-        <div class="plan__price">
-          <span class="plan__currency">₹</span>
-          <strong class="plan__amount" data-monthly="2499" data-quarterly="6749" data-annual="22491">2,499</strong>
-          <span class="plan__cycle">/<span data-cycle-label>month</span></span>
-        </div>
-        <ul class="plan__list">
-          <li>Everything in Starter</li>
-          <li><strong>Unlimited group classes</strong></li>
-          <li>HIIT, spin, yoga & CrossFit</li>
-          <li>Sauna & steam access</li>
-          <li>15% off smoothie bar</li>
-          <li>2 free guest passes / month</li>
-        </ul>
-        <a href="#join" class="btn btn--primary btn--block" data-plan="Pro">Choose Pro</a>
-      </article>
-
-      <article class="plan reveal">
-        <header class="plan__head">
-          <h3>Elite</h3>
-          <p>Personalised coaching & full VIP access.</p>
-        </header>
-        <div class="plan__price">
-          <span class="plan__currency">₹</span>
-          <strong class="plan__amount" data-monthly="4999" data-quarterly="13499" data-annual="44991">4,999</strong>
-          <span class="plan__cycle">/<span data-cycle-label>month</span></span>
-        </div>
-        <ul class="plan__list">
-          <li>Everything in Pro</li>
-          <li><strong>4 personal training sessions / mo</strong></li>
-          <li>Custom nutrition plan</li>
-          <li>Body composition analysis</li>
-          <li>Priority class booking</li>
-          <li>Unlimited guest passes</li>
-        </ul>
-        <a href="#join" class="btn btn--ghost btn--block" data-plan="Elite">Choose Elite</a>
-      </article>
-
-    </div>
-
-    <p class="plans__note reveal">
-      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
-      All plans include a free fitness assessment. Cancel anytime — no joining fee, no exit fee.
-    </p>
-  </section>
-
-  <!-- ============ GALLERY ============ -->
-  <section class="gallery" id="gallery">
-    <div class="gallery__head">
-      <p class="kicker reveal">// Gallery</p>
-      <h2 class="reveal stagger">Real members. <span class="grad">Real grind.</span></h2>
-      <p class="reveal stagger gallery__sub">A peek inside the floor — the work, the wins, the community that makes Iron Forge home.</p>
-    </div>
-
-    <div class="gallery__grid">
-      <a class="g-item g-item--tall" href="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80" alt="Member doing barbell deadlift" loading="lazy"/>
-        <span class="g-item__tag">Strength</span>
-      </a>
-      <a class="g-item" href="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80" alt="Heavy weights training" loading="lazy"/>
-        <span class="g-item__tag">Powerlifting</span>
-      </a>
-      <a class="g-item" href="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80" alt="Cardio floor with treadmills" loading="lazy"/>
-        <span class="g-item__tag">Cardio</span>
-      </a>
-      <a class="g-item g-item--wide" href="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80" alt="Group fitness class" loading="lazy"/>
-        <span class="g-item__tag">Group Class</span>
-      </a>
-      <a class="g-item" href="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80" alt="Yoga session" loading="lazy"/>
-        <span class="g-item__tag">Yoga</span>
-      </a>
-      <a class="g-item" href="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80" alt="Kettlebell training" loading="lazy"/>
-        <span class="g-item__tag">Functional</span>
-      </a>
-      <a class="g-item g-item--tall" href="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80" alt="Boxing training" loading="lazy"/>
-        <span class="g-item__tag">Boxing</span>
-      </a>
-      <a class="g-item" href="https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=800&q=80" alt="Trainer with member" loading="lazy"/>
-        <span class="g-item__tag">Coaching</span>
-      </a>
-      <a class="g-item g-item--wide" href="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=1600&q=85" data-lightbox>
-        <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=1200&q=80" alt="Spin studio" loading="lazy"/>
-        <span class="g-item__tag">Spin</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ============ TRAINERS ============ -->
-  <section class="trainers" id="trainers">
-    <div class="trainers__head">
-      <p class="kicker reveal">// Meet the Coaches</p>
-      <h2 class="reveal stagger">The team behind <span class="grad">your transformation.</span></h2>
-    </div>
-
-    <div class="trainers__grid">
-      <article class="trainer reveal">
-        <div class="trainer__photo">
-          <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=600&q=80" alt="Coach Arjun" loading="lazy"/>
-        </div>
-        <div class="trainer__meta">
-          <h4>Arjun Mehta</h4>
-          <p>Head Coach · Strength & Conditioning</p>
-          <span class="trainer__certs">NASM-CPT · CSCS</span>
-        </div>
-      </article>
-
-      <article class="trainer reveal">
-        <div class="trainer__photo">
-          <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=600&q=80" alt="Coach Priya" loading="lazy"/>
-        </div>
-        <div class="trainer__meta">
-          <h4>Priya Sharma</h4>
-          <p>Yoga & Mobility Lead</p>
-          <span class="trainer__certs">RYT-500 · FRC</span>
-        </div>
-      </article>
-
-      <article class="trainer reveal">
-        <div class="trainer__photo">
-          <img src="https://images.unsplash.com/photo-1597347316205-36f6c451902a?auto=format&fit=crop&w=600&q=80" alt="Coach Vikram" loading="lazy"/>
-        </div>
-        <div class="trainer__meta">
-          <h4>Vikram Singh</h4>
-          <p>CrossFit & HIIT Coach</p>
-          <span class="trainer__certs">CrossFit L2 · ACSM</span>
-        </div>
-      </article>
-
-      <article class="trainer reveal">
-        <div class="trainer__photo">
-          <img src="https://images.unsplash.com/photo-1609899537878-88d5ba429bdf?auto=format&fit=crop&w=600&q=80" alt="Coach Neha" loading="lazy"/>
-        </div>
-        <div class="trainer__meta">
-          <h4>Neha Kapoor</h4>
-          <p>Nutrition & Body Composition</p>
-          <span class="trainer__certs">PN L1 · ISSA Nutritionist</span>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ LOCATION ============ -->
-  <section class="location" id="location">
-    <div class="location__inner">
-      <div class="location__copy">
-        <p class="kicker reveal">// Find Us</p>
-        <h2 class="reveal stagger">Drop in. <span class="grad">Lift up.</span></h2>
-        <p class="reveal stagger">We're easy to find and even easier to join. Use the map for turn-by-turn directions, or call us — we'll guide you in.</p>
-
-        <ul class="location__list">
-          <li class="reveal stagger">
-            <span class="location__icon">
-              <svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7 11.5 7.3 11.8a1 1 0 0 0 1.4 0C13 21.5 20 15.4 20 10a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg>
-            </span>
-            <div>
-              <strong>Address</strong>
-              <p>Iron Forge Gym<br/>(See map for exact location)</p>
-            </div>
-          </li>
-          <li class="reveal stagger">
-            <span class="location__icon">
-              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm.5 5H11v6l5 3 .8-1.3-4.3-2.5z"/></svg>
-            </span>
-            <div>
-              <strong>Hours</strong>
-              <p>Mon – Sat: 5:00 AM – 11:00 PM<br/>Sun: 6:00 AM – 2:00 PM</p>
-            </div>
-          </li>
-          <li class="reveal stagger">
-            <span class="location__icon">
-              <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15 15 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .2-1A11.4 11.4 0 0 1 8.5 4 1 1 0 0 0 7.5 3H4a1 1 0 0 0-1 1 17 17 0 0 0 17 17 1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg>
-            </span>
-            <div>
-              <strong>Phone</strong>
-              <p><a href="tel:+919000000000">+91 90000 00000</a></p>
-            </div>
-          </li>
-          <li class="reveal stagger">
-            <span class="location__icon">
-              <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
-            </span>
-            <div>
-              <strong>Email</strong>
-              <p><a href="mailto:hello@ironforgegym.com">hello@ironforgegym.com</a></p>
-            </div>
-          </li>
-        </ul>
-
-        <div class="location__cta">
-          <a href="https://maps.app.goo.gl/SDMSimyBpvaQiEZD7" target="_blank" rel="noopener" class="btn btn--primary">
-            Get Directions
-            <svg viewBox="0 0 24 24"><path d="M21.71 11.29 12.71 2.29a1 1 0 0 0-1.42 0l-9 9a1 1 0 0 0 0 1.42l9 9a1 1 0 0 0 1.42 0l9-9a1 1 0 0 0 0-1.42zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5z"/></svg>
-          </a>
-          <a href="tel:+919000000000" class="btn btn--ghost">
-            Call Us
-          </a>
-        </div>
-      </div>
-
-      <div class="location__map reveal">
-        <iframe
-          src="https://maps.google.com/maps?q=gym&t=&z=14&ie=UTF8&iwloc=&output=embed"
-          loading="lazy"
-          allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Iron Forge Gym location on Google Maps"></iframe>
-        <a href="https://maps.app.goo.gl/SDMSimyBpvaQiEZD7" target="_blank" rel="noopener" class="location__map-cta">
-          <svg viewBox="0 0 24 24"><path d="M14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3z"/></svg>
-          Open in Google Maps
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ JOIN / SIGNUP ============ -->
-  <section class="join" id="join">
-    <div class="join__bg" aria-hidden="true">
-      <div class="join__blob join__blob--1"></div>
-      <div class="join__blob join__blob--2"></div>
-    </div>
-
-    <div class="join__inner">
-      <div class="join__copy">
-        <p class="kicker kicker--light reveal">// Start Today</p>
-        <h2 class="reveal stagger">Your free trial is <span class="grad-light">one form away.</span></h2>
-        <p class="reveal stagger">Drop your details — our team will call you within an hour during gym hours to schedule your free 7-day trial. No card. No commitment. Just show up.</p>
-
-        <ul class="join__perks">
-          <li class="reveal stagger">7-day full-access trial</li>
-          <li class="reveal stagger">Free fitness assessment</li>
-          <li class="reveal stagger">Personalised plan recommendation</li>
-          <li class="reveal stagger">No card. No commitment.</li>
-        </ul>
-      </div>
-
-      <form class="join__form reveal" id="joinForm" novalidate>
-        <div class="join__form-head">
-          <h3>Claim Free Trial</h3>
-          <p>We'll call you to confirm. Takes &lt; 30 seconds.</p>
-        </div>
-
-        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
-
-        <div class="field">
-          <label for="j-name">Full Name</label>
-          <input id="j-name" name="name" type="text" placeholder="e.g. Rahul Singh" required minlength="2" autocomplete="name" />
-        </div>
-
-        <div class="field">
-          <label for="j-phone">Phone Number</label>
-          <input id="j-phone" name="phone" type="tel" placeholder="+91 90XXX XXXXX" required pattern="^[+0-9 ()-]{8,}$" autocomplete="tel" inputmode="tel" />
-        </div>
-
-        <div class="field">
-          <label for="j-email">Email <span>(optional)</span></label>
-          <input id="j-email" name="email" type="email" placeholder="you@email.com" autocomplete="email" />
-        </div>
-
-        <div class="field">
-          <label for="j-plan">Interested Plan</label>
-          <select id="j-plan" name="plan">
-            <option value="Free Trial">Just the free trial first</option>
-            <option value="Starter">Starter</option>
-            <option value="Pro">Pro</option>
-            <option value="Elite">Elite</option>
-            <option value="Personal Training">Personal Training</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="j-goal">Your goal <span>(optional)</span></label>
-          <textarea id="j-goal" name="goal" rows="2" placeholder="Lose weight, build strength, train for a sport..."></textarea>
-        </div>
-
-        <button type="submit" class="btn btn--primary btn--block btn--glow">
-          <span class="btn__label">Claim My Free Trial</span>
-          <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-        </button>
-
-        <p class="join__success" id="joinSuccess" hidden>
-          <svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-          You're in! We'll call you within an hour to confirm your free trial.
-        </p>
-      </form>
-    </div>
-  </section>
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <div class="footer__brand">
-        <a href="#top" class="nav__brand">
-          <span class="nav__brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64"><path d="M42 14h4v36h-4zm-24 0h4v36h-4zM10 22h4v20h-4zm40 0h4v20h-4zM22 28h20v8H22z"/></svg>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal" data-reveal="up">
+          <span class="eyebrow">
+            <span class="dot"></span> Premium Maths Coaching · Sangrur, Punjab
           </span>
-          <span class="nav__brand-text">
-            <strong>Iron<span>Forge</span></strong>
-            <em>Strength · Endurance · Community</em>
-          </span>
-        </a>
-        <p>Your transformation starts here. Train hard, live strong, and never settle for less than your best self.</p>
-        <div class="footer__social">
-          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.7 0 3 0 4.1.1 1 0 1.7.2 2.4.5.6.2 1.2.6 1.7 1.1s.9 1.1 1.1 1.7c.3.6.4 1.4.5 2.4.1 1 .1 1.4.1 4.1s0 3-.1 4.1c0 1-.2 1.7-.5 2.4-.2.6-.6 1.2-1.1 1.7s-1.1.9-1.7 1.1c-.6.3-1.4.4-2.4.5-1 .1-1.4.1-4.1.1s-3 0-4.1-.1c-1 0-1.7-.2-2.4-.5-.6-.2-1.2-.6-1.7-1.1S3 18 2.7 17.4c-.3-.6-.4-1.4-.5-2.4-.1-1-.1-1.4-.1-4.1s0-3 .1-4.1c0-1 .2-1.7.5-2.4.2-.6.6-1.2 1.1-1.7s1.1-.9 1.7-1.1c.6-.3 1.4-.4 2.4-.5C9 2 9.3 2 12 2zm0 5.4a4.6 4.6 0 1 0 4.6 4.6A4.6 4.6 0 0 0 12 7.4zm0 7.6a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm5.8-7.8a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1z"/></svg></a>
-          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9V14.9H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9a15 15 0 0 1 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg></a>
-          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6z"/></svg></a>
-          <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.7 11.7 0 0 0 12 0 11.8 11.8 0 0 0 1.7 17.6L0 24l6.6-1.7A11.8 11.8 0 0 0 24 12a11.7 11.7 0 0 0-3.5-8.5z"/></svg></a>
+          <h1 class="hero-title">
+            Master <span class="text-gradient">Mathematics</span><br />
+            with <span class="text-gold">Confidence</span>.
+          </h1>
+          <p class="hero-sub">
+            Helping students achieve top scores and build unshakeable concepts through structured learning, daily practice, and personal mentorship by <strong>Sahil Verma</strong> at SG Coaching Centre.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#courses" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Join Now</a>
+            <a href="#demo" class="btn btn-gold"><i class="fa-solid fa-chalkboard-user"></i> Book Free Demo</a>
+            <a href="#contact" class="btn btn-ghost"><i class="fa-solid fa-phone"></i> Contact Us</a>
+          </div>
+
+          <div class="hero-trust">
+            <div class="avatars">
+              <span style="background:linear-gradient(135deg,#1e6cf5,#0a2540)">A</span>
+              <span style="background:linear-gradient(135deg,#f5c518,#d4a017)">R</span>
+              <span style="background:linear-gradient(135deg,#0a2540,#1e6cf5)">S</span>
+              <span style="background:linear-gradient(135deg,#d4a017,#f5c518)">M</span>
+              <span class="more">+1k</span>
+            </div>
+            <div>
+              <div class="stars" aria-label="4.9 rating">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+              <small>Trusted by <strong>1000+ students &amp; parents</strong></small>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" data-reveal="right">
+          <div class="hero-card glass">
+            <div class="hero-card-head">
+              <span class="live-dot"></span> Live Classroom · Concept Class
+            </div>
+            <div class="hero-card-img">
+              <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80" alt="Students learning mathematics" />
+              <div class="play-btn" aria-hidden="true"><i class="fa-solid fa-play"></i></div>
+            </div>
+            <div class="hero-card-body">
+              <div class="formula-chip">f(x) = ax&sup2; + bx + c</div>
+              <div class="formula-chip">&int; x dx = x&sup2;/2 + C</div>
+              <div class="formula-chip">sin&sup2;&theta; + cos&sup2;&theta; = 1</div>
+            </div>
+          </div>
+
+          <div class="float-badge glass" style="top:-18px; left:-18px;">
+            <i class="fa-solid fa-trophy text-gold"></i>
+            <div>
+              <strong>Top Scorers</strong>
+              <small>95%+ in Boards</small>
+            </div>
+          </div>
+
+          <div class="float-badge glass" style="bottom:-18px; right:-18px;">
+            <i class="fa-solid fa-user-graduate text-blue"></i>
+            <div>
+              <strong>Personal Mentorship</strong>
+              <small>Small Batch Focus</small>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="footer__col">
-        <h5>Quick Links</h5>
-        <a href="#about">About</a>
-        <a href="#amenities">Amenities</a>
-        <a href="#membership">Membership</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#trainers">Trainers</a>
+      <!-- Counters -->
+      <div class="container">
+        <div class="counters glass reveal" data-reveal="up">
+          <div class="counter">
+            <i class="fa-solid fa-users"></i>
+            <h3><span class="count" data-target="1200">0</span>+</h3>
+            <p>Students Taught</p>
+          </div>
+          <div class="counter">
+            <i class="fa-solid fa-chart-line"></i>
+            <h3><span class="count" data-target="98">0</span>%</h3>
+            <p>Success Rate</p>
+          </div>
+          <div class="counter">
+            <i class="fa-solid fa-medal"></i>
+            <h3><span class="count" data-target="10">0</span>+</h3>
+            <p>Years of Experience</p>
+          </div>
+          <div class="counter">
+            <i class="fa-solid fa-trophy"></i>
+            <h3><span class="count" data-target="350">0</span>+</h3>
+            <p>Top Results</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="footer__col">
-        <h5>Visit</h5>
-        <a href="https://maps.app.goo.gl/SDMSimyBpvaQiEZD7" target="_blank" rel="noopener">Get Directions</a>
-        <a href="tel:+919000000000">+91 90000 00000</a>
-        <a href="mailto:hello@ironforgegym.com">hello@ironforgegym.com</a>
-        <p class="footer__hours">Mon–Sat: 5 AM – 11 PM<br/>Sun: 6 AM – 2 PM</p>
+    <!-- ===== About ===== -->
+    <section class="section about" id="about">
+      <div class="container about-grid">
+        <div class="about-copy reveal" data-reveal="up">
+          <span class="section-eyebrow">About the Mentor</span>
+          <h2 class="section-title">Built on <span class="text-gradient">Trust</span>, Driven by <span class="text-gold">Results</span>.</h2>
+          <p class="lead">
+            <strong>Sahil Verma</strong> is the founder &amp; lead mentor at <strong>SG Coaching Centre</strong>, Sangrur — a premium learning space where every student is treated like a topper in the making. With a decade of teaching experience, his classes are built on conceptual clarity, disciplined practice, and personal attention.
+          </p>
+
+          <ul class="about-points">
+            <li><i class="fa-solid fa-circle-check"></i> Concept-based, first-principles teaching style</li>
+            <li><i class="fa-solid fa-circle-check"></i> Personal attention to every single student</li>
+            <li><i class="fa-solid fa-circle-check"></i> Small batch size for maximum interaction</li>
+            <li><i class="fa-solid fa-circle-check"></i> Structured doubt-solving system &amp; mentorship</li>
+            <li><i class="fa-solid fa-circle-check"></i> Modern teaching techniques &amp; smart classrooms</li>
+            <li><i class="fa-solid fa-circle-check"></i> Daily practice + weekly testing methodology</li>
+          </ul>
+
+          <div class="about-actions">
+            <a href="#demo" class="btn btn-primary"><i class="fa-solid fa-chalkboard-user"></i> Book Free Demo</a>
+            <a href="#courses" class="btn btn-outline">Explore Courses <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="profile-card glass reveal" data-reveal="left">
+          <div class="profile-banner"></div>
+          <div class="profile-photo">
+            <div class="profile-photo-inner">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <span class="verified" title="Verified Mentor"><i class="fa-solid fa-check"></i></span>
+          </div>
+          <div class="profile-body">
+            <h3>Sahil Verma</h3>
+            <p class="profile-role">Founder &amp; Senior Mathematics Mentor</p>
+            <div class="profile-meta">
+              <span><i class="fa-solid fa-graduation-cap"></i> M.Sc. Mathematics, B.Ed.</span>
+              <span><i class="fa-solid fa-briefcase"></i> 10+ Years Teaching</span>
+            </div>
+
+            <div class="profile-stats">
+              <div><strong>9–12</strong><small>Classes</small></div>
+              <div><strong>1200+</strong><small>Students</small></div>
+              <div><strong>4.9&#9733;</strong><small>Rating</small></div>
+            </div>
+
+            <div class="profile-tags">
+              <span>CBSE</span>
+              <span>Punjab Board</span>
+              <span>JEE Foundation</span>
+              <span>NTSE</span>
+              <span>Olympiad</span>
+            </div>
+
+            <div class="profile-achievement">
+              <i class="fa-solid fa-award text-gold"></i>
+              <p>Mentored <strong>350+ top scorers</strong> with 95%+ marks in board exams.</p>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="footer__col">
-        <h5>Newsletter</h5>
-        <p>Workout tips, member stories & event invites — once a month, no spam.</p>
-        <form class="footer__newsletter" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='✓ Subscribed';">
-          <input type="email" placeholder="you@email.com" required aria-label="Email"/>
-          <button type="submit">Join</button>
+    <!-- ===== Courses ===== -->
+    <section class="section courses" id="courses">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Our Courses</span>
+          <h2 class="section-title">Programs Designed to <span class="text-gradient">Make You a Topper</span></h2>
+          <p class="section-sub">Structured curriculum, expert mentorship, and a result-oriented strategy for every class and board.</p>
+        </div>
+
+        <div class="course-grid">
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-badge">Most Popular</div>
+            <div class="course-icon"><i class="fa-solid fa-9"></i></div>
+            <h3>Class 9 Mathematics</h3>
+            <p>Foundation building with crystal-clear basics for a strong start to high school maths.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 10 months</li>
+              <li><i class="fa-solid fa-list-check"></i> Weekly tests + daily DPP</li>
+              <li><i class="fa-regular fa-calendar"></i> 4:00 PM &amp; 6:00 PM batches</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-badge gold">Hot</div>
+            <div class="course-icon"><i class="fa-solid fa-1"></i><i class="fa-solid fa-0"></i></div>
+            <h3>Class 10 Mathematics</h3>
+            <p>Board-focused mastery with chapter-wise tests, PYQs and topper-level revision.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 10 months</li>
+              <li><i class="fa-solid fa-list-check"></i> Mock board exams</li>
+              <li><i class="fa-regular fa-calendar"></i> 5:00 PM &amp; 7:00 PM batches</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-icon"><i class="fa-solid fa-1"></i><i class="fa-solid fa-1"></i></div>
+            <h3>Class 11 Mathematics</h3>
+            <p>NCERT mastery + advanced concepts to build a strong base for boards &amp; competitives.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 11 months</li>
+              <li><i class="fa-solid fa-list-check"></i> JEE-style problems</li>
+              <li><i class="fa-regular fa-calendar"></i> Morning &amp; evening batches</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-badge">Premium</div>
+            <div class="course-icon"><i class="fa-solid fa-1"></i><i class="fa-solid fa-2"></i></div>
+            <h3>Class 12 Mathematics</h3>
+            <p>Complete board preparation with calculus, vectors &amp; 3D mastery + revision sprints.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 11 months</li>
+              <li><i class="fa-solid fa-list-check"></i> Board + JEE foundation</li>
+              <li><i class="fa-regular fa-calendar"></i> Morning &amp; evening batches</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-icon"><i class="fa-solid fa-book"></i></div>
+            <h3>CBSE Preparation</h3>
+            <p>NCERT-aligned, exam-pattern based teaching with regular MCQ &amp; case-study practice.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> Year-long</li>
+              <li><i class="fa-solid fa-list-check"></i> Sample paper sessions</li>
+              <li><i class="fa-regular fa-calendar"></i> Flexible batches</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-icon"><i class="fa-solid fa-bookmark"></i></div>
+            <h3>Punjab Board Preparation</h3>
+            <p>PSEB syllabus expertise with last-10-year question pattern &amp; bilingual support.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> Year-long</li>
+              <li><i class="fa-solid fa-list-check"></i> PSEB topper strategy</li>
+              <li><i class="fa-regular fa-calendar"></i> After-school batches</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-badge">New</div>
+            <div class="course-icon"><i class="fa-solid fa-microscope"></i></div>
+            <h3>Competitive Exam Foundation</h3>
+            <p>JEE / NTSE / Olympiad foundation for Class 9–12 with advanced problem-solving drills.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 12 months</li>
+              <li><i class="fa-solid fa-list-check"></i> Olympiad-style tests</li>
+              <li><i class="fa-regular fa-calendar"></i> Weekend intensive</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-badge gold">Fast Track</div>
+            <div class="course-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3>Crash Courses</h3>
+            <p>High-impact 60-day capsule covering full syllabus + intensive revision &amp; mock tests.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 60 days</li>
+              <li><i class="fa-solid fa-list-check"></i> Daily mocks</li>
+              <li><i class="fa-regular fa-calendar"></i> Pre-board sprint</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+
+          <article class="course-card glass reveal" data-reveal="up">
+            <div class="course-icon"><i class="fa-solid fa-trophy"></i></div>
+            <h3>Board Exam Preparation</h3>
+            <p>Topper-style strategy: blueprint analysis, answer-writing drills, full-length mocks.</p>
+            <ul class="course-meta">
+              <li><i class="fa-regular fa-clock"></i> 4 months</li>
+              <li><i class="fa-solid fa-list-check"></i> Weekly grand tests</li>
+              <li><i class="fa-regular fa-calendar"></i> Dec–Mar intensive</li>
+            </ul>
+            <div class="course-actions">
+              <a href="#contact" class="btn btn-outline btn-sm">View Fees</a>
+              <a href="#demo" class="btn btn-primary btn-sm">Enroll <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Why Choose Us ===== -->
+    <section class="section why" id="why">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Why Choose Us</span>
+          <h2 class="section-title">A <span class="text-gradient">Complete System</span> Built for Your Success</h2>
+          <p class="section-sub">Every feature is designed to boost concept clarity, build confidence and deliver real, measurable results.</p>
+        </div>
+
+        <div class="why-grid">
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+            <h4>Daily Practice Sheets</h4>
+            <p>Custom DPPs for every chapter to lock concepts into long-term memory.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-file-pen"></i></div>
+            <h4>Weekly Tests</h4>
+            <p>Real exam simulation every week with detailed performance reports.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-comments"></i></div>
+            <h4>Doubt Sessions</h4>
+            <p>Dedicated 1-on-1 doubt-clearing slots — no question is too small.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-user-check"></i></div>
+            <h4>Personal Mentorship</h4>
+            <p>Each student gets focused guidance &amp; a personalised study plan.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-chalkboard"></i></div>
+            <h4>Smart Classrooms</h4>
+            <p>Modern classrooms with visual teaching aids &amp; digital boards.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <h4>Result-Oriented Strategy</h4>
+            <p>Proven 4-step framework: Learn &rarr; Practice &rarr; Test &rarr; Master.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-users-line"></i></div>
+            <h4>Small Batch Size</h4>
+            <p>Limited seats per batch ensure attention &amp; interaction for everyone.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-chart-simple"></i></div>
+            <h4>Progress Tracking</h4>
+            <p>Detailed reports of test scores, weak areas &amp; improvement curve.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-bell"></i></div>
+            <h4>Parent Updates</h4>
+            <p>Regular performance &amp; attendance updates directly to parents.</p>
+          </div>
+          <div class="why-card glass reveal" data-reveal="up">
+            <div class="why-icon"><i class="fa-solid fa-trophy"></i></div>
+            <h4>Exam Preparation System</h4>
+            <p>Blueprint-based revision, PYQs &amp; full-length mocks before boards.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Results ===== -->
+    <section class="section results" id="results">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Our Results</span>
+          <h2 class="section-title">Where <span class="text-gold">Hard Work</span> Meets <span class="text-gradient">Top Ranks</span></h2>
+          <p class="section-sub">Real students. Real marks. Real success stories from SG Coaching Centre.</p>
+        </div>
+
+        <div class="results-stats reveal" data-reveal="up">
+          <div class="stat glass">
+            <strong>98%</strong>
+            <small>Students scored 85%+</small>
+          </div>
+          <div class="stat glass">
+            <strong>40+</strong>
+            <small>Scored above 95% in 2025</small>
+          </div>
+          <div class="stat glass">
+            <strong>+32%</strong>
+            <small>Avg. score improvement</small>
+          </div>
+          <div class="stat glass">
+            <strong>15+</strong>
+            <small>District &amp; School toppers</small>
+          </div>
+        </div>
+
+        <div class="topper-grid">
+          <article class="topper-card glass reveal" data-reveal="up">
+            <div class="topper-photo" style="background:linear-gradient(135deg,#1e6cf5,#0a2540)">A</div>
+            <div class="topper-rank gold">98 / 100</div>
+            <h4>Aarav Singh</h4>
+            <p>Class 10 · CBSE</p>
+            <span class="topper-tag"><i class="fa-solid fa-school"></i> School Topper</span>
+          </article>
+
+          <article class="topper-card glass reveal" data-reveal="up">
+            <div class="topper-photo" style="background:linear-gradient(135deg,#f5c518,#d4a017)">R</div>
+            <div class="topper-rank gold">97 / 100</div>
+            <h4>Riya Sharma</h4>
+            <p>Class 12 · CBSE</p>
+            <span class="topper-tag"><i class="fa-solid fa-medal"></i> District Rank</span>
+          </article>
+
+          <article class="topper-card glass reveal" data-reveal="up">
+            <div class="topper-photo" style="background:linear-gradient(135deg,#0a2540,#1e6cf5)">M</div>
+            <div class="topper-rank gold">96 / 100</div>
+            <h4>Manpreet Kaur</h4>
+            <p>Class 10 · PSEB</p>
+            <span class="topper-tag"><i class="fa-solid fa-star"></i> PSEB Topper</span>
+          </article>
+
+          <article class="topper-card glass reveal" data-reveal="up">
+            <div class="topper-photo" style="background:linear-gradient(135deg,#d4a017,#1e6cf5)">H</div>
+            <div class="topper-rank gold">95 / 100</div>
+            <h4>Harshit Goyal</h4>
+            <p>Class 12 · PSEB</p>
+            <span class="topper-tag"><i class="fa-solid fa-award"></i> Maths Topper</span>
+          </article>
+
+          <article class="topper-card glass reveal" data-reveal="up">
+            <div class="topper-photo" style="background:linear-gradient(135deg,#1e6cf5,#f5c518)">I</div>
+            <div class="topper-rank gold">95 / 100</div>
+            <h4>Ishaan Mehta</h4>
+            <p>Class 11 · JEE Foundation</p>
+            <span class="topper-tag"><i class="fa-solid fa-rocket"></i> Olympiad Qualifier</span>
+          </article>
+
+          <article class="topper-card glass reveal" data-reveal="up">
+            <div class="topper-photo" style="background:linear-gradient(135deg,#0a2540,#d4a017)">S</div>
+            <div class="topper-rank gold">94 / 100</div>
+            <h4>Simran Bansal</h4>
+            <p>Class 10 · CBSE</p>
+            <span class="topper-tag"><i class="fa-solid fa-bolt"></i> +38% Improvement</span>
+          </article>
+        </div>
+
+        <div class="improvement glass reveal" data-reveal="up">
+          <div class="imp-block">
+            <span class="imp-label">Before Joining</span>
+            <strong>62%</strong>
+            <small>Average score in Maths</small>
+          </div>
+          <div class="imp-arrow">
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span>4 months later</span>
+          </div>
+          <div class="imp-block highlight">
+            <span class="imp-label">After SG Coaching</span>
+            <strong>94%</strong>
+            <small>Average score in Maths</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Testimonials ===== -->
+    <section class="section testimonials" id="testimonials">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Testimonials</span>
+          <h2 class="section-title">Loved by <span class="text-gradient">Students</span> &amp; <span class="text-gold">Parents</span></h2>
+          <p class="section-sub">Real stories from those who walked the journey with us.</p>
+        </div>
+
+        <div class="testi-slider reveal" data-reveal="up">
+          <div class="testi-track" id="testiTrack">
+            <article class="testi-card glass">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p>"Sahil sir explains every concept like a story. I used to struggle with Maths, now it's my favourite subject. Scored 96 in Class 10 boards!"</p>
+              <div class="testi-user">
+                <span class="avatar" style="background:linear-gradient(135deg,#1e6cf5,#0a2540)">A</span>
+                <div><strong>Aarav Singh</strong><small>Class 10 Student · CBSE</small></div>
+              </div>
+            </article>
+
+            <article class="testi-card glass">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p>"As a parent, the regular updates and personal attention my daughter gets here is unmatched. SG Coaching feels like family."</p>
+              <div class="testi-user">
+                <span class="avatar" style="background:linear-gradient(135deg,#f5c518,#d4a017)">P</span>
+                <div><strong>Mrs. Pooja Sharma</strong><small>Parent · Sangrur</small></div>
+              </div>
+            </article>
+
+            <article class="testi-card glass">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p>"From 58% to 94% in just 5 months. The DPPs and weekly tests changed everything. Best decision of my school life."</p>
+              <div class="testi-user">
+                <span class="avatar" style="background:linear-gradient(135deg,#0a2540,#1e6cf5)">S</span>
+                <div><strong>Simran Bansal</strong><small>Class 10 Student · CBSE</small></div>
+              </div>
+            </article>
+
+            <article class="testi-card glass">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p>"Calculus felt impossible before. Sir's first-principles approach made it click. Got 95 in Class 12 boards."</p>
+              <div class="testi-user">
+                <span class="avatar" style="background:linear-gradient(135deg,#d4a017,#1e6cf5)">H</span>
+                <div><strong>Harshit Goyal</strong><small>Class 12 Student · PSEB</small></div>
+              </div>
+            </article>
+
+            <article class="testi-card glass">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p>"The discipline, the test culture, the doubt sessions — it's a complete ecosystem. My son not only improved marks, his confidence grew."</p>
+              <div class="testi-user">
+                <span class="avatar" style="background:linear-gradient(135deg,#1e6cf5,#f5c518)">R</span>
+                <div><strong>Mr. Rajinder Singh</strong><small>Parent · Sangrur</small></div>
+              </div>
+            </article>
+
+            <article class="testi-card glass">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p>"Cleared NTSE Stage 1 thanks to the foundation built here. Sir pushes you to think, not just memorise."</p>
+              <div class="testi-user">
+                <span class="avatar" style="background:linear-gradient(135deg,#0a2540,#d4a017)">I</span>
+                <div><strong>Ishaan Mehta</strong><small>Class 11 Student</small></div>
+              </div>
+            </article>
+          </div>
+
+          <div class="testi-controls">
+            <button class="testi-btn" id="testiPrev" aria-label="Previous"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="testi-dots" id="testiDots"></div>
+            <button class="testi-btn" id="testiNext" aria-label="Next"><i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Free Demo CTA + Form ===== -->
+    <section class="section demo" id="demo">
+      <div class="container demo-grid">
+        <div class="demo-copy reveal" data-reveal="up">
+          <span class="section-eyebrow light">Free Demo Class</span>
+          <h2 class="section-title light">
+            Experience the <span class="text-gold">SG Difference</span> &mdash; <br />
+            Book a <span class="text-white-underline">100% Free</span> Demo Class.
+          </h2>
+          <p class="lead light">
+            Sit through a live concept class, meet Sahil sir personally, and see how we make Maths simple, structured and exciting. No commitment required.
+          </p>
+          <ul class="demo-points">
+            <li><i class="fa-solid fa-circle-check"></i> Free 60-minute live concept class</li>
+            <li><i class="fa-solid fa-circle-check"></i> Personalised study plan after demo</li>
+            <li><i class="fa-solid fa-circle-check"></i> Free study material on the day</li>
+            <li><i class="fa-solid fa-circle-check"></i> No fees, no obligations</li>
+          </ul>
+          <p class="demo-note">
+            <i class="fa-brands fa-whatsapp"></i>
+            Submitting the form sends your details directly to us on WhatsApp &mdash; we&rsquo;ll respond within minutes.
+          </p>
+        </div>
+
+        <form class="demo-form glass reveal" data-reveal="left" id="demoForm" novalidate>
+          <h3>Book Your Free Demo</h3>
+          <p class="form-sub">Fill the form &mdash; we&rsquo;ll receive it instantly on WhatsApp.</p>
+
+          <div class="form-row">
+            <label>
+              <span>Student Name</span>
+              <input type="text" name="name" placeholder="e.g. Aarav Singh" required />
+            </label>
+          </div>
+          <div class="form-row two">
+            <label>
+              <span>Class</span>
+              <select name="class" required>
+                <option value="">Select Class</option>
+                <option>Class 9</option>
+                <option>Class 10</option>
+                <option>Class 11</option>
+                <option>Class 12</option>
+                <option>Crash Course</option>
+                <option>Foundation</option>
+              </select>
+            </label>
+            <label>
+              <span>Phone Number</span>
+              <input type="tel" name="phone" pattern="[0-9+ ]{10,15}" placeholder="+91 9XXXXXXXXX" required />
+            </label>
+          </div>
+          <div class="form-row two">
+            <label>
+              <span>Subject / Stream</span>
+              <select name="subject" required>
+                <option value="">Select Subject</option>
+                <option>Mathematics</option>
+                <option>Maths + Foundation</option>
+                <option>Olympiad / NTSE</option>
+                <option>Board Crash Course</option>
+              </select>
+            </label>
+            <label>
+              <span>Preferred Timing</span>
+              <select name="timing" required>
+                <option value="">Select Timing</option>
+                <option>Morning (8:00 AM)</option>
+                <option>Afternoon (2:00 PM)</option>
+                <option>Evening (5:00 PM)</option>
+                <option>Evening (7:00 PM)</option>
+              </select>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-block">
+            <i class="fa-brands fa-whatsapp"></i> Send My Details on WhatsApp
+          </button>
+
+          <p class="form-success" id="demoSuccess" hidden>
+            <i class="fa-solid fa-circle-check"></i> Opening WhatsApp&hellip; if it didn&rsquo;t open, <a href="#" id="demoFallback">tap here</a>.
+          </p>
         </form>
       </div>
+    </section>
+
+    <!-- ===== Gallery ===== -->
+    <section class="section gallery" id="gallery">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Gallery</span>
+          <h2 class="section-title">Inside Our <span class="text-gradient">Learning Space</span></h2>
+          <p class="section-sub">A peek into the classrooms, sessions and celebrations at SG Coaching Centre.</p>
+        </div>
+
+        <div class="gallery-grid reveal" data-reveal="up">
+          <figure class="g-item tall">
+            <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=900&q=80" alt="Classroom session" />
+            <figcaption>Classroom Sessions</figcaption>
+          </figure>
+          <figure class="g-item">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80" alt="Whiteboard teaching" />
+            <figcaption>Whiteboard Teaching</figcaption>
+          </figure>
+          <figure class="g-item">
+            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=900&q=80" alt="Students studying" />
+            <figcaption>Students Studying</figcaption>
+          </figure>
+          <figure class="g-item wide">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80" alt="Teaching environment" />
+            <figcaption>Modern Teaching Environment</figcaption>
+          </figure>
+          <figure class="g-item">
+            <img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=900&q=80" alt="Group study" />
+            <figcaption>Group Discussions</figcaption>
+          </figure>
+          <figure class="g-item">
+            <img src="https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?auto=format&fit=crop&w=900&q=80" alt="Result celebration" />
+            <figcaption>Result Celebrations</figcaption>
+          </figure>
+          <figure class="g-item tall">
+            <img src="https://images.unsplash.com/photo-1610484826917-0f101a7c1da4?auto=format&fit=crop&w=900&q=80" alt="Events and seminars" />
+            <figcaption>Events &amp; Seminars</figcaption>
+          </figure>
+          <figure class="g-item wide">
+            <img src="https://images.unsplash.com/photo-1488998427799-e3362cec87c3?auto=format&fit=crop&w=1200&q=80" alt="Smart classroom" />
+            <figcaption>Smart Classrooms</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Resources / Video / Notes ===== -->
+    <section class="section resources" id="resources">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Free Resources</span>
+          <h2 class="section-title">Lectures, <span class="text-gradient">Notes</span> &amp; <span class="text-gold">Practice Material</span></h2>
+          <p class="section-sub">Hand-picked free resources to help you revise, practice and master every concept.</p>
+        </div>
+
+        <div class="resource-grid">
+          <div class="video-card glass reveal" data-reveal="up">
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/WUvTyaaNkzM" title="Mathematics Concept Lecture" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope" allowfullscreen></iframe>
+            </div>
+            <div class="video-meta">
+              <h4>Trigonometry &mdash; One Shot Concept</h4>
+              <p><i class="fa-regular fa-clock"></i> 24 min · <i class="fa-solid fa-eye"></i> Free Lecture</p>
+            </div>
+          </div>
+
+          <div class="resource-list glass reveal" data-reveal="up">
+            <h4><i class="fa-solid fa-folder-open text-gold"></i> Study Material</h4>
+            <ul>
+              <li>
+                <i class="fa-regular fa-file-pdf"></i>
+                <div>
+                  <strong>Class 10 &mdash; Quadratic Equations Notes</strong>
+                  <small>PDF · 1.8 MB</small>
+                </div>
+                <a href="#demo" class="dl-btn"><i class="fa-solid fa-download"></i></a>
+              </li>
+              <li>
+                <i class="fa-regular fa-file-pdf"></i>
+                <div>
+                  <strong>Class 12 &mdash; Calculus Formula Sheet</strong>
+                  <small>PDF · 0.9 MB</small>
+                </div>
+                <a href="#demo" class="dl-btn"><i class="fa-solid fa-download"></i></a>
+              </li>
+              <li>
+                <i class="fa-regular fa-file-lines"></i>
+                <div>
+                  <strong>Class 9 &mdash; DPP Set 1 (Polynomials)</strong>
+                  <small>PDF · 1.2 MB</small>
+                </div>
+                <a href="#demo" class="dl-btn"><i class="fa-solid fa-download"></i></a>
+              </li>
+              <li>
+                <i class="fa-regular fa-file-lines"></i>
+                <div>
+                  <strong>Class 11 &mdash; Trigonometry Assignment</strong>
+                  <small>PDF · 1.5 MB</small>
+                </div>
+                <a href="#demo" class="dl-btn"><i class="fa-solid fa-download"></i></a>
+              </li>
+              <li>
+                <i class="fa-regular fa-file-pdf"></i>
+                <div>
+                  <strong>Class 10 &mdash; PYQ Pack (5 Years)</strong>
+                  <small>PDF · 4.2 MB</small>
+                </div>
+                <a href="#demo" class="dl-btn"><i class="fa-solid fa-download"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section faq" id="faq">
+      <div class="container faq-grid">
+        <div class="reveal" data-reveal="up">
+          <span class="section-eyebrow">FAQs</span>
+          <h2 class="section-title">Got <span class="text-gradient">Questions?</span><br />We&rsquo;ve Got <span class="text-gold">Answers</span>.</h2>
+          <p class="section-sub">Everything you need to know before joining SG Coaching Centre.</p>
+          <div class="faq-help glass">
+            <i class="fa-solid fa-headset text-gold"></i>
+            <div>
+              <strong>Still have questions?</strong>
+              <p>Talk to our team directly.</p>
+              <a href="tel:+917986422304" class="btn btn-primary btn-sm"><i class="fa-solid fa-phone"></i> +91 79864 22304</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-list reveal" data-reveal="up">
+          <details class="faq-item glass" open>
+            <summary>Which classes are taught at SG Coaching Centre?</summary>
+            <p>We offer Mathematics coaching for <strong>Class 9, 10, 11 and 12</strong> students from CBSE &amp; Punjab Board, along with crash courses, board exam preparation, and a competitive exam foundation program (JEE/NTSE/Olympiad).</p>
+          </details>
+          <details class="faq-item glass">
+            <summary>Is there a demo class available?</summary>
+            <p>Yes! We offer a <strong>100% free demo class</strong> for every new student. You can book it directly from this website by filling the form in the &ldquo;Free Demo&rdquo; section &mdash; your details are sent to us instantly on WhatsApp.</p>
+          </details>
+          <details class="faq-item glass">
+            <summary>Are online classes available?</summary>
+            <p>Our flagship offering is offline classroom coaching at our Sangrur centre, but we provide <strong>online doubt sessions, recorded revisions and digital DPPs</strong> for all enrolled students.</p>
+          </details>
+          <details class="faq-item glass">
+            <summary>What are the batch timings?</summary>
+            <p>We run <strong>morning, afternoon and evening batches</strong> &mdash; typically 8:00 AM, 2:00 PM, 5:00 PM and 7:00 PM. Final timings are confirmed at admission based on your school schedule.</p>
+          </details>
+          <details class="faq-item glass">
+            <summary>How does the test system work?</summary>
+            <p>Students get <strong>daily practice sheets (DPPs), weekly chapter tests, monthly grand tests</strong> and <strong>full-length mocks</strong> before boards. Each test is reviewed in class with a performance report shared with parents.</p>
+          </details>
+          <details class="faq-item glass">
+            <summary>What is the fees structure?</summary>
+            <p>Fees vary by class, course duration and batch type. We keep our pricing transparent and student-friendly. Please <a href="#contact">contact us</a> or <a href="#demo">book a demo</a> for the latest fee details and seasonal offers.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="up">
+          <span class="section-eyebrow">Get in Touch</span>
+          <h2 class="section-title">Visit Us. Call Us. <span class="text-gradient">Join Us.</span></h2>
+          <p class="section-sub">We&rsquo;d love to meet you at the centre or talk to you over a quick call.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info reveal" data-reveal="up">
+            <div class="info-card glass">
+              <i class="fa-solid fa-location-dot text-gold"></i>
+              <div>
+                <strong>Address</strong>
+                <p>C-480, Street Number 1A, Guru Nanak Colony,<br />Mubarik Mehal Colony, Sangrur, Punjab</p>
+              </div>
+            </div>
+            <div class="info-card glass">
+              <i class="fa-solid fa-phone text-gold"></i>
+              <div>
+                <strong>Phone</strong>
+                <p><a href="tel:+917986422304">+91 79864 22304</a></p>
+              </div>
+            </div>
+            <div class="info-card glass">
+              <i class="fa-brands fa-whatsapp text-gold"></i>
+              <div>
+                <strong>WhatsApp</strong>
+                <p><a href="https://wa.me/917986422304" target="_blank" rel="noopener">Chat with us instantly</a></p>
+              </div>
+            </div>
+            <div class="info-card glass">
+              <i class="fa-regular fa-clock text-gold"></i>
+              <div>
+                <strong>Opening Hours</strong>
+                <p>Mon &ndash; Sat · 8:00 AM &ndash; 9:00 PM<br />Sun · Doubt sessions only</p>
+              </div>
+            </div>
+
+            <div class="contact-cta">
+              <a href="tel:+917986422304" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Call Now</a>
+              <a href="https://wa.me/917986422304" target="_blank" rel="noopener" class="btn btn-gold"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+            </div>
+          </div>
+
+          <div class="contact-map-wrap reveal" data-reveal="left">
+            <div class="contact-map glass">
+              <iframe
+                title="SG Coaching Centre on Google Maps"
+                src="https://www.google.com/maps?q=Guru+Nanak+Colony,+Sangrur,+Punjab&output=embed"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+
+            <form class="inquiry-form glass" id="inquiryForm" novalidate>
+              <h4>Send a Quick Inquiry</h4>
+              <div class="form-row two">
+                <label><span>Name</span><input type="text" name="name" required placeholder="Your name" /></label>
+                <label><span>Phone</span><input type="tel" name="phone" required placeholder="Phone number" /></label>
+              </div>
+              <label><span>Message</span><textarea name="message" rows="3" placeholder="How can we help you?"></textarea></label>
+              <button type="submit" class="btn btn-primary btn-block"><i class="fa-brands fa-whatsapp"></i> Send Inquiry on WhatsApp</button>
+              <p class="form-success" id="inquirySuccess" hidden><i class="fa-solid fa-circle-check"></i> Opening WhatsApp&hellip; if it didn&rsquo;t open, <a href="#" id="inquiryFallback">tap here</a>.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="#home" class="brand brand-light">
+          <span class="brand-logo">SV</span>
+          <span class="brand-text">
+            <strong>Maths with Sahil Verma</strong>
+            <small>SG Coaching Centre</small>
+          </span>
+        </a>
+        <p class="footer-about">
+          Premium concept-based Mathematics coaching in Sangrur, Punjab. Building toppers and confident learners since a decade.
+        </p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://wa.me/917986422304" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#why">Why Choose Us</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Courses</h5>
+        <ul>
+          <li><a href="#courses">Class 9 Maths</a></li>
+          <li><a href="#courses">Class 10 Maths</a></li>
+          <li><a href="#courses">Class 11 Maths</a></li>
+          <li><a href="#courses">Class 12 Maths</a></li>
+          <li><a href="#courses">Crash Course</a></li>
+          <li><a href="#courses">Foundation Program</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul class="footer-contact">
+          <li><i class="fa-solid fa-location-dot"></i> C-480, Street No. 1A, Guru Nanak Colony, Mubarik Mehal Colony, Sangrur, Punjab</li>
+          <li><i class="fa-solid fa-phone"></i> <a href="tel:+917986422304">+91 79864 22304</a></li>
+          <li><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/917986422304" target="_blank" rel="noopener">WhatsApp Chat</a></li>
+          <li><i class="fa-regular fa-clock"></i> Mon&ndash;Sat · 8:00 AM &ndash; 9:00 PM</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="footer__bottom">
-      <p>© <span id="year">2026</span> Iron Forge Gym. All rights reserved.</p>
-      <p>Built with sweat & code 💪</p>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>&copy; <span id="year"></span> SG Coaching Centre · Maths with Sahil Verma. All rights reserved.</p>
+        <p>Crafted with <i class="fa-solid fa-heart text-gold"></i> for ambitious students.</p>
+      </div>
     </div>
   </footer>
 
-  <!-- ============ FLOATING CTA ============ -->
-  <a href="https://wa.me/919000000000?text=Hi%20Iron%20Forge%2C%20I%27d%20like%20to%20know%20about%20membership." class="float-wa" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.7 11.7 0 0 0 12 0 11.8 11.8 0 0 0 1.7 17.6L0 24l6.6-1.7A11.8 11.8 0 0 0 24 12a11.7 11.7 0 0 0-3.5-8.5zM12 21.8a9.7 9.7 0 0 1-5-1.4l-.4-.2-3.9 1 1-3.8-.2-.4A9.8 9.8 0 1 1 21.8 12 9.8 9.8 0 0 1 12 21.8z"/></svg>
-  </a>
-
-  <button class="back-top" id="backTop" aria-label="Back to top">
-    <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
-  </button>
-
-  <!-- ============ LIGHTBOX ============ -->
-  <div class="lightbox" id="lightbox" hidden>
-    <button class="lightbox__close" aria-label="Close">×</button>
-    <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous">‹</button>
-    <button class="lightbox__nav lightbox__nav--next" aria-label="Next">›</button>
-    <img id="lightboxImg" src="" alt=""/>
+  <!-- ===== Floating Buttons ===== -->
+  <div class="floating">
+    <a href="https://wa.me/917986422304" target="_blank" rel="noopener" class="float-btn whatsapp" aria-label="WhatsApp us">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="tel:+917986422304" class="float-btn call" aria-label="Call us">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+    <button class="float-btn top" id="backToTop" aria-label="Back to top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
   </div>
 
-  <script src="script.js" defer></script>
+  <!-- Scripts -->
+  <script src="script.js"></script>
 </body>
 </html>
