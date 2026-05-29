@@ -1,5 +1,5 @@
-# Netlify configuration — Iron Forge Gym
-# Pure static site, no build step
+# Netlify configuration — Maths with Sahil Verma (SG Coaching Centre)
+# Pure static site, no build step.
 
 [build]
   publish = "."
@@ -13,7 +13,7 @@
     Referrer-Policy        = "strict-origin-when-cross-origin"
     Permissions-Policy     = "geolocation=(), microphone=(), camera=()"
 
-# No caching for HTML so updates roll out fast
+# No caching for HTML so content updates roll out immediately
 [[headers]]
   for = "/*.html"
   [headers.values]
