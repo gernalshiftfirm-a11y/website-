@@ -1,78 +1,89 @@
-# Maths with Sahil Verma — SG Coaching Centre
+# Spice Garden — Restaurant POS
 
-Premium concept-based Mathematics coaching website for **SG Coaching
-Centre, Sangrur**, run by **Sahil Verma**. Static HTML/CSS/JS — no build
-step.
+A clean, single-page **Point of Sale system for a restaurant**. Built with
+plain HTML / CSS / JavaScript — no build step, no backend. Data is
+persisted in the browser's `localStorage`.
 
-## Highlights
+Open `index.html` in any modern browser to start.
 
-- **Free Demo form → WhatsApp**: Submitting the demo form composes a
-  formatted WhatsApp message with all the student's details (name,
-  class, phone, subject, preferred timing, timestamp) and opens it in
-  WhatsApp directed at **+91 79864 22304**. No backend required.
-- **Quick Inquiry form → WhatsApp**: Same flow for the contact-section
-  inquiry form (name, phone, message).
-- Light & dark theme with persistent preference.
-- Sticky navbar, smooth-scroll, animated counters, reveal-on-scroll,
-  testimonials slider with autoplay, animated FAQ.
-- Floating WhatsApp + call buttons, back-to-top.
-- Fully responsive (mobile, tablet, desktop).
+## Features
+
+### Customer view
+- **Menu** of 24 dishes across 6 categories (Starters, Main Course,
+  Breads, Rice, Beverages, Desserts) with veg / non-veg indicators
+- Search bar and category filter chips
+- Click a dish to add it to the cart, with `+ / -` quantity controls
+- Live **subtotal, GST (5%) and grand total**
+- **Place Order** with a table number / customer name
+
+### Admin view
+- **Stat cards**: today's earnings, this week, total earnings, pending
+  orders
+- **Earnings bar chart** for the last 7 days (today highlighted)
+- **Live orders** grid with a status workflow:
+  `pending → preparing → ready → billed`
+- **One-click bill generation** that opens a printable bill modal
+  (CGST / SGST split, restaurant header, GSTIN, totals, footer)
+- Filter orders by **Active / Billed / All**
+- **Export sales** as JSON (one-click download)
+- **Reset all data** (with confirmation)
+
+### Other
+- Responsive (mobile / tablet / desktop)
+- Toast notifications for actions
+- Print-friendly bill (use browser **Print → Save as PDF**)
+- Live date/time clock in the top bar
 
 ## File structure
 
 ```
 website-/
-├── index.html     ← all sections / markup
-├── styles.css     ← navy + gold premium UI, light/dark themes
-├── script.js      ← interactions + WhatsApp form redirect
+├── index.html     ← single-page POS, customer + admin views
+├── styles.css     ← UI styles + print stylesheet for bills
+├── script.js      ← menu data, cart, orders, bills, earnings logic
 ├── netlify.toml   ← static-site config + cache headers
 ├── package.json
 └── README.md
 ```
 
-## How the WhatsApp redirect works
+## Customise
 
-When the user submits the **Free Demo** form (or the **Quick Inquiry**
-form), the JS:
-
-1. Validates the form with native HTML5 validation.
-2. Builds a formatted WhatsApp message, e.g.:
-
-   ```
-   *New Free Demo Class Request*
-   _via Maths with Sahil Verma website_
-
-   *Student Name:* Aarav Singh
-   *Class:* Class 10
-   *Phone:* +91 9XXXXXXXXX
-   *Subject / Stream:* Mathematics
-   *Preferred Timing:* Evening (5:00 PM)
-
-   Submitted: 29 May 2026, 04:30 pm
-   ```
-
-3. URL-encodes that message and opens
-   `https://wa.me/917986422304?text=<message>` in a new tab.
-4. On mobile this hands off to the WhatsApp app; on desktop it opens
-   `web.whatsapp.com`. If the popup is blocked, the page falls back to
-   a same-tab redirect.
-5. A small success message is shown with a manual fallback link in case
-   the redirect didn't fire.
-
-## Customise the WhatsApp number
-
-Open `script.js` and change the constant at the top:
+### Menu
+Edit the `MENU` array at the top of `script.js`. Each entry:
 
 ```js
-const WHATSAPP_NUMBER = '917986422304'; // country code + number, no '+', no spaces
+{ id: 's1', name: 'Paneer Tikka', category: 'Starters',
+  price: 220, veg: true, emoji: '🧀',
+  desc: 'Char-grilled cottage cheese cubes in tandoori spices.' }
 ```
 
-Also update the `tel:` and `wa.me/` links throughout `index.html` to
-match (search for `7986422304`).
+### Tax rate / restaurant info
+Also in `script.js`:
+
+```js
+const TAX_RATE = 0.05; // 5% GST (split as CGST 2.5% + SGST 2.5% on the bill)
+
+const RESTAURANT = {
+  name:    'Spice Garden',
+  address: '12 MG Road, Sangrur, Punjab',
+  phone:   '+91 98765 43210',
+  gstin:   '03ABCDE1234F1Z5',
+};
+```
+
+## Order workflow
+
+1. Customer adds items, enters table, clicks **Place Order** —
+   order saved with status `pending`.
+2. Admin clicks **Start Preparing** → status `preparing`.
+3. Admin clicks **Mark Ready** → status `ready`.
+4. Admin clicks **Generate Bill** — status becomes `billed`,
+   the printable bill opens, and the order's amount is added to today's
+   earnings and the 7-day chart.
 
 ## Run locally
 
-Just open `index.html` in any modern browser. No build step required.
+Just open `index.html` in any browser — no install required.
 
 For Netlify dev (optional):
 
@@ -80,3 +91,12 @@ For Netlify dev (optional):
 npm install
 npx netlify dev
 ```
+
+## Limitations
+
+- All data lives in the browser's `localStorage`. It is not synced
+  across devices or browsers. For multi-device use, swap the
+  `loadOrders` / `saveOrders` helpers in `script.js` for API calls to
+  your backend.
+- The Admin view has no authentication. To add a basic passcode, gate
+  the click on the *Admin* tab in `script.js`.
