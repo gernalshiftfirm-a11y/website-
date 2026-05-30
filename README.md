@@ -1,82 +1,134 @@
-# Maths with Sahil Verma — SG Coaching Centre
+# Satija's Bakers & Cafe — Premium Bakery Website
 
-Premium concept-based Mathematics coaching website for **SG Coaching
-Centre, Sangrur**, run by **Sahil Verma**. Static HTML/CSS/JS — no build
-step.
+A cinematic, modern website for **Satija's Bakers & Cafe**, a premium
+bakery and cafe in Sangrur, Punjab. Built with plain HTML / CSS / JS —
+no frameworks, no build step. Deployed via GitHub Pages.
+
+> Open `index.html` in any modern browser to preview.
+
+## Live business info baked in
+
+- **Name:** Satija's Bakers & Cafe
+- **Phone:** +91 99887 99191
+- **Address:** Sector-17, near Kidzee School, Guru Nanak Colony, Sangrur, Punjab 148001
+- **Hours:** Every day · 8:00 AM – 9:00 PM
+- **Instagram:** [@satija_bakers_and_cafe](https://www.instagram.com/satija_bakers_and_cafe)
+- **Rating:** 4.8 ★ (150+ reviews)
 
 ## Highlights
 
-- **Free Demo form → WhatsApp**: Submitting the demo form composes a
-  formatted WhatsApp message with all the student's details (name,
-  class, phone, subject, preferred timing, timestamp) and opens it in
-  WhatsApp directed at **+91 79864 22304**. No backend required.
-- **Quick Inquiry form → WhatsApp**: Same flow for the contact-section
-  inquiry form (name, phone, message).
-- Light & dark theme with persistent preference.
-- Sticky navbar, smooth-scroll, animated counters, reveal-on-scroll,
-  testimonials slider with autoplay, animated FAQ.
-- Floating WhatsApp + call buttons, back-to-top.
-- Fully responsive (mobile, tablet, desktop).
+- Cinematic loading screen
+- Glassmorphism navbar with dark / light mode toggle
+- **3D rotating cake** in the hero (pure CSS, with orbital floating items)
+- Live offers ticker
+- About section with floating cards
+- Signature Specials trio
+- **Full interactive menu** with category tabs, search, 3D-tilt hover,
+  and one-click add-to-cart
+- Cakes & Bento showcase
+- Combo deals dark cards
+- Reviews testimonial cards
+- Instagram-style gallery (8 tiles)
+- Embedded Google Maps location
+- Reservation form that sends to WhatsApp
+- Footer with social links
+- **Floating WhatsApp button** with pulse ring
+- **Floating cart** drawer — items persist in `localStorage`,
+  one-click "Order via WhatsApp" with full itemised message
+- **AI-style FAQ chatbot** widget (timings, address, recommendations…)
+- Scroll-triggered reveal animations
+- Fully responsive (mobile / tablet / desktop)
+- SEO meta tags + JSON-LD structured data
 
 ## File structure
 
 ```
 website-/
-├── index.html     ← all sections / markup
-├── styles.css     ← navy + gold premium UI, light/dark themes
-├── script.js      ← interactions + WhatsApp form redirect
-├── netlify.toml   ← static-site config + cache headers
+├── .github/workflows/pages.yml   ← auto-deploy to GitHub Pages
+├── index.html
+├── styles.css
+├── script.js                     ← menu data + all interactions
 ├── package.json
 └── README.md
 ```
 
-## How the WhatsApp redirect works
-
-When the user submits the **Free Demo** form (or the **Quick Inquiry**
-form), the JS:
-
-1. Validates the form with native HTML5 validation.
-2. Builds a formatted WhatsApp message, e.g.:
-
-   ```
-   *New Free Demo Class Request*
-   _via Maths with Sahil Verma website_
-
-   *Student Name:* Aarav Singh
-   *Class:* Class 10
-   *Phone:* +91 9XXXXXXXXX
-   *Subject / Stream:* Mathematics
-   *Preferred Timing:* Evening (5:00 PM)
-
-   Submitted: 29 May 2026, 04:30 pm
-   ```
-
-3. URL-encodes that message and opens
-   `https://wa.me/917986422304?text=<message>` in a new tab.
-4. On mobile this hands off to the WhatsApp app; on desktop it opens
-   `web.whatsapp.com`. If the popup is blocked, the page falls back to
-   a same-tab redirect.
-5. A small success message is shown with a manual fallback link in case
-   the redirect didn't fire.
-
-## Customise the WhatsApp number
-
-Open `script.js` and change the constant at the top:
-
-```js
-const WHATSAPP_NUMBER = '917986422304'; // country code + number, no '+', no spaces
-```
-
-Also update the `tel:` and `wa.me/` links throughout `index.html` to
-match (search for `7986422304`).
-
 ## Run locally
 
-Just open `index.html` in any modern browser. No build step required.
-
-For Netlify dev (optional):
-
 ```bash
-npm install
-npx netlify dev
+# Any static server works. Quickest:
+npx --yes http-server -p 8080 -c-1 .
 ```
+
+Then open http://localhost:8080.
+
+## Deployment — GitHub Pages
+
+A workflow at `.github/workflows/pages.yml` auto-deploys the default
+branch on every push.
+
+**One-time setup on GitHub:**
+
+1. Repo → **Settings** → **Pages**
+2. **Build and deployment → Source** → choose **GitHub Actions**
+3. (Optional) Add a custom domain on the same page
+
+After the next push to the default branch, the site goes live at:
+
+```
+https://gernalshiftfirm-a11y.github.io/website-/
+```
+
+## Customising
+
+### Edit the menu
+All menu data lives in `script.js` near the top in the `MENU` array.
+Each item:
+
+```js
+M('Truffle Pastry', 'Pastries', 65, '🍫', 'Premium dark truffle ganache pastry.')
+//  name              category    price emoji description
+```
+
+Adding, removing or re-pricing items just means editing this array —
+the rest of the site (tabs, search, cart, WhatsApp order message)
+updates automatically.
+
+### Change shop info
+At the top of `script.js`:
+
+```js
+const SHOP = {
+  name: "Satija's Bakers & Cafe",
+  phone: '+919988799191',
+  whatsapp: '919988799191',
+  address: 'Sector-17, near Kidzee School, Guru Nanak Colony, Sangrur, Punjab 148001',
+  timings: '8:00 AM – 9:00 PM',
+  instagram: 'satija_bakers_and_cafe',
+  rating: 4.8,
+  reviewsCount: 150,
+};
+```
+
+### Theme colours
+Top of `styles.css` — `:root` for light mode, `[data-theme="dark"]`
+for dark.
+
+## Tech notes
+
+- No build step — everything works by just opening `index.html`.
+- `localStorage` keys: `satija_cart`, `satija_theme`.
+- Fonts loaded from Google Fonts (Playfair Display + Inter).
+- Icons from Font Awesome 6 CDN.
+- The 3D cake is built with stacked CSS ellipses + `transform: rotateX/rotateZ`
+  for a luxe rotating-platter feel.
+
+## Known limitations
+
+- The Google Maps embed uses a public unauthenticated URL; for a custom
+  pin / styled map, replace the `iframe src` with a Google Maps embed
+  API URL.
+- The chatbot is a keyword-match FAQ assistant, not an LLM. Replace
+  `findAnswer` in `script.js` if you want to wire it to a real model.
+- The Instagram gallery uses static tiles (with hover effects). Embed
+  real reels by replacing each `<a class="gallery-item">` with an
+  Instagram embed once you have post URLs.

@@ -1,17 +1,13 @@
 {
-  "name": "maths-with-sahil-verma",
+  "name": "satija-bakers-cafe",
   "version": "1.0.0",
-  "description": "SG Coaching Centre, Sangrur — premium Maths coaching website with a Free Demo form that sends submissions directly to WhatsApp.",
+  "description": "Satija's Bakers & Cafe — premium bakery & cafe website for Sangrur, Punjab. Cinematic, responsive single-page site with menu, cart, reservations, gallery and chatbot. Pure HTML/CSS/JS, deployed via GitHub Pages.",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "netlify dev",
-    "start": "netlify dev"
+    "serve": "npx --yes http-server -p 8080 -c-1 .",
+    "start": "npm run serve"
   },
   "engines": {
     "node": ">=18"
-  },
-  "devDependencies": {
-    "netlify-cli": "^17.0.0"
   }
 }

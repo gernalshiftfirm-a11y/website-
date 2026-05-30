@@ -1,391 +1,596 @@
-/* ====================================================================
-   Maths with Sahil Verma  ·  SG Coaching Centre
-   Site interactions + WhatsApp form redirect
-   ==================================================================== */
+/* ==========================================================
+   Satija's Bakers & Cafe — Premium Bakery Website JS
+   ========================================================== */
 
 (() => {
   'use strict';
 
-  /* ---- WhatsApp business number (digits only, with country code) ---- */
-  const WHATSAPP_NUMBER = '917986422304';
+  /* =========================================================
+     1) BUSINESS DATA
+     ========================================================= */
+  const SHOP = {
+    name: "Satija's Bakers & Cafe",
+    phone: '+919988799191',
+    phoneDisplay: '+91 99887 99191',
+    whatsapp: '919988799191',
+    address: 'Sector-17, near Kidzee School, Guru Nanak Colony, Sangrur, Punjab 148001',
+    timings: '8:00 AM – 9:00 PM',
+    instagram: 'satija_bakers_and_cafe',
+    rating: 4.8,
+    reviewsCount: 150,
+  };
 
-  /* ============================================================
-     1) Loader — hide once the page is ready
-     ============================================================ */
+  /* =========================================================
+     2) MENU DATA — emojis chosen item-by-item, all veg
+     ========================================================= */
+  const ICONS = {
+    Meals:       'fa-solid fa-utensils',
+    Salads:      'fa-solid fa-leaf',
+    Pizza:       'fa-solid fa-pizza-slice',
+    Pasta:       'fa-solid fa-bowl-food',
+    Burgers:     'fa-solid fa-burger',
+    Sandwiches:  'fa-solid fa-bread-slice',
+    Snacks:      'fa-solid fa-cookie-bite',
+    Wraps:       'fa-solid fa-drumstick-bite',
+    Desserts:    'fa-solid fa-ice-cream',
+    Cakes:       'fa-solid fa-cake-candles',
+    Pastries:    'fa-solid fa-stroopwafel',
+    Drinks:      'fa-solid fa-mug-hot',
+    Combos:      'fa-solid fa-box-archive',
+    'Bento Cakes': 'fa-solid fa-heart',
+  };
+
+  const M = (name, category, price, emoji, desc) => ({ id: slug(name), name, category, price, emoji, desc, veg: true });
+
+  const MENU = [
+    // ===== MEALS =====
+    M('Aloo Tikki Burger Meal', 'Meals', 140, '🍔', 'Crispy aloo tikki burger, fries & a chilled drink.'),
+    M('Aloo Tikki Spicy Burger Meal', 'Meals', 150, '🌶️', 'Spice-loaded aloo tikki burger with fries & drink.'),
+    M('Nuggets Burger Meal', 'Meals', 185, '🍟', 'Veg nuggets burger paired with fries & soft drink.'),
+    M('Veggie Burger Meal', 'Meals', 160, '🥬', 'Garden-fresh veggie patty meal with fries & drink.'),
+    M('Veggie Ginger Burger Meal', 'Meals', 175, '🫚', 'Ginger-spiced veggie patty meal with fries & drink.'),
+    M('Paneer Ginger Burger Meal', 'Meals', 195, '🧀', 'Tandoori paneer & ginger burger with fries & drink.'),
+    M('Satija Special Burger Meal', 'Meals', 210, '👑', "Our signature loaded burger meal — chef's pick."),
+
+    // ===== SALADS =====
+    M('American Veggie Salad', 'Salads', 120, '🥗', 'Crunchy greens, corn & tangy American dressing.'),
+    M('Manchurian Veg Salad', 'Salads', 135, '🥢', 'Indo-Chinese veg manchurian over a fresh salad bed.'),
+    M('Tandoori Paneer Salad', 'Salads', 160, '🔥', 'Smoky tandoori paneer over a crunchy salad mix.'),
+    M('Shammi Kebab Veg Salad', 'Salads', 145, '🌿', 'Hand-rolled veg shammi kebabs with fresh greens.'),
+
+    // ===== PIZZA =====
+    M('Onion Corn Pizza', 'Pizza', 120, '🍕', 'Classic onion & corn on stretchy mozzarella base.'),
+    M('Tomato Corn Pizza', 'Pizza', 120, '🍅', 'Juicy tomato & sweet corn over melted cheese.'),
+    M('Cheese Pizza', 'Pizza', 135, '🧀', 'Pure indulgence — extra cheese on a crisp base.'),
+    M('Corn On Pizza', 'Pizza', 255, '🌽', 'Loaded with sweet corn, herbs & double cheese.'),
+    M('Paneer Tikka Pizza', 'Pizza', 195, '🥘', 'Smoky paneer tikka chunks with capsicum & onion.'),
+    M('Spicy Paneer Pizza', 'Pizza', 255, '🌶️', 'Fiery paneer pizza for spice lovers.'),
+    M('Veg Overloaded Pizza', 'Pizza', 280, '🥦', 'Capsicum, corn, onion, paneer, jalapeños — all on one.'),
+    M('Satija Special Pizza', 'Pizza', 310, '👑', "Our signature loaded pizza — the house favourite."),
+
+    // ===== PASTA =====
+    M('White Sauce Pasta', 'Pasta', 145, '🍝', 'Creamy béchamel pasta with herbs & cheese.'),
+    M('Red Sauce Pasta', 'Pasta', 160, '🍅', 'Tomato-basil sauce pasta with Italian herbs.'),
+    M('Mix Sauce Pasta', 'Pasta', 175, '🍲', 'Best of both — creamy & tangy in one bowl.'),
+    M('Italian Red Sauce Pasta', 'Pasta', 200, '🇮🇹', 'Authentic Italian pomodoro pasta with parmesan.'),
+    M('Italian White Sauce Pasta', 'Pasta', 200, '🥛', 'Authentic Italian alfredo with garlic & cream.'),
+    M('Italian Mixed Sauce Pasta', 'Pasta', 200, '🍷', 'House Italian-style mix sauce pasta.'),
+
+    // ===== BURGERS =====
+    M('Aloo Tikki Burger', 'Burgers', 60, '🥔', 'Soft bun, hot crispy aloo tikki, mint mayo.'),
+    M('Veggie Burger', 'Burgers', 80, '🥗', 'Crunchy mixed-veg patty with melt-in cheese.'),
+    M('Paneer Ginger Burger', 'Burgers', 115, '🧀', 'Tandoori paneer & ginger patty for that zing.'),
+    M('Satija Special Burger', 'Burgers', 130, '👑', "Stacked tall, signature sauce — our pride."),
+
+    // ===== SANDWICHES =====
+    M('Cold Sandwich', 'Sandwiches', 80, '🥪', 'Fresh, crunchy & light — a daytime favourite.'),
+    M('Mixed Veg Grilled Sandwich', 'Sandwiches', 105, '🍞', 'Garden veggies grilled to golden perfection.'),
+    M('Grilled Paneer Sandwich', 'Sandwiches', 120, '🧀', 'Spiced paneer grilled with capsicum & onion.'),
+    M('Super Veg Sandwich', 'Sandwiches', 145, '🥬', 'Triple-decker loaded with veggies & cheese.'),
+    M('American Veggie Sub Sandwich', 'Sandwiches', 135, '🌭', 'Sub-style roll with veggies & house dressing.'),
+    M('Tandoori Paneer Sub Sandwich', 'Sandwiches', 175, '🔥', 'Smoky paneer sub with mint chutney drizzle.'),
+
+    // ===== SNACKS =====
+    M('Potato Balls', 'Snacks', 80, '🥔', 'Golden-fried cheesy potato pops — kid favourite.'),
+    M('Momos', 'Snacks', 80, '🥟', 'Steamed veg momos with spicy red chutney.'),
+    M('Veg Nuggets', 'Snacks', 120, '🍗', 'Crispy outside, soft inside — pop-able veg bites.'),
+    M('Salted Fries', 'Snacks', 80, '🍟', 'Classic salted fries, crisp golden batches.'),
+    M('Peri Peri Fries', 'Snacks', 100, '🌶️', 'Tangy peri-peri tossed fries for the soul.'),
+    M('Loaded Cheesy Fries', 'Snacks', 135, '🧀', 'Cheddar, jalapeños & house sauce over fries.'),
+    M('Stuffed Garlic Bread', 'Snacks', 120, '🍞', 'Garlic bread loaded with veggies & mozzarella.'),
+    M('Paneer Garlic Bread', 'Snacks', 135, '🧀', 'Garlic bread stuffed with spiced paneer.'),
+    M('Crispy Momos', 'Snacks', 105, '🥟', 'Pan-fried momos with spicy schezwan glaze.'),
+    M('Spring Roll', 'Snacks', 110, '🥬', 'Crisp veg spring rolls with sweet-chilli dip.'),
+
+    // ===== WRAPS =====
+    M('Potato Wrap', 'Wraps', 95, '🥔', 'Crispy aloo tikki wrapped with mint & onion.'),
+    M('Crispy Veg Wrap', 'Wraps', 110, '🥬', 'Mixed crunchy veggies in a soft wrap.'),
+    M('Nuggets Wrap', 'Wraps', 120, '🍗', 'Veg nuggets, crisp lettuce, mayo — rolled up.'),
+    M('Paneer & Cheesy Wrap', 'Wraps', 135, '🧀', 'Spiced paneer + cheese pull in every bite.'),
+    M('Super Veg Wrap', 'Wraps', 150, '👑', 'Loaded veggies, paneer, cheese & house sauce.'),
+
+    // ===== DESSERTS =====
+    M('Red Velvet Butter Roll', 'Desserts', 40, '❤️', 'Soft red velvet sponge rolled with butter cream.'),
+    M('Chocolate Butter Roll', 'Desserts', 40, '🍫', 'Cocoa sponge rolled with rich butter cream.'),
+    M('Brownie', 'Desserts', 65, '🟫', 'Fudgy chocolate brownie — warm on request.'),
+    M('Choco Lava', 'Desserts', 65, '🌋', 'Molten chocolate centre — pour & melt.'),
+
+    // ===== CAKES =====
+    M('Strawberry Cake', 'Cakes', 350, '🍓', 'Pillowy sponge with fresh cream & strawberries (½ kg).'),
+    M('Pineapple Cake', 'Cakes', 350, '🍍', 'Classic pineapple cream cake (½ kg).'),
+    M('Butterscotch Cake', 'Cakes', 350, '🍯', 'Butterscotch crunch with caramel drizzle (½ kg).'),
+    M('Blueberry Cake', 'Cakes', 350, '🫐', 'Soft sponge layered with blueberry compote (½ kg).'),
+    M('Blackcurrant Cake', 'Cakes', 350, '🍇', 'Tangy blackcurrant cream layered cake (½ kg).'),
+    M('Mango Cake', 'Cakes', 350, '🥭', 'Seasonal mango cream cake — alphonso bliss (½ kg).'),
+    M('Red Velvet Cake', 'Cakes', 400, '❤️', 'Velvety red sponge with cream cheese (½ kg).'),
+    M('Chocolate Cake', 'Cakes', 400, '🍫', 'Rich chocolate ganache layered cake (½ kg).'),
+    M('Fruit Cake', 'Cakes', 475, '🍒', 'Loaded with seasonal fresh fruits (½ kg).'),
+    M('Choco Chips Cake', 'Cakes', 475, '🍪', 'Chocolate cake studded with choco chips (½ kg).'),
+
+    // ===== PASTRIES =====
+    M('Pineapple Pastry', 'Pastries', 25, '🍍', 'Single-serve pineapple cream pastry.'),
+    M('Chocolate Pastry', 'Pastries', 25, '🍫', 'Classic chocolate cream pastry.'),
+    M('Red Velvet Pastry', 'Pastries', 35, '❤️', 'Single red-velvet slice with cream cheese.'),
+    M('Black Forest Pastry', 'Pastries', 35, '🍒', 'Dark chocolate, cherries & whipped cream.'),
+    M('Truffle Pastry', 'Pastries', 65, '🍫', 'Premium dark truffle ganache pastry.'),
+    M('Choco Mousse Pastry', 'Pastries', 65, '🍮', 'Airy chocolate mousse on a sponge base.'),
+
+    // ===== DRINKS =====
+    M('Cold Coffee', 'Drinks', 120, '☕', 'Frothy iced coffee with vanilla scoop.'),
+    M('Oreo Shake', 'Drinks', 120, '🍪', 'Crushed Oreos blended into thick milkshake.'),
+    M('Brownie Shake', 'Drinks', 135, '🟫', 'Fudge brownie chunks in a creamy shake.'),
+    M('KitKat Shake', 'Drinks', 145, '🍫', 'KitKat crunch swirled into a thick shake.'),
+    M('Lemonade', 'Drinks', 105, '🍋', 'Fresh lime, mint & a splash of soda.'),
+    M('Watermelon Mocktail', 'Drinks', 105, '🍉', 'Chilled watermelon mocktail with mint.'),
+    M('Blue Lagoon Mojito', 'Drinks', 105, '💙', 'Blue curaçao styled refreshing mocktail.'),
+    M('Mint Mojito', 'Drinks', 120, '🌿', 'Crushed mint, lime, soda — pure refreshment.'),
+
+    // ===== COMBOS =====
+    M('Pizza Combo', 'Combos', 850, '🍕', 'Large pizza + sides + drinks for the whole gang.'),
+    M('Pasta Combo', 'Combos', 500, '🍝', 'Pasta + garlic bread + drinks combo.'),
+    M('Sandwich Combo', 'Combos', 440, '🥪', 'Sandwich + fries + drinks combo.'),
+    M('Garlic Bread Combo', 'Combos', 300, '🍞', 'Garlic bread duo + dip + drinks.'),
+    M('Snack Combo', 'Combos', 460, '🍟', 'Mixed snack platter + dips + drinks.'),
+    M('Wrap Combo', 'Combos', 360, '🌯', 'Wrap + fries + drink combo.'),
+    M('Couple Combo 1', 'Combos', 240, '💑', 'For two — burger pair + fries + drinks.'),
+    M('Couple Combo 2', 'Combos', 240, '💑', 'For two — wrap pair + fries + drinks.'),
+    M('Couple Combo 3', 'Combos', 479, '💕', 'Premium duo combo with snacks & shakes.'),
+    M('Family Combo 1', 'Combos', 335, '👨‍👩‍👧', 'Family of 4 — meals + sides.'),
+    M('Family Combo 2', 'Combos', 350, '👨‍👩‍👧‍👦', 'Family of 4 — pizza + sides + drinks.'),
+    M('Family Combo 3', 'Combos', 430, '🎉', 'Family feast with mixed favourites.'),
+
+    // ===== BENTO / SPECIAL CAKES =====
+    M('Bento Cake 150G', 'Bento Cakes', 245, '🎁', 'Mini personalised bento cake — 150 g (perfect gift).'),
+    M('Bento Cake 250G', 'Bento Cakes', 295, '💝', 'Personalised bento cake — 250 g.'),
+    M('Matki Cake 500G', 'Bento Cakes', 350, '🏺', 'Traditional matki (pot) style cake — 500 g.'),
+  ];
+
+  function slug(s) {
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  /* =========================================================
+     3) HELPERS & STATE
+     ========================================================= */
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+
+  let cart = JSON.parse(localStorage.getItem('satija_cart') || '[]');
+  let activeCategory = 'All';
+  let menuQuery = '';
+
+  const saveCart = () => localStorage.setItem('satija_cart', JSON.stringify(cart));
+
+  function toast(msg, icon = 'fa-circle-check') {
+    const t = $('#toast');
+    t.innerHTML = `<i class="fa-solid ${icon}"></i> ${msg}`;
+    t.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* =========================================================
+     4) LOADING SCREEN
+     ========================================================= */
   window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    if (!loader) return;
-    setTimeout(() => loader.classList.add('done'), 900);
-    setTimeout(() => loader.remove(), 1600);
+    setTimeout(() => $('#loader').classList.add('hidden'), 600);
   });
 
-  /* ============================================================
-     2) Sticky nav — add scrolled state
-     ============================================================ */
-  const nav = document.getElementById('nav');
-  const onScroll = () => {
-    if (!nav) return;
-    nav.classList.toggle('scrolled', window.scrollY > 30);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  /* =========================================================
+     5) THEME TOGGLE
+     ========================================================= */
+  const savedTheme = localStorage.getItem('satija_theme');
+  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
 
-  /* ============================================================
-     3) Mobile menu
-     ============================================================ */
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('navLinks');
-  if (hamburger && nav) {
-    hamburger.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    });
-    navLinks?.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => nav.classList.remove('open'));
-    });
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target) && nav.classList.contains('open')) {
-        nav.classList.remove('open');
-      }
+  function updateThemeIcon() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    $$('#themeBtn i, #themeBtnMobile i').forEach(i => {
+      i.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     });
   }
+  updateThemeIcon();
 
-  /* ============================================================
-     4) Smooth-scroll with sticky-nav offset
-     ============================================================ */
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const id = link.getAttribute('href');
-      if (!id || id.length <= 1) return;
-      const target = document.querySelector(id);
-      if (!target) return;
-      e.preventDefault();
-      const navH = nav?.offsetHeight ?? 76;
-      const y = target.getBoundingClientRect().top + window.scrollY - navH - 8;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    });
-  });
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = cur === 'dark' ? 'light' : 'dark';
+    if (next === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('satija_theme', next);
+    updateThemeIcon();
+  }
+  $('#themeBtn')?.addEventListener('click', toggleTheme);
+  $('#themeBtnMobile')?.addEventListener('click', toggleTheme);
 
-  /* ============================================================
-     5) Theme toggle (light <-> dark) with localStorage
-     ============================================================ */
-  const themeToggle = document.getElementById('themeToggle');
-  const root = document.documentElement;
-
-  const applyTheme = (mode) => {
-    root.setAttribute('data-theme', mode);
-    if (themeToggle) {
-      const icon = themeToggle.querySelector('i');
-      if (icon) icon.className = mode === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  /* =========================================================
+     6) MOBILE DRAWER
+     ========================================================= */
+  const drawer = $('#mobileDrawer');
+  $('#menuToggle')?.addEventListener('click', () => drawer.classList.add('open'));
+  $('#mobileDrawerClose')?.addEventListener('click', () => drawer.classList.remove('open'));
+  drawer?.addEventListener('click', (e) => {
+    if (e.target.classList.contains('mobile-drawer-bg') || e.target.closest('a:not(.icon-btn)')) {
+      drawer.classList.remove('open');
     }
-  };
-
-  try {
-    const saved = localStorage.getItem('sg-theme');
-    if (saved === 'dark' || saved === 'light') {
-      applyTheme(saved);
-    } else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-      applyTheme('dark');
-    }
-  } catch (_) { /* no-op */ }
-
-  themeToggle?.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    try { localStorage.setItem('sg-theme', next); } catch (_) {}
   });
 
-  /* ============================================================
-     6) Reveal-on-scroll
-     ============================================================ */
-  const revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        }
+  /* =========================================================
+     7) RENDER MENU
+     ========================================================= */
+  const tabsEl = $('#menuTabs');
+  const gridEl = $('#menuGrid');
+
+  function renderTabs() {
+    const cats = ['All', ...new Set(MENU.map(m => m.category))];
+    tabsEl.innerHTML = cats.map(c => `
+      <button class="menu-tab ${c === activeCategory ? 'active' : ''}" data-cat="${c}">
+        <i class="${c === 'All' ? 'fa-solid fa-layer-group' : (ICONS[c] || 'fa-solid fa-utensils')}"></i> ${c}
+      </button>
+    `).join('');
+    $$('.menu-tab', tabsEl).forEach(t => {
+      t.addEventListener('click', () => {
+        activeCategory = t.dataset.cat;
+        renderTabs();
+        renderMenu();
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    revealEls.forEach(el => io.observe(el));
-  } else {
-    revealEls.forEach(el => el.classList.add('is-visible'));
+    });
   }
 
-  /* ============================================================
-     7) Animated counters
-     ============================================================ */
-  const counts = document.querySelectorAll('.count[data-target]');
-  if ('IntersectionObserver' in window && counts.length) {
-    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-    const animate = (el) => {
-      const target = parseInt(el.dataset.target, 10) || 0;
-      const dur = 1600;
-      const start = performance.now();
-      const tick = (now) => {
-        const p = Math.min((now - start) / dur, 1);
-        el.textContent = Math.floor(easeOut(p) * target).toLocaleString('en-IN');
-        if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = target.toLocaleString('en-IN');
-      };
-      requestAnimationFrame(tick);
-    };
-    const cIO = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animate(entry.target);
-          cIO.unobserve(entry.target);
-        }
+  function renderMenu() {
+    const q = menuQuery.trim().toLowerCase();
+    const list = MENU.filter(m =>
+      (activeCategory === 'All' || m.category === activeCategory) &&
+      (!q || m.name.toLowerCase().includes(q) || (m.desc && m.desc.toLowerCase().includes(q)))
+    );
+
+    if (!list.length) {
+      gridEl.innerHTML = `
+        <div class="menu-empty">
+          <i class="fa-regular fa-face-frown"></i>
+          <h4>Nothing matches that search</h4>
+          <p>Try a different keyword or category.</p>
+        </div>`;
+      return;
+    }
+
+    gridEl.innerHTML = list.map(m => `
+      <article class="menu-card" data-id="${m.id}">
+        <span class="veg-mark" title="Vegetarian"></span>
+        <div class="emoji">${m.emoji}</div>
+        <h4>${m.name}</h4>
+        <p class="desc">${m.desc || ''}</p>
+        <div class="row">
+          <span class="price">${fmt(m.price)}</span>
+          <button class="add-btn" aria-label="Add ${m.name} to cart">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </article>
+    `).join('');
+
+    // 3D hover tilt
+    $$('.menu-card', gridEl).forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = ((e.clientX - r.left) / r.width) * 100;
+        const py = ((e.clientY - r.top) / r.height) * 100;
+        card.style.setProperty('--mx', px + '%');
+        card.style.setProperty('--my', py + '%');
       });
-    }, { threshold: 0.4 });
-    counts.forEach(c => cIO.observe(c));
+      card.addEventListener('click', () => addToCart(card.dataset.id));
+    });
   }
 
-  /* ============================================================
-     8) Active section highlight in nav
-     ============================================================ */
-  const sections = document.querySelectorAll('section[id]');
-  const navAnchors = document.querySelectorAll('.nav-links a');
-  if (sections.length && navAnchors.length && 'IntersectionObserver' in window) {
-    const sIO = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navAnchors.forEach(a => {
-            a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`);
-          });
-        }
-      });
-    }, { threshold: 0.45 });
-    sections.forEach(s => sIO.observe(s));
+  $('#menuSearch')?.addEventListener('input', e => {
+    menuQuery = e.target.value;
+    renderMenu();
+  });
+
+  /* =========================================================
+     8) CAKES SHOWCASE (separate visual section)
+     ========================================================= */
+  function renderCakeShowcase() {
+    const cakes = MENU.filter(m => m.category === 'Cakes' || m.category === 'Bento Cakes');
+    const el = $('#cakeShowcase');
+    if (!el) return;
+    el.innerHTML = cakes.map((c, i) => `
+      <article class="cake-tile" data-id="${c.id}">
+        ${i < 3 ? `<span class="ribbon">${['BESTSELLER', 'NEW', 'POPULAR'][i]}</span>` : ''}
+        <div class="emoji">${c.emoji}</div>
+        <h4>${c.name}</h4>
+        <p class="muted" style="font-size:.82rem;">${c.desc || ''}</p>
+        <div class="price">${fmt(c.price)} <small>onwards</small></div>
+        <button class="order-btn">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+      </article>
+    `).join('');
+    $$('.cake-tile', el).forEach(t => {
+      t.addEventListener('click', () => addToCart(t.dataset.id));
+    });
   }
 
-  /* ============================================================
-     9) Testimonials slider
-     ============================================================ */
-  const testiTrack = document.getElementById('testiTrack');
-  const testiPrev  = document.getElementById('testiPrev');
-  const testiNext  = document.getElementById('testiNext');
-  const testiDots  = document.getElementById('testiDots');
+  /* =========================================================
+     9) COMBOS
+     ========================================================= */
+  function renderCombos() {
+    const combos = MENU.filter(m => m.category === 'Combos');
+    const el = $('#combosGrid');
+    if (!el) return;
+    el.innerHTML = combos.map(c => `
+      <article class="combo-card" data-id="${c.id}">
+        <span class="icon">${c.emoji}</span>
+        <h4>${c.name}</h4>
+        <p class="desc">${c.desc || ''}</p>
+        <div class="price">${fmt(c.price)} <small>combo</small></div>
+      </article>
+    `).join('');
+    $$('.combo-card', el).forEach(t => {
+      t.addEventListener('click', () => addToCart(t.dataset.id));
+    });
+  }
 
-  if (testiTrack) {
-    const cards = testiTrack.children;
-    let visible = 3;
-    let index = 0;
-    let auto;
+  /* =========================================================
+     10) CART
+     ========================================================= */
+  function addToCart(id) {
+    const item = MENU.find(m => m.id === id);
+    if (!item) return;
+    const line = cart.find(l => l.id === id);
+    if (line) line.qty += 1;
+    else cart.push({ id, qty: 1 });
+    saveCart();
+    renderCart();
+    bumpCartIcon();
+    toast(`Added ${item.name}`, 'fa-circle-check');
+  }
 
-    const computeVisible = () => {
-      const w = window.innerWidth;
-      visible = w < 600 ? 1 : (w < 920 ? 2 : 3);
-    };
+  function changeQty(id, delta) {
+    const line = cart.find(l => l.id === id);
+    if (!line) return;
+    line.qty += delta;
+    if (line.qty <= 0) cart = cart.filter(l => l.id !== id);
+    saveCart();
+    renderCart();
+  }
 
-    const totalPages = () => Math.max(1, Math.ceil(cards.length / visible));
+  function bumpCartIcon() {
+    const badge = $('#cartBadge');
+    const count = cart.reduce((s, l) => s + l.qty, 0);
+    badge.textContent = count;
+    badge.classList.toggle('show', count > 0);
+    const btn = $('#cartBtn');
+    btn.style.transform = 'scale(1.18)';
+    setTimeout(() => btn.style.transform = '', 220);
+  }
 
-    const buildDots = () => {
-      if (!testiDots) return;
-      testiDots.innerHTML = '';
-      const pages = totalPages();
-      for (let i = 0; i < pages; i++) {
-        const b = document.createElement('button');
-        b.setAttribute('aria-label', `Go to slide ${i + 1}`);
-        b.addEventListener('click', () => goTo(i));
-        testiDots.appendChild(b);
-      }
-      updateDots();
-    };
+  function renderCart() {
+    const itemsEl = $('#cartItems');
+    const totalEl = $('#cartTotal');
+    const footerEl = $('#cartFooter');
 
-    const updateDots = () => {
-      if (!testiDots) return;
-      [...testiDots.children].forEach((d, i) => d.classList.toggle('active', i === index));
-    };
+    const count = cart.reduce((s, l) => s + l.qty, 0);
+    $('#cartBadge').textContent = count;
+    $('#cartBadge').classList.toggle('show', count > 0);
 
-    const goTo = (i) => {
-      const pages = totalPages();
-      index = (i + pages) % pages;
-      const offsetPercent = (100 / visible) * visible * index;
-      testiTrack.style.transform = `translateX(-${offsetPercent}%)`;
-      updateDots();
-    };
+    if (!cart.length) {
+      itemsEl.innerHTML = `
+        <div class="cart-empty">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <h4 style="font-family: var(--display); margin-bottom: .4rem;">Your cart is empty</h4>
+          <p>Browse the menu and add some delicious items!</p>
+        </div>`;
+      footerEl.style.display = 'none';
+      return;
+    }
 
-    const startAuto = () => {
-      stopAuto();
-      auto = setInterval(() => goTo(index + 1), 5500);
-    };
-    const stopAuto = () => { if (auto) clearInterval(auto); };
+    let total = 0;
+    itemsEl.innerHTML = cart.map(l => {
+      const m = MENU.find(x => x.id === l.id);
+      if (!m) return '';
+      const sub = m.price * l.qty;
+      total += sub;
+      return `
+        <div class="cart-item">
+          <div class="emoji">${m.emoji}</div>
+          <div>
+            <h5>${m.name}</h5>
+            <div class="meta">
+              <button class="qty-btn" data-act="dec" data-id="${m.id}" aria-label="Decrease"><i class="fa-solid fa-minus"></i></button>
+              <span class="qty-num">${l.qty}</span>
+              <button class="qty-btn" data-act="inc" data-id="${m.id}" aria-label="Increase"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="item-price">${fmt(sub)}</div>
+        </div>`;
+    }).join('');
 
-    const init = () => {
-      computeVisible();
-      buildDots();
-      goTo(0);
-      startAuto();
-    };
-
-    testiPrev?.addEventListener('click', () => { goTo(index - 1); startAuto(); });
-    testiNext?.addEventListener('click', () => { goTo(index + 1); startAuto(); });
-    testiTrack.addEventListener('mouseenter', stopAuto);
-    testiTrack.addEventListener('mouseleave', startAuto);
-
-    let resizeT;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeT);
-      resizeT = setTimeout(init, 200);
+    $$('.qty-btn', itemsEl).forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeQty(b.dataset.id, b.dataset.act === 'inc' ? 1 : -1);
+      });
     });
 
-    init();
+    totalEl.textContent = fmt(total);
+    footerEl.style.display = 'block';
   }
 
-  /* ============================================================
-     10) === WhatsApp redirect for the FREE DEMO form ===
-         Builds a formatted WhatsApp message with all submitted
-         info and opens https://wa.me/<number>?text=<message>.
-     ============================================================ */
-  const demoForm     = document.getElementById('demoForm');
-  const demoSuccess  = document.getElementById('demoSuccess');
-  const demoFallback = document.getElementById('demoFallback');
+  $('#cartBtn')?.addEventListener('click', () => {
+    $('#cartDrawer').classList.add('open');
+  });
+  $('#cartClose')?.addEventListener('click', () => {
+    $('#cartDrawer').classList.remove('open');
+  });
+  $('#cartDrawer')?.addEventListener('click', (e) => {
+    if (e.target.classList.contains('cart-bg')) $('#cartDrawer').classList.remove('open');
+  });
 
-  /** Build the WhatsApp deep-link URL for a payload */
-  const buildWhatsAppURL = (text) =>
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-
-  /** Compose the demo-class WhatsApp message */
-  const buildDemoMessage = (data) => {
-    const today = new Date().toLocaleString('en-IN', {
-      day: '2-digit', month: 'short', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
+  /* =========================================================
+     11) ORDER VIA WHATSAPP
+     ========================================================= */
+  function buildOrderMessage() {
+    if (!cart.length) return '';
+    const lines = cart.map(l => {
+      const m = MENU.find(x => x.id === l.id);
+      return `• ${m.name} x${l.qty} — ${fmt(m.price * l.qty)}`;
     });
+    const total = cart.reduce((s, l) => {
+      const m = MENU.find(x => x.id === l.id);
+      return s + (m ? m.price * l.qty : 0);
+    }, 0);
     return [
-      `*New Free Demo Class Request*`,
-      `_via Maths with Sahil Verma website_`,
-      ``,
-      `*Student Name:* ${data.name || '-'}`,
-      `*Class:* ${data.class || '-'}`,
-      `*Phone:* ${data.phone || '-'}`,
-      `*Subject / Stream:* ${data.subject || '-'}`,
-      `*Preferred Timing:* ${data.timing || '-'}`,
-      ``,
-      `Submitted: ${today}`,
-      ``,
-      `Hello Sahil sir, I'd like to book my free demo class. Please confirm a slot. Thank you!`
+      `Hi ${SHOP.name}! I'd like to place an order:`,
+      '',
+      ...lines,
+      '',
+      `Total: ${fmt(total)}`,
+      '',
+      'Please confirm availability & delivery time. Thank you!'
     ].join('\n');
-  };
-
-  if (demoForm) {
-    demoForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // HTML5 validation
-      if (!demoForm.checkValidity()) {
-        demoForm.reportValidity();
-        return;
-      }
-
-      const data = {
-        name:    demoForm.name.value.trim(),
-        class:   demoForm.class.value,
-        phone:   demoForm.phone.value.trim(),
-        subject: demoForm.subject.value,
-        timing:  demoForm.timing.value,
-      };
-
-      const url = buildWhatsAppURL(buildDemoMessage(data));
-
-      // Open WhatsApp in a new tab. Most browsers will route to the
-      // native app if installed (mobile) or web.whatsapp.com (desktop).
-      const win = window.open(url, '_blank', 'noopener,noreferrer');
-
-      // If the popup was blocked, fall back to a same-tab redirect.
-      if (!win) {
-        window.location.href = url;
-      }
-
-      // Show success message + give the user a manual fallback link.
-      if (demoSuccess) {
-        demoSuccess.hidden = false;
-        if (demoFallback) {
-          demoFallback.href = url;
-          demoFallback.target = '_blank';
-          demoFallback.rel = 'noopener';
-        }
-      }
-
-      // Reset the form so it can be reused
-      demoForm.reset();
-    });
   }
 
-  /* ============================================================
-     11) === WhatsApp redirect for the QUICK INQUIRY form ===
-     ============================================================ */
-  const inquiryForm     = document.getElementById('inquiryForm');
-  const inquirySuccess  = document.getElementById('inquirySuccess');
-  const inquiryFallback = document.getElementById('inquiryFallback');
+  $('#cartCheckout')?.addEventListener('click', () => {
+    const msg = buildOrderMessage();
+    if (!msg) return;
+    window.open(`https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+  });
 
-  const buildInquiryMessage = (data) => {
-    const today = new Date().toLocaleString('en-IN', {
-      day: '2-digit', month: 'short', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
-    });
-    return [
-      `*New Inquiry*`,
-      `_via Maths with Sahil Verma website_`,
-      ``,
-      `*Name:* ${data.name || '-'}`,
-      `*Phone:* ${data.phone || '-'}`,
-      `*Message:* ${data.message || '(no message provided)'}`,
-      ``,
-      `Submitted: ${today}`,
-    ].join('\n');
-  };
+  $('#cartClear')?.addEventListener('click', () => {
+    if (!cart.length) return;
+    if (!confirm('Clear all items from your cart?')) return;
+    cart = [];
+    saveCart();
+    renderCart();
+    toast('Cart cleared', 'fa-trash');
+  });
 
-  if (inquiryForm) {
-    inquiryForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!inquiryForm.checkValidity()) {
-        inquiryForm.reportValidity();
-        return;
-      }
+  /* =========================================================
+     12) RESERVATION FORM
+     ========================================================= */
+  $('#reservationForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    const msg = [
+      `Hi ${SHOP.name}! I'd like to make a reservation:`,
+      '',
+      `Name:    ${data.name}`,
+      `Phone:   ${data.phone}`,
+      `Date:    ${data.date}`,
+      `Time:    ${data.time}`,
+      `Guests:  ${data.guests}`,
+      data.message ? `Note:    ${data.message}` : ''
+    ].filter(Boolean).join('\n');
+    window.open(`https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    toast('Sending your reservation via WhatsApp', 'fa-paper-plane');
+    e.target.reset();
+  });
 
-      const data = {
-        name:    inquiryForm.name.value.trim(),
-        phone:   inquiryForm.phone.value.trim(),
-        message: inquiryForm.message.value.trim(),
-      };
+  /* =========================================================
+     13) CHATBOT (simple FAQ assistant)
+     ========================================================= */
+  const FAQ = [
+    { q: 'timings|open|close|hours', a: `We're open every day from ${SHOP.timings}.` },
+    { q: 'address|location|where|find|map', a: `We're at: ${SHOP.address}. Tap the map below for directions!` },
+    { q: 'phone|call|number|contact', a: `You can reach us at ${SHOP.phoneDisplay}.` },
+    { q: 'instagram|insta|social', a: `Follow us on Instagram @${SHOP.instagram} for daily fresh updates!` },
+    { q: 'cake|order|birthday|custom', a: 'We make customized cakes! Browse our cake section or message us on WhatsApp with your design idea.' },
+    { q: 'delivery|deliver', a: 'Yes, we offer delivery in Sangrur. Place your order via WhatsApp from the cart and we\'ll confirm.' },
+    { q: 'best|signature|special|recommend', a: 'Our Satija Special Pizza, Truffle Pastry, and Bento Cakes are total crowd favourites! 😋' },
+    { q: 'menu|food|eat', a: 'Scroll up to see our full menu — we have meals, pizza, pasta, burgers, cakes, drinks and much more!' },
+    { q: 'price|cost|cheap', a: 'Our pastries start at just ₹25, snacks from ₹80, and meals from ₹140. There\'s something for everyone!' },
+    { q: 'rating|review|reviews', a: `We're rated ${SHOP.rating}/5 by ${SHOP.reviewsCount}+ happy customers. We'd love to add you to that list!` },
+  ];
 
-      const url = buildWhatsAppURL(buildInquiryMessage(data));
-      const win = window.open(url, '_blank', 'noopener,noreferrer');
-      if (!win) window.location.href = url;
-
-      if (inquirySuccess) {
-        inquirySuccess.hidden = false;
-        if (inquiryFallback) {
-          inquiryFallback.href = url;
-          inquiryFallback.target = '_blank';
-          inquiryFallback.rel = 'noopener';
-        }
-      }
-
-      inquiryForm.reset();
-    });
+  function findAnswer(text) {
+    const t = text.toLowerCase();
+    for (const item of FAQ) {
+      if (new RegExp(item.q).test(t)) return item.a;
+    }
+    return "I'd love to help! For specific queries, please WhatsApp us at " + SHOP.phoneDisplay + ' or use the call button. 🥰';
   }
 
-  /* ============================================================
-     12) Back-to-top
-     ============================================================ */
-  const backToTop = document.getElementById('backToTop');
-  if (backToTop) {
-    const update = () => backToTop.classList.toggle('visible', window.scrollY > 600);
-    window.addEventListener('scroll', update, { passive: true });
-    update();
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  function addChatMsg(text, who = 'bot') {
+    const body = $('#chatBody');
+    const div = document.createElement('div');
+    div.className = `chat-msg ${who}`;
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
   }
 
-  /* ============================================================
-     13) Footer year
-     ============================================================ */
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  function chatRespond(text) {
+    setTimeout(() => addChatMsg(findAnswer(text)), 500);
+  }
+
+  $('#chatBtn')?.addEventListener('click', () => {
+    const cb = $('#chatbot');
+    cb.classList.toggle('open');
+  });
+  $('#chatClose')?.addEventListener('click', () => $('#chatbot').classList.remove('open'));
+
+  $$('.chat-quick button').forEach(b => {
+    b.addEventListener('click', () => {
+      const q = b.textContent;
+      addChatMsg(q, 'me');
+      chatRespond(q);
+    });
+  });
+
+  $('#chatForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const inp = $('#chatInput');
+    const text = inp.value.trim();
+    if (!text) return;
+    addChatMsg(text, 'me');
+    inp.value = '';
+    chatRespond(text);
+  });
+
+  /* =========================================================
+     14) SCROLL REVEAL
+     ========================================================= */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  function observeReveals() {
+    $$('.reveal').forEach(el => io.observe(el));
+  }
+
+  /* =========================================================
+     15) INIT
+     ========================================================= */
+  renderTabs();
+  renderMenu();
+  renderCakeShowcase();
+  renderCombos();
+  renderCart();
+  observeReveals();
 
 })();
